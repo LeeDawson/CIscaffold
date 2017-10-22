@@ -10,5 +10,6 @@ $option = [
     "modules" => "wechat"
 ];
 
+
 $application = new Application($option);
 $application->run();
