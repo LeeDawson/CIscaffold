@@ -1,0 +1,14 @@
+<?php
+
+include "./vendor/autoload.php";
+use OutSource\Kernel\Application;
+
+
+$option = [
+    "basePath" => dirname(__FILE__),
+    "driver" => 'CI',
+    "modules" => "wechat"
+];
+
+$application = new Application($option);
+$application->run();

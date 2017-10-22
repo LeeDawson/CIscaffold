@@ -1,0 +1,54 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+
+class AdminBase extends MY_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+
+//        $this->load->library( 'Userlib');
+//        $this->load->library( 'orderlib');
+//        //判断登录状态
+//        Userlib::checkLogin();
+    }
+
+    protected function loadView( $filename)
+    {
+        $this->load->view( '$viewModulesHeader$');
+        $this->load->view( '$viewModules$' . $filename , $this->_data);
+        $this->load->view( '$viewModulesFooter$');
+    }
+
+    protected function fileUpload( $upload_path = 'public/uploads/', $max_size = 1000 , $allow_types = 'jpg|jpeg|png|gif')
+    {
+           !is_dir( FCPATH . $upload_path) && $this->ajaxReturnError( "参数错误");
+           $this->load->library('upload');
+           $upload_path_url = base_url() . $upload_path;
+           $config['upload_path'] = FCPATH . $upload_path;
+           $config['allowed_types'] = $allow_types;
+           $config['encrypt_name'] = true;
+           $config['max_size'] = $max_size;
+           $this->load->library('upload', $config);
+           $this->upload->initialize( $config);
+           if( $this->upload->do_upload( 'image_upload')){
+                $this->ajaxReturn( false , array( 'imgurl' => $upload_path . $this->upload->data('file_name')));
+           }else{
+               $this->ajaxReturnError( $this->upload->display_errors());
+           }
+    }
+
+    public function ajaxReturn($jumpurl = '', $data = '', $status = 'success', $data_type = 'json')
+    {
+          echo json_encode(compact('status', 'data', 'jumpurl'));
+          exit();
+    }
+
+    public function ajaxReturnError( $errmsg = '')
+    {
+         $ci = &get_instance();
+         $token = $ci->security->get_csrf_hash();
+         $this->ajaxReturn( false , array( 'token' => $token , 'errmsg' => $errmsg) , 'error');
+    }
+}

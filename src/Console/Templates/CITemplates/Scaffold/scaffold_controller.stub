@@ -1,0 +1,145 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+require_once  __DIR__ . DIRECTORY_SEPARATOR . 'Adminbase.php';
+
+
+class $CONTROLER_NAME$ extends Adminbase
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->library('$LIBRARY_NAME$');
+        $this->_data['form_title'] = '$CONTROLER_NAME$';
+    }
+
+    /**
+     * Display a listing of the $MODEL_NAME$.
+     *
+     * @return Response
+     */
+    public function index()
+    {
+        $this->loadView('$INDEXVIEW$');
+    }
+
+    public function list()
+    {
+        if($this->_is_ajax){
+            $this->_data['cur_page'] = max( 1 , intval( $this->input->post( 'cur_page')));
+            $SHOWSOFTDELETE$
+            $adminList = $this->$LIBRARY_NAME$->getList($this->_data);
+            $this->ajaxReturn('' , $adminList);
+        }
+    }
+
+    /**
+     * Show the form for creating a new admin.
+     *
+     * @return Response
+     */
+    public function create()
+    {
+        $this->loadView('$CREATEVIEW$');
+    }
+
+    /**
+     * Store a newly created $MODEL_NAME$ in storage.
+     *
+     * @param array $postData
+     *
+     * @return Response
+     */
+    public function store()
+    {
+        if($this->_is_ajax){
+            $postData = $this->input->post(null,true);
+            $SAVESOFTDELETE$
+            //$postData['if_show'] = 1;
+            $returnData = $this->$LIBRARY_NAME$->save($postData);
+
+            if(!$returnData['result'])
+                $this->ajaxReturnError($returnData);
+            else
+                $this->ajaxReturn(base_url('$INDEXURL$/index'),$returnData);
+        }
+
+    }
+
+    /**
+     * Display the specified $MODEL_NAME$.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function show()
+    {
+
+    }
+
+    /**
+     * Show the form for editing the specified $MODEL_NAME$.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function edit()
+    {
+        $order_id = intval( $this->uri->segment(4) );
+        $this->_data['data'] = $this->$LIBRARY_NAME$->queryOne($order_id);
+        if(empty( $this->_data['data']))
+            show_404();
+
+        $this->loadView('$EDITVIEW$' , $this->_data);
+    }
+
+    /**
+     * Update the specified $MODEL_NAME$ in storage.
+     *
+     * @param  int              $id
+     * @param  array $postData
+     *
+     * @return Response
+     */
+    public function update()
+    {
+        if($this->_is_ajax){
+            $postData = $this->input->post(null,true);
+            $id = intval($this->input->post('$PRIMARY$'));
+
+            $returnData = $this->$LIBRARY_NAME$->update(
+                [ "$PRIMARY$" => $id ],
+                $postData
+            );
+
+            if($returnData)
+                $this->ajaxReturn(base_url('$INDEXURL$/index'),$returnData);
+            else
+               $this->ajaxReturnError('更新失败');
+        }
+
+    }
+
+    /**
+     * Remove the specified $MODEL_NAME$ from storage.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function destory()
+    {
+        if($this->_is_ajax){
+
+            $id = intval( $this->input->post('$PRIMARY$') );
+            if(empty($id))
+                $this->ajaxReturnError("$PRIMARY$不能为空");
+
+            $result = $this->$LIBRARY_NAME$->$SOFTDELETE$($id);
+            $this->ajaxReturn('',compact('result'));
+        }
+
+    }
+}

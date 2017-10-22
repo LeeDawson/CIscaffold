@@ -1,0 +1,39 @@
+{
+  "name": "torvalds8462/CIscaffold",
+  "description": "简易的代码脚手架,简化生成CRUD的操作",
+  "keywords": [
+    "outsource",
+    "外包",
+    "脚手架"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "li deshun",
+      "email": "584309598@qq.com"
+    }
+  ],
+  "require": {
+    "php":">=7.0",
+    "ext-openssl": "*",
+    "pimple/pimple": "^3.0",
+    "monolog/monolog": "^1.22",
+    "symfony/console":"3.3.*",
+    "symfony/finder": "~3.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "OutSource\\": "src/"
+    },
+    "files": [
+      "src/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+    }
+  }
+}

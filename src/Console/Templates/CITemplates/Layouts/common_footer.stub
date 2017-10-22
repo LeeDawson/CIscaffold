@@ -1,0 +1,167 @@
+<footer class="main-footer">
+    <div class="pull-right hidden-xs">
+    </div>
+    <strong>Copyright &copy; 2014-2017 <a href="javascript:;">后台管理</a></strong> All rights
+    reserved.
+</footer>
+
+</div>
+<!-- ./wrapper -->
+
+<!--普遍需要的js begining-->
+<!-- Bootstrap 3.3.7 -->
+<script src="js/bootstrap.min.js"></script>
+<!-- SlimScroll -->
+<script src="js/jquery.slimscroll.min.js"></script>
+<!-- FastClick -->
+<script src="js/fastclick.js"></script>
+<!-- AdminLTE App -->
+<script src="js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="js/demo.js"></script>
+<!--普遍需要的js ending-->
+<script src="js/jquery.validate.js"></script>
+<script src="js/page.js"></script>
+<script type="text/javascript">
+    $.validator.setDefaults({
+        errorElement:'span'
+    });
+
+    //配置通用的默认提示语
+    $.extend($.validator.messages, {
+        required: '必填',
+        equalTo: "请再次输入相同的值"
+    });
+    //邮箱
+    jQuery.validator.addMethod("email", function (value, element) {
+        var mail = /^[a-z0-9._%-]+@([a-z0-9-]+\.)+[a-z]{2,4}$/;
+        return this.optional(element) || (mail.test(value));
+    }, "邮箱格式不对");
+    //手机验证规则
+    jQuery.validator.addMethod("mobile", function (value, element) {
+        var mobile = /^1[3|4|5|7|8]\d{9}$/;
+        return this.optional(element) || (mobile.test(value));
+    }, "手机号格式不对");
+    //身份证
+    jQuery.validator.addMethod("idCard", function (value, element) {
+        var isIDCard1=/^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$/;//(15位)
+        var isIDCard2=/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;//(18位)
+        return this.optional(element) || (isIDCard1.test(value)) || (isIDCard2.test(value));
+    }, "身份证格式不对");
+    //电话验证规则
+    jQuery.validator.addMethod("phone", function (value, element) {
+        var phone = /^0\d{2,3}-\d{7,8}$/;
+        return this.optional(element) || (phone.test(value));
+    }, "电话格式如：0371-68787027");
+    //无区号电话验证规则
+    jQuery.validator.addMethod("noactel", function (value, element) {
+        var noactel = /^\d{7,8}$/;
+        return this.optional(element) || (noactel.test(value));
+    }, "电话格式如：68787027");
+    //邮箱或手机验证规则
+    jQuery.validator.addMethod("mm", function (value, element) {
+        var mm = /^[a-z0-9._%-]+@([a-z0-9-]+\.)+[a-z]{2,4}$|^1[3|4|5|7|8]\d{9}$/;
+        return this.optional(element) || (mm.test(value));
+    }, "邮箱或手机格式不对");
+    //电话或手机验证规则
+    jQuery.validator.addMethod("tm", function (value, element) {
+        var tm=/(^1[3|4|5|7|8]\d{9}$)|(^\d{3,4}-\d{7,8}$)|(^\d{7,8}$)|(^\d{3,4}-\d{7,8}-\d{1,4}$)|(^\d{7,8}-\d{1,4}$)/;
+        return this.optional(element) || (tm.test(value));
+    }, "格式不对");
+    //年龄
+    jQuery.validator.addMethod("age", function(value, element) {
+        var age = /^(?:[1-9][0-9]?|1[01][0-9]|120)$/;
+        return this.optional(element) || (age.test(value));
+    }, "不能超过120岁");
+    ///// 20-60   /^([2-5]\d)|60$/
+
+</script>
+
+
+<!-- customized styles end -->
+
+<script>
+
+
+    var uniAjax = function( url , data){
+        var rsJson = '';
+        $.ajax({
+            url:url,data:data,type:'POST',dataType:'json',async:false,success:function( data){
+                rsJson = data;
+            }
+        });
+        return rsJson;
+    };
+
+    var uniIsnull = function( par){
+        if( par == '' || typeof(par) == 'undefined' || par == null)
+            return true;
+        return false;
+    };
+
+    var showError = function( errMsg , jumpUrl){
+        alert( errMsg);
+        if( !uniIsnull( jumpUrl))
+            window.location = jumpUrl;
+    };
+
+    var showSuccess = function( msg , jumpUrl){
+        alert( msg);
+        if( !uniIsnull( jumpUrl))
+            window.location = jumpUrl;
+    };
+
+    var reSetToken = function( newToken){
+        $( '#token').val( newToken);
+    };
+
+    var jumpTo = function( jumpUrl){
+        window.location.href = jumpUrl;
+        return false;
+    };
+
+    var getLocalTime = function(nS) {
+        var date = new Date(parseInt( nS) * 1000);
+        Y = date.getFullYear() + '-';
+        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        D = date.getDate() + ' ';
+        h = date.getHours() + ':';
+        m = date.getMinutes() + ':';
+        s = date.getSeconds();
+        return Y+M+D+h+m+s;
+    };
+
+    var clearFilters = function( obj){
+        $(obj).parents('.filter-box').find('select').val( -1);
+        $(obj).parents('.filter-box').find('input').val( '');
+        $(obj).siblings('input').val('');
+        $(obj).prev().trigger('click');
+    };
+
+
+    $(function () {
+
+    })
+</script>
+
+<script>
+
+    $(function () {
+        var href = location.href;
+
+        $('.sidebar-menu').find('li').each(function(){
+            var current = $(this).find('a').attr('href');
+            if(current == href)
+            {
+                var $this = $(this);
+                $this.addClass("active").siblings().removeClass("active");
+            }
+        });
+        $('.sidebar-menu').on("click" , "li" , function () {
+            $(this).removeClass('.has_dot');
+        })
+    });
+
+</script>
+
+</html>

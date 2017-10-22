@@ -1,0 +1,134 @@
+<?php
+
+include_once __DIR__.DIRECTORY_SEPARATOR.'Rule.php';
+
+class Validation
+{
+
+    private static $correctRule = [
+        "required" => "该属性必须存在",
+        "min"      => "该属性必须小于设置值",
+        "max"      => "该属性不能大于设置值",
+        "number"   => "该属性必须是数字" ,
+        "email"    => "该属性必须是邮箱格式",
+        "ip"       => "该属性必须是IP地址格式",
+        "string"   => "该属性必须是字符串",
+    ];
+
+    /**
+     * 用验证规则来验证数据
+     *
+     * @param array $preDatas 准备验证的数据
+     * @param array  $rules  准备验证的规则
+     *
+     * @return array  [ "result" => true , "msg" => "" ,"correctData" => ""];
+     */
+    public static function checkDaraRule($preDatas, $rules)
+    {
+        $checkData = [ "result" => true , "msg" => "" ];
+
+        if(empty($preDatas))
+            throw new LogicException("待检查数组不能为空");
+
+        foreach ($rules as $key => $rule) {
+            if( isset($preDatas[$key]) ) {
+                $waitData = $preDatas[$key]; //需要检查的数据
+                $checkData = Validation::startCheck($waitData , Validation::handleRule($rule) , $key);
+                if(!$checkData['result']){
+                    return $checkData;
+                }
+            }
+        }
+
+        $checkData['correctData'] = $preDatas;
+        return $checkData;
+    }
+
+    /**
+     * 处理用户输入的验证规则 正确则验证 不正确则过滤掉
+     *
+     * @param array $rules
+     *
+     * @return array correct rules
+     */
+    protected static function handleRule($val)
+    {
+        $correct = [];
+        $rules = explode('|',$val);
+
+        if(empty($rules))
+            return [];
+
+        foreach ($rules as $key => $rule) {
+            if( preg_match("/^(.+):(\d+)/" , $rule , $match ) && count($match) == 3 ){
+                if(in_array( $match[1] , array_keys(Validation::$correctRule)) )
+                    $correct[] =  new Rule($match[1] , $match[2]);
+            } else if( in_array($rule , array_keys(Validation::$correctRule)) ){
+                    $correct[] =  new Rule($rule);
+            }
+        }
+
+        return $correct;
+    }
+
+    protected static function startCheck($waitData , $preRules , $name)
+    {
+        $result = true;
+        $msg = '';
+        foreach ($preRules as $preRule) {
+            $checkReuslt = forward_static_call_array( [ self::class , $preRule->ruleName] ,[ $waitData , $preRule->ruleParamter]);
+            if(!$checkReuslt){
+                $result = false;
+                $msg = $name.Validation::$correctRule[$preRule->ruleName];
+                return compact('result','msg');
+            }
+        }
+        return compact('result','msg');
+    }
+
+    private static function required($val , $param = [])
+    {
+        if(empty($val))
+            return false;
+
+        return true;
+    }
+
+    private static function max($val , $param)
+    {
+         if(strlen($val) > $param)
+             return false;
+
+         return true;
+    }
+
+    private static function number($val , $param )
+    {
+        return filter_var($val,FILTER_VALIDATE_INT);
+    }
+
+    private static function min($val , $param )
+    {
+        if(strlen($val) < $param)
+            return true;
+
+        return false;
+    }
+
+    public static function string( $val , $param)
+    {
+        return filter_var($val , FILTER_SANITIZE_STRING);
+    }
+
+    public static function email( $val , $param)
+    {
+        return filter_var($val , FILTER_VALIDATE_EMAIL);
+    }
+
+    public function ip ($val , $param)
+    {
+        return filter_var($val , FILTER_VALIDATE_IP);
+    }
+
+
+}

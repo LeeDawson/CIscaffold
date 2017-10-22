@@ -1,0 +1,110 @@
+<?php
+
+include_once APPPATH.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'MY_Server.php';
+include_once APPPATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'Validation.php';
+
+
+
+class $LIBNAME$ extends MY_Server
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('$MODEL_INCULDE_NAME$');
+    }
+
+    public function getList( $data)
+    {
+        $cond = array();
+
+        !empty($data['$SOFTDELETE$']) && $cond['where'] = [ "$SOFTDELETE$" => 1];
+        !empty($data['keyword']) && $cond['like'] = array( 'key' => 'order_trade_no' , 'value' => $data['keyword']);
+
+        $total_rows = $this->$MODEL_NAME$->getTotalRows( $cond);
+
+        if( $total_rows) {
+            $cond['cur_page'] = $data['cur_page'];
+            $cond['order_by'] = array( 'key' => 'date_add' , 'value' => 'DESC');
+            $cond['limit'] = ADMIN_PER_PAGE;
+            $cond['offset'] = ( $data['cur_page'] - 1) * $cond['limit'];
+            $res = $this->$MODEL_NAME$->getMsg( $cond);
+            $rs['msg'] = $res;
+            if( ADMIN_PER_PAGE < $total_rows){
+                $cond['total_rows'] = $total_rows;
+                $cond['cur_page'] = $data['cur_page'];
+                $cond['base_url'] = site_url( 'admin/order/orderManage');
+                $cond['per_page'] = ADMIN_PER_PAGE;
+                $cond['data_page_attr'] = 'data-page';
+                $this->load->library( 'pagination');
+                $this->pagination->initialize( $cond );
+                $rs['pagination'] = $this->pagination->create_links();
+            }
+            return $rs;
+        } else { // no data
+            return false;
+        }
+    }
+
+    public function destory($id)
+    {
+        return $this->update([ "$PRIMARY$" => $id ],[ "$SOFTDELETE$" => 0 ]);
+    }
+
+    public function delete($id)
+    {
+        return $this->$MODEL_NAME$->delByPk( $id , true );
+    }
+
+    public function update($where , $data)
+    {
+        return $this->$MODEL_NAME$->update($where , $data);
+    }
+
+    public function save($postDatas)
+    {
+        $preDatas = $this->prePostData($postDatas , $this->$MODEL_NAME$->fillAble);
+
+        $postDatas = Validation::checkDaraRule($preDatas , $this->$MODEL_NAME$->rules );//处理下
+
+        if(!$postDatas['result'])
+            return  $postDatas;
+
+        $insertResult  = $this->$MODEL_NAME$->insert($postDatas['correctData']);
+        if($insertResult)
+            return ["result" => true ,"msg" => $insertResult];
+
+    }
+
+    /**
+     * 检查插入属性是否是模型中定义的
+     *
+     * @param array  $postDatas
+     * @param array  $fillAble
+     *
+     * @return bool result
+     */
+    private function prePostData($postDatas,$fillAble)
+    {
+        $preDatas = array();
+        foreach ($fillAble as $fill) {
+            $preDatas[$fill] = in_array($fill,array_keys($postDatas)) ? $postDatas[$fill] : 0;
+        }
+        return $preDatas;
+    }
+
+    public function queryOne($id)
+    {
+        return $this->$MODEL_NAME$->getOneMsg([
+            "where" => ['$PRIMARY$' => $id]
+        ]);
+    }
+
+
+
+
+
+
+
+
+}

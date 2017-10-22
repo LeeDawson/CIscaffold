@@ -1,0 +1,204 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+define("ADMIN_PER_PAGE",10);
+
+class MY_Model extends CI_Model
+{
+
+    protected $_tablename;
+    protected $_pk;
+    protected $_data;
+
+    function __construct()
+    {
+        parent::__construct();
+    }
+
+    //验证数据是否存在
+    public function checkValUnique( $fieldname , $value , $limit_filed = '', $limit_val = '', $type = 'insert'){
+        if( $type == 'insert'){
+            $this->db->where( $fieldname , $value);
+            $this->db->where( 'if_show' , 1);
+            return $this->db->count_all_results( $this->_tablename);
+        }else if( $type == 'update'){
+            $this->db->where( 'if_show' , 1);
+            $this->db->where( $fieldname , $value);
+            $this->db->where( $limit_filed . " !=" , $limit_val);
+            return $this->db->count_all_results( $this->_tablename);
+        }
+    }
+
+    public function reSort( $table , $post_data){
+        foreach( $post_data as $k => $v){
+            $arr['sortrank'] = $v;
+            $this->db->where( 'id' , $k)->update( $table ,$arr);
+        }
+        return true;
+    }
+    //保存数据
+    public function saveData( $arr , $edit_id = 0 , $tablename = '' , $pk = '')
+    {
+        $tablename = $tablename?$tablename:$this->_tablename;
+        !$pk && $pk = $this->_pk;
+        if( $edit_id){
+            $this->db->where( $pk , $edit_id);
+            $arr['date_update'] = TIMESTAMP;
+            if($this->db->update( $tablename , $arr))
+                return $edit_id;
+        }else{
+            $arr['date_add'] = TIMESTAMP;
+            $this->db->insert( $tablename , $arr);
+            return $this->db->insert_id();
+        }
+    }
+    //分页中 获取数据行数
+    public function getTotalRows( $param = array()){
+
+        if( isset( $param['where']) && !empty( $param['where']))
+            $this->db->where( $param['where']);
+
+        if( isset( $param['where_in']) && !empty( $param['where_in']))
+            $this->db->where_in( $param['where_in']['key'],$param['where_in']['value']);
+
+
+        if( isset( $param['like']) && !empty( $param['like'])){
+            $this->db->group_start();
+            $this->db->like( $param['like']['key'] , $param['like']['value']);
+            if( isset( $param['or_like']) && !empty( $param['or_like']))
+                $this->db->or_like( $param['or_like']['key'] , $param['or_like']['value']);
+            $this->db->group_end();
+        }
+
+        if( !empty( $param['find_in_set'])){
+            $str = "FIND_IN_SET('{$param['find_in_set']['value']}', {$param['find_in_set']['key']}) !=";
+            $this->db->where( $str , 0);
+        }
+
+        $tablename = empty( $param['tablename'])?$this->_tablename:$param['tablename'];
+        $result = $this->db->count_all_results( $tablename);
+        return $result;
+
+    }
+    //获取一条数据
+    public function getOneMsg( $param = array())
+    {
+        $res = array();
+        $tablename = isset( $param['tablename']) ? $param['tablename'] : $this->_tablename;
+        $this->db->where( $param['where']);
+        $this->db->limit(1);
+        if( isset( $param['order_by']))
+            $this->db->order_by( $param['order_by'][0] , $param['order_by'][1]);
+        if( isset( $param['select']) && !empty( $param['select']))
+            $this->db->select( $param['select']);
+        if( isset( $param['join']) && is_array( $param['join'])){
+            foreach( $param['join'] as $join){
+                $this->db->join( $join['join_table'] , $join['join_cond'] , $join['join_type']);
+            }
+        }
+        $query = $this->db->get( $tablename);
+        if( $query->num_rows() == 1){
+            $res = $query->row_array();
+            $query->free_result();
+        }
+        return $res;
+    }
+    //获取数据
+    public function getMsg( $param = array()){
+
+        $res = array();
+        if( isset( $param['select']))
+            $this->db->select( $param['select']);
+        if( isset( $param['join']) && is_array( $param['join'])){
+            foreach( $param['join'] as $join){
+                $this->db->join( $join['join_table'] , $join['join_cond'] , $join['join_type']);
+            }
+        }
+        if( isset( $param['where']))
+            $this->db->where( $param['where']);
+
+        if( isset( $param['where_in']) && !empty( $param['where_in']))
+            $this->db->where_in( $param['where_in']['key'],$param['where_in']['value']);
+
+        if( isset( $param['like']) && !empty( $param['like'])){
+            $this->db->group_start();
+            $this->db->like( $param['like']['key'] , $param['like']['value']);
+            if( isset( $param['or_like']) && !empty( $param['or_like']))
+                $this->db->or_like( $param['or_like']['key'] , $param['or_like']['value']);
+            $this->db->group_end();
+        }
+
+        if( isset( $param['order_by']))
+            $this->db->order_by( $param['order_by']['key'] , $param['order_by']['value']);
+        if( isset( $param['offset']))
+            $this->db->offset( $param['offset']);
+        if( isset( $param['limit']))
+            $this->db->limit( $param['limit']);
+        if( isset( $param['select_sum']))
+            $this->db->select_sum( $param['select_sum']);
+        if( !empty( $param['find_in_set'])){
+            $str = "FIND_IN_SET('{$param['find_in_set']['value']}', {$param['find_in_set']['key']}) !=";
+            $this->db->where( $str , 0);
+        }
+
+        $query = $this->db->get( empty( $param['tablename'])? $this->_tablename : $param['tablename']);
+        if( $query->num_rows() > 0){
+            $res = $query->result_array();
+            $query->free_result();
+        }
+
+        return $res;
+    }
+
+    public function getData( $param = array()){
+        $param['where']['if_show'] = 1;
+        return $this->getMsg( $param);
+    }
+
+    public function getByPk( $pk = 0){
+        return $this->getOneMsg( array( 'where' => array( $this->_pk => $pk)));
+    }
+
+    public function delByPk( $pk = 0 , $logic = 0){
+        $this->db->where( $this->_pk , $pk);
+        if( $logic){
+            return $this->db->delete( $this->_tablename);
+        }else{
+            $this->_data['if_show'] = 0;
+            return $this->db->update( $this->_tablename , $this->_data);
+        }
+    }
+
+    public function noShow( $id , $field){
+        $this->db->where( $field , $id);
+        $arr['if_show'] = 0;
+        return $this->db->update( $this->_tablename , $arr);
+    }
+
+    public function insert($data)
+    {
+        $this->db->insert($this->_tablename,$data);
+        return $this->db->insert_id();
+    }
+
+    public function update($where,$data)
+    {
+        $this->db->where($where);
+        return $this->db->update($this->_tablename,$data);
+    }
+
+    public function preData($data)
+    {
+        if($this->_attrprefix){
+            $insert_data = array();
+            array_walk($data,function($v,$k) use(&$insert_data){
+                $insert_data[$this->_attrprefix.$k] = is_array($v) ? json_encode($v,JSON_UNESCAPED_UNICODE) : $v;
+            });
+            return $insert_data;
+        }
+
+        return $data;
+    }
+
+
+}
+?>

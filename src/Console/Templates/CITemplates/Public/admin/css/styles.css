@@ -1,0 +1,48 @@
+.num-header{
+    padding: 0 10px;
+}
+.num_total{
+    font-size: 14px;
+    font-weight: bold;
+}
+.num_total .order_amount{
+}
+.num_total .order_num{
+    margin-left: 30px;
+}
+.fgquerybox{
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+.col-md-1 .fgsearchbtn{
+    margin-left: -30px;
+    margin-top: 45px;
+}
+.inputbtnbox{
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+.clearbtnbox{
+    display: block;
+    margin-top: 45px;
+    margin-bottom: 0;
+}
+.containerbox{
+    width: 100%;
+    padding: 0 10px;
+}
+/*导航处小红点 begin*/
+.reddot{
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background: #f32800;
+    margin-left: 10px;
+    display: none;
+}
+.has_dot .reddot
+{
+    display: inline-block;
+}
+/*导航处小红点 end*/

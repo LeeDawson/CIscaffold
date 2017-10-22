@@ -1,0 +1,26 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class $MODEL_NAME$ extends MY_Model
+{
+
+    public $fillAble = [
+        $FILLABLE$
+    ];
+
+    public $rules = [
+         $RULES$
+    ];
+
+    public $softDelete = "$SOFTDELETE$";
+
+    public $timestamps = "$TIMESTAMPS$";
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->_tablename = '$TABLE_NAME$';
+        $this->_pk = '$TABLE_ID$';
+    }
+
+
+}
