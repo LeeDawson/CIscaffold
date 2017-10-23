@@ -6,7 +6,7 @@
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
+ * http://www.opensource.org/licenses/MIT
  */
 
 /* jshint nomen:false */
@@ -17,10 +17,9 @@
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
         define([
-            'jquery.fileupload',
+            'jquery',
             'load-image',
             'load-image-meta',
-            'load-image-scale',
             'load-image-exif',
             'canvas-to-blob',
             './jquery.fileupload-process'
@@ -31,7 +30,6 @@
             require('jquery'),
             require('blueimp-load-image/js/load-image'),
             require('blueimp-load-image/js/load-image-meta'),
-            require('blueimp-load-image/js/load-image-scale'),
             require('blueimp-load-image/js/load-image-exif'),
             require('blueimp-canvas-to-blob'),
             require('./jquery.fileupload-process')

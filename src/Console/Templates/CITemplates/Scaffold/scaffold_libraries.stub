@@ -73,7 +73,6 @@ class $LIBNAME$ extends MY_Server
         $insertResult  = $this->$MODEL_NAME$->insert($postDatas['correctData']);
         if($insertResult)
             return ["result" => true ,"msg" => $insertResult];
-
     }
 
     /**

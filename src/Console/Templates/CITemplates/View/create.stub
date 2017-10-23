@@ -40,8 +40,8 @@ $FILEDS$
 <!-- /.content-wrapper -->
 
 <script type="text/javascript">
-    $(document).ready( function(){
-
+    $(document).ready( function()
+    {
         $( '#form').validate({
             submitHandler:function(){
                 var url = baseUrl + '$STORE_URL$';
@@ -55,8 +55,6 @@ $FILEDS$
                            showError( rsJson.data.errmsg.msg);
             },debug:true
         });
-
-
     });
 
 

@@ -8,10 +8,9 @@ class MY_Controller extends CI_Controller{
 
     protected $_is_ajax;
 
-    public function __construct(){
-
+    public function __construct()
+    {
         parent::__construct();
-
         $this->_is_ajax = $this->input->is_ajax_request() ? 1: 0;
     }
 }

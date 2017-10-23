@@ -6,7 +6,7 @@
  * https://blueimp.net
  *
  * Licensed under the MIT license:
- * https://opensource.org/licenses/MIT
+ * http://www.opensource.org/licenses/MIT
  */
 
 /* jshint nomen:false */
@@ -17,8 +17,8 @@
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
         define([
-            'jquery.fileupload',
-            'jquery-ui/ui/widget'
+            'jquery',
+            'jquery-ui/widget'
         ], factory);
     } else if (typeof exports === 'object') {
         // Node/CommonJS:
@@ -730,7 +730,7 @@
                 promise = dfd.promise(),
                 jqXHR,
                 upload;
-            if (!(this._isXHRUpload(options) && slice && (ub || ($.type(mcs) === 'function' ? mcs(options) : mcs) < fs)) ||
+            if (!(this._isXHRUpload(options) && slice && (ub || mcs < fs)) ||
                     options.data) {
                 return false;
             }
@@ -753,7 +753,7 @@
                 o.blob = slice.call(
                     file,
                     ub,
-                    ub + ($.type(mcs) === 'function' ? mcs(o) : mcs),
+                    ub + mcs,
                     file.type
                 );
                 // Store the current chunk size, as the blob itself
@@ -1080,8 +1080,6 @@
         _handleFileTreeEntry: function (entry, path) {
             var that = this,
                 dfd = $.Deferred(),
-                entries = [],
-                dirReader,
                 errorHandler = function (e) {
                     if (e && !e.entry) {
                         e.entry = entry;
@@ -1109,7 +1107,8 @@
                             readEntries();
                         }
                     }, errorHandler);
-                };
+                },
+                dirReader, entries = [];
             path = path || '';
             if (entry.isFile) {
                 if (entry._file) {
@@ -1310,10 +1309,6 @@
             this._off(this.options.dropZone, 'dragenter dragleave dragover drop');
             this._off(this.options.pasteZone, 'paste');
             this._off(this.options.fileInput, 'change');
-        },
-
-        _destroy: function () {
-            this._destroyEventHandlers();
         },
 
         _setOption: function (key, value) {

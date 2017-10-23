@@ -48,6 +48,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->initControllerBase();    //初始化父类控制器
         $this->initPagination();        //初始化分页样式
         $this->initValidation();        //初始化验证类
+        $this->initUploadify();         //初始化文件类
 
         $this->Comment("\n init completed: ");
     }
@@ -74,6 +75,23 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
         $this->Info("Validation.php");
         $this->Info("Rule.php");
+    }
+
+    /**
+     * 初始化文件类
+     *
+     */
+    private function initUploadify()
+    {
+        $UploadHandler = FileUtils::getTemplateByPath($this->config->get('systemTemplates').'Uploadify'.DIRECTORY_SEPARATOR."UploadHandler.php");
+        FileUtils::createFile(
+            $this->config->get('library'),
+            "UploadHandler.php",
+            $UploadHandler
+        );
+
+        $this->Info("UploadHandler.php");
+
     }
 
     /**

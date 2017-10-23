@@ -63,7 +63,6 @@ class $CONTROLER_NAME$ extends Adminbase
             else
                 $this->ajaxReturn(base_url('$INDEXURL$/index'),$returnData);
         }
-
     }
 
     /**

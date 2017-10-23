@@ -1,0 +1,23 @@
+html,body,div,span,p,ul,li,input,img,ol,h2,input,a,h1,h2,h3,h4,h5,h6,em,strong,i,section,header,footer,canvas,area,dd,dl,embed,form,iframe,label,textarea,video,table,td,tr{margin:0;padding:0;border:0;}
+table{border-collapse:collapse;border-spacing:0;}
+th,tr,td,h1,h2,h3,h4,h5,h6,i,b,em{font-style:normal;font-weight:normal;}
+ol,ul,li {list-style-type:none; display:block;}
+select,input,img{vertical-align:middle;border:none;outline:none;}
+textarea {resize: none;} /*webkit核心中textare取消拖动调整大小*/
+textarea:focus {outline: none;} /*textarea聚焦时默认边框颜色不变*/
+select,input[type=text],input[type=tel],input[type=password],input[type=number],textarea{ -webkit-appearance:none; border:none; border-radius:0; background-color:transparent;}
+input::-webkit-input-placeholder,input:focus::-webkit-input-placeholder{color:#9c9c9c;}/* input 标签placeholder文字的颜色*/
+video{ background:#000;}
+/*解决Safari浏览器input出现小人问题*/
+input::-webkit-contacts-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+}
+li{list-style:none;}
+body{text-align:center;font-size:75%;line-height:1.33em; font-family:"微软雅黑";}
+a{text-decoration: none;display: block;}
+img{display: block;}
+

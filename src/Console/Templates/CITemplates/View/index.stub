@@ -70,10 +70,6 @@
                 </div>
             </div>
     </section>
-
-
-
-
 </div>
 
 
@@ -82,20 +78,20 @@
     $(document).ready( function()
     {
         $( '.searchbtn').click( function(){
-            getGoodsContents(1);
+            getContents(1);
         });
 
-        getGoodsContents( 1);
+        getContents(1);
 
         $('.clearbtnbox').click(function(){
             $("input[name='keyword']").val('');
-            getGoodsContents(1);
-        })
+            getContents(1);
+        });
     });
 
     $(document).on( 'click' , '#pagi a' , function(){
         var curPage = $(this).attr( 'data-page');
-        getGoodsContents( curPage);
+        getContents( curPage);
         return false;
     });
 
@@ -114,10 +110,9 @@
             showError( rsJson.msg);
         else
             showSuccess( '删除失败' , null);
-
     };
 
-    var getGoodsContents = function( curPage)
+    var getContents = function( curPage)
     {
         var data = $( '#form').serialize();
         data += '&cur_page=' + curPage;
