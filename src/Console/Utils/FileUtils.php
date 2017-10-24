@@ -23,7 +23,6 @@ class FileUtils
     public static function getTemplateByPath($systemTemplatePath)
     {
 
-
         $result = file_get_contents($systemTemplatePath);
 
         if(empty($result)){

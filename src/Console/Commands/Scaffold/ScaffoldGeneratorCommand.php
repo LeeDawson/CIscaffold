@@ -41,22 +41,35 @@ class ScaffoldGeneratorCommand extends BaseCommand
 
         $this->commandData->modelName = $this->input->getArgument('model');
 
-        if($this->option('rollback')){
-
-          $this->rollbackCommonItems();
-
-          $this->rollbackScaffoldItems();
-
+        if( $this->option('rollback') ){
+            $this->rollbackScaffold();
+        } elseif( $this->option('schema') ){
+            $this->generScaffoldBySchema();
         } else {
-            parent::handle();
-
-            $this->generateCommonItems();
-
-            $this->generateScaffoldItems();
+            $this->generScaffold();
         }
     }
 
-    public function generateCommonItems()
+    protected function generScaffoldBySchema()
+    {
+
+    }
+
+    protected function generScaffold()
+    {
+        parent::handle();
+        $this->generateCommonItems();
+        $this->generateScaffoldItems();
+    }
+
+    protected function rollbackScaffold()
+    {
+        $this->rollbackCommonItems();
+        $this->rollbackScaffoldItems();
+    }
+
+
+    private function generateCommonItems()
     {
         if (!$this->isSkip('model')) {
             $generator = new $this->container['generator.model']($this->config,$this->commandData,$this->container['files']);
@@ -68,8 +81,7 @@ class ScaffoldGeneratorCommand extends BaseCommand
             $generator->generate();
         }
     }
-
-    public function generateScaffoldItems()
+    private function generateScaffoldItems()
     {
         if (!$this->isSkip('controllers') ) {
             $generator = new $this->container['generator.controller']($this->config,$this->commandData,$this->container['files']);
@@ -83,7 +95,7 @@ class ScaffoldGeneratorCommand extends BaseCommand
     }
 
 
-    public function rollbackCommonItems()
+    private function rollbackCommonItems()
     {
         $generator = new $this->container['generator.controller']($this->config,$this->commandData,$this->container['files']);
         $generator->rollback();
@@ -91,8 +103,7 @@ class ScaffoldGeneratorCommand extends BaseCommand
         $generator = new $this->container['generator.view']($this->config,$this->commandData,$this->container['files']);
         $generator->rollback();
     }
-
-    public function rollbackScaffoldItems()
+    private function rollbackScaffoldItems()
     {
         $generator = new $this->container['generator.model']($this->config,$this->commandData,$this->container['files']);
         $generator->rollback();

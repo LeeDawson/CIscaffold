@@ -11,39 +11,36 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class ControllerGeneratorCommand extends BaseCommand
+class SchemaGeneratorCommand extends BaseCommand
 {
-    protected $name = 'make:controller';
+    protected $name = 'make:schema';
 
-    protected $description = "Create a controller";
+    protected $description = "Create a schema";
 
     protected $container;
 
     public function __construct($pimple)
     {
         parent::__construct();
-        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD );
+        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD);
         $this->container = $pimple;
-        $this->config = $pimple['config'];
+        $this->config = new GeneratorConfig($this->commandData , $pimple['config']);
     }
 
-    /**
-     * 命令行的启动入口
-     *
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     *
-     */
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $controller = $input->getArgument('name');
+        $this->preOptions();
 
-        if(empty($controller))
+        $schemaName = $input->getArgument('name');
+
+        if(empty($schemaName))
             $this->error('controller name not empty');
 
-        $this->commandData->modelName = $controller;
-        $generator = new $this->container['generator.controller']($this->config , $this->commandData , $this->container['files']);
-        $generator->generateController();
+        $this->commandData->modelName = $schemaName;
+
+        $generator = new $this->container['generator.schema']($this->config , $this->commandData , $this->container['files']);
+        $generator->generate();
 
     }
 
@@ -56,7 +53,7 @@ class ControllerGeneratorCommand extends BaseCommand
     public function getOptions()
     {
         return [
-              ['scaffold', null, InputOption::VALUE_REQUIRED, 'generate scaffold controller'],
+            ['primary', null, InputOption::VALUE_REQUIRED, 'Custom primary key'],
         ];
     }
 
@@ -72,4 +69,6 @@ class ControllerGeneratorCommand extends BaseCommand
             ['name', InputArgument::REQUIRED, 'Controller name'],
         ];
     }
+
+
 }

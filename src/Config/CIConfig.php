@@ -27,11 +27,13 @@ class CIConfig implements ConfigInterface
         "systemTemplates" => "",
         "config" => "config",
         "modules" => "admin" ,
-        "core" => "core"
+        "core" => "core" ,
+        "schema" => "schema"
     ];
 
     public function __construct(array $items)
     {
+
         $this->setSystemPath($items);
         $this->setBasePath($this->getBaseUrl($items));
         $this->setTemplates($items);
@@ -39,10 +41,9 @@ class CIConfig implements ConfigInterface
 
     protected function setTemplates($items)
     {
-        $applicaitonTemplate = $this->basePath.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'templates/';
+        $applicaitonTemplate = $this->basePath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR;
         $this->ciPath['applicationTemplates'] = $applicaitonTemplate;
         $this->ciPath['systemTemplates'] = $this->templatePath($items['applicationPath']);
-
     }
 
     protected function getBaseUrl($item)
@@ -59,6 +60,10 @@ class CIConfig implements ConfigInterface
         return $this->basePath = $basePath;
     }
 
+    /**
+     * 合并用户自定义数据
+     * @param array  $args
+     */
     protected function setSystemPath($item)
     {
         $this->ciPath =  array_merge($this->ciPath,$item);
@@ -80,6 +85,7 @@ class CIConfig implements ConfigInterface
             "systemTemplates" =>  $this->ciPath['systemTemplates'],
             "basePath" => $this->basePath,
             "modules" =>  $this->ciPath['modules'].DIRECTORY_SEPARATOR,
+            "schema" => $this->basePath . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $this->ciPath['schema'] . DIRECTORY_SEPARATOR ,
         ];
     }
 
@@ -88,7 +94,7 @@ class CIConfig implements ConfigInterface
         if(!$this->checkPath($path)){
             throw new InvalidArgumentException($path."error");
         }
-        return $this->basePath . DIRECTORY_SEPARATOR . $this->rootPath . DIRECTORY_SEPARATOR. $path.DIRECTORY_SEPARATOR;
+        return $this->basePath . DIRECTORY_SEPARATOR . $this->rootPath . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
     }
 
     protected function templatePath($applicationPath)

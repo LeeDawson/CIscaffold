@@ -15,6 +15,9 @@ use OutSource\Console\Commands\Scaffold\LibraryGeneratorCommand;
 use OutSource\Console\Commands\Scaffold\ModelGeneratorCommand;
 use OutSource\Console\Generators\CIGenerator\LibraryGenerator;
 use OutSource\Console\Generators\CIGenerator\ViewGenerator;
+use OutSource\Console\Commands\Scaffold\SchemaGeneratorCommand;
+use OutSource\Console\Generators\CIGenerator\SchemaGenerator;
+
 
 class ServerProvider implements ServiceProviderInterface
 {
@@ -32,7 +35,8 @@ class ServerProvider implements ServiceProviderInterface
         GeneratorPublishCommand::class,
         LayoutPublishCommand::class,
         ModelGeneratorCommand::class,
-        LibraryGeneratorCommand::class
+        LibraryGeneratorCommand::class,
+        SchemaGeneratorCommand::class
     ];
 
 
@@ -42,7 +46,6 @@ class ServerProvider implements ServiceProviderInterface
         return $pimple['console'] = function() use($pimple){
            return  $this->initKernlConsole($pimple);
         };
-
 
     }
 
@@ -79,6 +82,7 @@ class ServerProvider implements ServiceProviderInterface
         $pimple['generator.model'] = ModelGenerator::class;
         $pimple['generator.library'] = LibraryGenerator::class;
         $pimple['generator.view'] = ViewGenerator::class;
+        $pimple['generator.schema'] = SchemaGenerator::class;
     }
 
 

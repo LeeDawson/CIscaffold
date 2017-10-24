@@ -46,7 +46,7 @@ class LibraryGeneratorCommand extends BaseCommand
             $this->error('library name not empty');
 
         $this->commandData->modelName = $libraryName;
-        $generator = new $this->container['generator.library']($this->config,$this->commandData,$this->container['files']);
+        $generator = new $this->container['generator.library']($this->config , $this->commandData , $this->container['files']);
         $generator->generateLibrary();
     }
 

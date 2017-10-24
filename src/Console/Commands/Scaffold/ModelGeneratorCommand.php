@@ -45,7 +45,7 @@ class ModelGeneratorCommand extends BaseCommand
 
         $this->preConfig($input,$this->config);
 
-        $generator = new $this->container['generator.model']($this->config,$this->commandData,$this->container['files']);
+        $generator = new $this->container['generator.model']($this->config , $this->commandData , $this->container['files']);
         $generator->generate();
     }
 

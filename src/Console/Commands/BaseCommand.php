@@ -101,7 +101,6 @@ class BaseCommand extends SymfonyCommand
         foreach ($this->getOptions() as $option) {
             $this->getDefinition()->addOption($this->parseOption($option));
         }
-
     }
 
     /**
@@ -392,12 +391,15 @@ class BaseCommand extends SymfonyCommand
         //让commandData准备数据
         $this->commandData->getFields($this->input);
 
-        //把option放到config准备好
-        $this->config->setOptions($this->input);
-
+        $this->preOptions();
         //启动config
         $this->config->init($this->commandData);
+    }
 
+    public function preOptions()
+    {
+        //把option放到config准备好
+        $this->config->setOptions($this->input);
     }
 
     /**

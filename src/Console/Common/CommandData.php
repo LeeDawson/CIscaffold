@@ -16,6 +16,7 @@ class CommandData
 
     /** @var string */
     public $modelName;
+
     public $commandType;
 
     /** @var GeneratorConfig */
@@ -29,6 +30,7 @@ class CommandData
 
     /** @var array */
     public $dynamicVars = [];
+
     public $fieldNamesMapping = [];
 
     /** @var CommandData */

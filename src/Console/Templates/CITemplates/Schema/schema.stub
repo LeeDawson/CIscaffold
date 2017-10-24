@@ -1,0 +1,26 @@
+<?php
+
+use OutSource\Console\Schema\Blueprint;
+use OutSource\Console\Schema\SchemBaseInterface;
+
+class create_$SCHEMA$_schema implements  SchemBaseInterface
+{
+
+    public function up()
+    {
+        $table = new Blueprint( "$SCHEMA$" );
+        //$table = new Blueprint( "$SCHEMA$" , "ID" );
+        //$table
+        //      ->addColumn('age' , [ 'radio' => [1,2,3,4,5] ] ,['required'] )
+        //      ->addColumn('name' , "text" ,['required'] );
+
+        return $table;
+    }
+
+
+
+}
+
+
+
+

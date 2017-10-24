@@ -81,44 +81,6 @@ class GeneratorField
 
     private function prepareMigrationText()
     {
-//        $inputsArr = explode(':', $this->dbInput);
-//        $this->migrationText = '$table->';
-//
-//        $fieldTypeParams = explode(',', array_shift($inputsArr));
-//        $this->fieldType = array_shift($fieldTypeParams);
-//        $this->migrationText .= $this->fieldType."('".$this->name."'";
-//
-//        if ($this->fieldType == 'enum') {
-//            $this->migrationText .= ', [';
-//            foreach ($fieldTypeParams as $param) {
-//                $this->migrationText .= "'".$param."',";
-//            }
-//            $this->migrationText = substr($this->migrationText, 0, strlen($this->migrationText) - 1);
-//            $this->migrationText .= ']';
-//        } else {
-//            foreach ($fieldTypeParams as $param) {
-//                $this->migrationText .= ', '.$param;
-//            }
-//        }
-//
-//        $this->migrationText .= ')';
-//
-//        foreach ($inputsArr as $input) {
-//            $inputParams = explode(',', $input);
-//            $functionName = array_shift($inputParams);
-//            if ($functionName == 'foreign') {
-//                $foreignTable = array_shift($inputParams);
-//                $foreignField = array_shift($inputParams);
-//                $this->foreignKeyText .= "\$table->foreign('".$this->name."')->references('".$foreignField."')->on('".$foreignTable."');";
-//            } else {
-//                $this->migrationText .= '->'.$functionName;
-//                $this->migrationText .= '(';
-//                $this->migrationText .= implode(', ', $inputParams);
-//                $this->migrationText .= ')';
-//            }
-//        }
-//
-//        $this->migrationText .= ';';
     }
 
     public static function parseFieldFromFile($fieldInput)
