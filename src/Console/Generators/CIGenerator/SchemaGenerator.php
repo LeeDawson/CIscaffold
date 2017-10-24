@@ -27,9 +27,23 @@ class SchemaGenerator implements GeneratorInterface
     public function generate()
     {
         $schemaName = $this->commandData->modelName;
-        $fileName = ucfirst($schemaName).'.php';
+        $fileName =  "create_".ucfirst($schemaName)."_schema.php";
         $templateData = FileUtils::getTemplateByPath($this->commandConfig->get('systemTemplates') . DIRECTORY_SEPARATOR . 'Schema' . DIRECTORY_SEPARATOR . 'schema.stub');
         $templateData = str_replace('$SCHEMA$', ucfirst($schemaName), $templateData);
+
+        $primary = isset( $this->commandConfig->options['primary'] ) ? ',"'.$this->commandConfig->options['primary'].'"' : " ";
+
+
+        $templateData = str_replace('$PRIMARY$', $primary, $templateData);
+
+        FileUtils::createFile(
+            $this->commandConfig->get('schema'),
+            $fileName,
+            $templateData
+        );
+
+        $this->commandData->commandComment("\nSchema created: ");
+        $this->commandData->commandInfo($fileName);
 
         // TODO: Implement generate() method.
     }

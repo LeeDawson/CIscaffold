@@ -35,6 +35,7 @@ class LibraryGenerator implements GeneratorInterface
         $templateData = str_replace('$MODEL_NAME$', $preModelName, $templateData);
         $templateData = str_replace('$PRIMARY$', $this->commandData->getModelPrimaryKey(), $templateData);
         $templateData = str_replace('$SOFTDELETE$', $this->commandConfig->softDelete, $templateData);
+        $templateData = str_replace('$TIMESTAMPE$', $this->getTimeStamp($this->commandConfig->timeStamp), $templateData);
 
         FileUtils::createFile(
             $this->commandConfig->get('library'),
@@ -44,6 +45,14 @@ class LibraryGenerator implements GeneratorInterface
 
         $this->commandData->commandComment("\nlibrary created: ");
         $this->commandData->commandInfo($FileName);
+    }
+
+    private function getTimeStamp($timeStamp)
+    {
+        if(!$timeStamp)
+            return null;
+
+        return  '$cond["order_by"] = array( "key" => "'.$timeStamp.'" , "value" => "DESC")';
     }
 
     public function generateLibrary()

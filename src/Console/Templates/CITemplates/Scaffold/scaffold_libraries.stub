@@ -25,7 +25,7 @@ class $LIBNAME$ extends MY_Server
 
         if( $total_rows) {
             $cond['cur_page'] = $data['cur_page'];
-            $cond['order_by'] = array( 'key' => 'date_add' , 'value' => 'DESC');
+            $TIMESTAMPE$
             $cond['limit'] = ADMIN_PER_PAGE;
             $cond['offset'] = ( $data['cur_page'] - 1) * $cond['limit'];
             $res = $this->$MODEL_NAME$->getMsg( $cond);

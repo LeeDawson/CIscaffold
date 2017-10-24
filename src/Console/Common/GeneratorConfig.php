@@ -88,7 +88,7 @@ class GeneratorConfig
         }
 
         if ($this->getOption('timestamp')) {
-            $this->timeStamp = true;
+            $this->timeStamp = $this->getOption('timestamp');
         }
     }
 

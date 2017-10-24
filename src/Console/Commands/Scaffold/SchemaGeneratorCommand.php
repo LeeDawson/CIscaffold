@@ -30,6 +30,7 @@ class SchemaGeneratorCommand extends BaseCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        //使用config获取到用户输入的option
         $this->preOptions();
 
         $schemaName = $input->getArgument('name');

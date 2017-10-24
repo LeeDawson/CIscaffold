@@ -2,6 +2,7 @@
 
 namespace OutSource\Console\Common;
 
+use OutSource\Console\Schema\Blueprint;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -85,6 +86,24 @@ class CommandData
 
     }
 
+    public function getInputFormSchema(Blueprint $schema)
+    {
+        $this->addPrimaryKeyBySchema($schema->primaryKey);
+
+        foreach ($schema->columns as $column) {
+            //todo 第三种类型添加
+            //多种类型的html支持
+            $fieldInputStr = implode(" " , [$column , $schema->htmlType[$column]]) ;
+            $validations = implode("|" , $schema->rule[$column]);
+
+            $this->fields[] = GeneratorFieldsInputUtil::processFieldInput(
+                $fieldInputStr,
+                $validations
+            );
+        }
+
+    }
+
     private function getInputFromConsole($input)
     {
         $this->commandInfo('Specify fields for the model (skip id & timestamp fields, we will add it automatically)');
@@ -107,7 +126,6 @@ class CommandData
 
             $validations = $this->commandObj->ask('Enter validations: ', false);
             $validations = ($validations == false) ? '' : $validations;
-
             $this->fields[] = GeneratorFieldsInputUtil::processFieldInput(
                 $fieldInputStr,
                 $validations
@@ -151,7 +169,22 @@ class CommandData
         $primaryKey->parseOptions('f,p');
 
         $this->fields[] = $primaryKey;
+    }
 
+    private function addPrimaryKeyBySchema($primary)
+    {
+        $primaryKey = new GeneratorField();
+
+        if ($primary) {
+            $primaryKey->name = $primary;
+        } else {
+            $primaryKey->name = 'id';
+        }
+
+        $primaryKey->parseDBType('increments');
+        $primaryKey->parseOptions('f,p');
+
+        $this->fields[] = $primaryKey;
     }
 
     public function getModelPrimaryKey()

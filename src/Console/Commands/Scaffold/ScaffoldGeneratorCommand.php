@@ -7,6 +7,7 @@ use OutSource\Console\Common\CommandData;
 use OutSource\Console\Common\GeneratorConfig;
 use OutSource\Console\Generators\CIGenerator\ControllerGenerator;
 use OutSource\Console\Generators\CIGenerator\ModelGenerator;
+use Psr\Log\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,22 +43,58 @@ class ScaffoldGeneratorCommand extends BaseCommand
         $this->commandData->modelName = $this->input->getArgument('model');
 
         if( $this->option('rollback') ){
+
             $this->rollbackScaffold();
+
         } elseif( $this->option('schema') ){
+            //从schema 收集数据
             $this->generScaffoldBySchema();
+
+            $this->generScaffold();
         } else {
+            //从用户输入收集数据
+            parent::handle();
+
             $this->generScaffold();
         }
     }
 
     protected function generScaffoldBySchema()
     {
+        $invoke = $this->loadSchema();
 
+        $this->parseInput($invoke);
+
+        $this->commandData->getInputFormSchema($invoke);
+
+        $this->config->init($this->commandData);
+    }
+
+    private function parseInput($invoke)
+    {
+       $invoke->table && $this->config->setOption("tableName",$invoke->table);
+       $invoke->primaryKey && $this->config->setOption("primary",$invoke->primaryKey);
+       $invoke->softDelete && $this->config->setOption("softdelete",$invoke->softDelete);
+       $invoke->timestamp &&  $this->config->setOption("timestamp",$invoke->timestamp);
+    }
+
+    private function loadSchema()
+    {
+        $schemaName = "create_". ucfirst($this->option('schema')). "_schema";
+        $schemaPath = $this->config->get('schema').$schemaName.".php";
+        if(file_exists($schemaPath))
+            include $schemaPath;
+        else
+            throw new InvalidArgumentException("未能找到".$schemaPath.'这个文件');
+
+        $class =  new $schemaName();
+        $invoke = $class->up();
+
+        return $invoke;
     }
 
     protected function generScaffold()
     {
-        parent::handle();
         $this->generateCommonItems();
         $this->generateScaffoldItems();
     }
@@ -72,43 +109,51 @@ class ScaffoldGeneratorCommand extends BaseCommand
     private function generateCommonItems()
     {
         if (!$this->isSkip('model')) {
-            $generator = new $this->container['generator.model']($this->config,$this->commandData,$this->container['files']);
+            $generator = new $this->container['generator.model']($this->config , $this->commandData , $this->container['files']);
             $generator->generate();
         }
 
         if (!$this->isSkip('library')) {
-            $generator = new $this->container['generator.library']($this->config,$this->commandData,$this->container['files']);
+            $generator = new $this->container['generator.library']($this->config , $this->commandData , $this->container['files']);
             $generator->generate();
         }
     }
+
     private function generateScaffoldItems()
     {
         if (!$this->isSkip('controllers') ) {
-            $generator = new $this->container['generator.controller']($this->config,$this->commandData,$this->container['files']);
+            $generator = new $this->container['generator.controller']($this->config , $this->commandData , $this->container['files']);
             $generator->generate();
         }
 
         if (!$this->isSkip('views')) {
-            $generator = new $this->container['generator.view']($this->config,$this->commandData,$this->container['files']);
+            $generator = new $this->container['generator.view']($this->config , $this->commandData , $this->container['files']);
             $generator->generate();
         }
     }
 
-
+    /**
+     * 删除掉 controller 和 view
+     */
     private function rollbackCommonItems()
     {
-        $generator = new $this->container['generator.controller']($this->config,$this->commandData,$this->container['files']);
+        $generator = new $this->container['generator.controller']($this->config , $this->commandData , $this->container['files']);
         $generator->rollback();
 
-        $generator = new $this->container['generator.view']($this->config,$this->commandData,$this->container['files']);
+        $generator = new $this->container['generator.view']($this->config , $this->commandData , $this->container['files']);
         $generator->rollback();
     }
+
+    /**
+     * 删除掉模型和类库
+     *
+     */
     private function rollbackScaffoldItems()
     {
-        $generator = new $this->container['generator.model']($this->config,$this->commandData,$this->container['files']);
+        $generator = new $this->container['generator.model']($this->config , $this->commandData , $this->container['files']);
         $generator->rollback();
 
-        $generator = new $this->container['generator.library']($this->config,$this->commandData,$this->container['files']);
+        $generator = new $this->container['generator.library']($this->config , $this->commandData , $this->container['files']);
         $generator->rollback();
 
     }
@@ -130,13 +175,9 @@ class ScaffoldGeneratorCommand extends BaseCommand
 //            ['save', null, InputOption::VALUE_NONE, 'Save model schema to file'],
             ['primary', null, InputOption::VALUE_REQUIRED, 'Custom primary key'],
             ['softdelete', null, InputOption::VALUE_REQUIRED, 'open softdelete'],
-            ['timestamp', null, InputOption::VALUE_NONE, 'auto time maintain'],
+            ['schema', null, InputOption::VALUE_REQUIRED, 'from schema generator'],
+            ['timestamp', null, InputOption::VALUE_REQUIRED, 'order by item'],
             ['rollback', null, InputOption::VALUE_NONE, 'delete scaffold'],
-//            ['paginate', null, InputOption::VALUE_REQUIRED, 'Pagination for index.blade.php'],
-//            ['skip', null, InputOption::VALUE_REQUIRED, 'Skip Specific Items to Generate (migration,model,controllers,api_controller,scaffold_controller,repository,requests,api_requests,scaffold_requests,routes,api_routes,scaffold_routes,views,tests,menu,dump-autoload)'],
-//            ['datatables', null, InputOption::VALUE_REQUIRED, 'Override datatables settings'],
-//            ['views', null, InputOption::VALUE_REQUIRED, 'Specify only the views you want generated: index,create,edit,show'],
-//            ['relations', null, InputOption::VALUE_NONE, 'Specify if you want to pass relationships for fields'],
         ];
     }
 

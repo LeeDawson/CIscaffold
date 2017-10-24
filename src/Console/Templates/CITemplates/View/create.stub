@@ -47,12 +47,14 @@ $FILEDS$
                 var url = baseUrl + '$STORE_URL$';
                 var data = $( '#form').serialize();
                 var rsJson = uniAjax( url , data);
-                    if( rsJson.status == 'success')
-                           showSuccess( '操作成功' , rsJson.jumpurl);
-                    else if (rsJson.status == 'error'){
-                           showError( rsJson.msg);
-                    else
-                           showError( rsJson.data.errmsg.msg);
+
+                if( rsJson.status == 'success')
+                      showSuccess( '操作成功' , rsJson.jumpurl);
+                else if(rsJson.status == 'error')
+                      showError( rsJson.msg);
+                else
+                      showError( rsJson.data.errmsg.msg);
+
             },debug:true
         });
     });

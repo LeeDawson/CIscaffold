@@ -13,27 +13,24 @@ class Blueprint
      *
      * @var string
      */
-    protected $table;
+    public $table;
 
-    protected $primaryKey;
+    public $primaryKey;
 
-    protected $tmpColumn;
+    public $softDelete = false;
 
-    /**
-     * The columns that should be added to the table.
-     *
-     * @var array
-     */
-    protected $columns = [];
+    public $timestamp;
 
-    protected $htmlType = [];
+    public $columns = [];
+
+    public $htmlType = [];
 
     /**
      * The commands that should be run for the table.
      *
      * @var array
      */
-    protected $rule = [];
+    public $rule = [];
 
 
     public function __construct($table , $primaryKey = null)
@@ -42,16 +39,26 @@ class Blueprint
         $this->primaryKey = $primaryKey;
     }
 
-    public function addColumn($columnName , $htmlType , $rule)
+    public function addColumn($columnName , $htmlType ,array $rule)
     {
         if(empty($columnName))
             throw new InvalidArgumentException("columnName invalid ");
 
         $this->columns[] = $columnName;
-        $this->htmlType[] = [ $columnName => $htmlType ];
-        $this->rule[] = [$columnName => $rule ];
+        $this->htmlType[$columnName] =  $htmlType;
+        $this->rule[$columnName] =  $rule;
 
         return $this;
+    }
+
+    public function activeSoftDelete($value)
+    {
+        $this->softDelete = $value;
+    }
+
+    public function activeTimeStamp($value)
+    {
+        $this->timestamp = $value;
     }
 
 
