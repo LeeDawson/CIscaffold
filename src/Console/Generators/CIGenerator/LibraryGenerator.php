@@ -31,7 +31,7 @@ class LibraryGenerator implements GeneratorInterface
 
         $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'scaffold_libraries.stub');
         $templateData = str_replace('$LIBNAME$', ucfirst($modelName).'Lib', $templateData);
-        $templateData = str_replace('$MODEL_INCULDE_NAME$', $modelIncludeName, $templateData);
+        $templateData = str_replace('$MODEL_INCULDE_NAME$', $preModelName, $templateData);
         $templateData = str_replace('$MODEL_NAME$', $preModelName, $templateData);
         $templateData = str_replace('$PRIMARY$', $this->commandData->getModelPrimaryKey(), $templateData);
         $templateData = str_replace('$SOFTDELETE$', $this->getSoftDelete($this->commandConfig->softDelete), $templateData);
@@ -65,19 +65,19 @@ class LibraryGenerator implements GeneratorInterface
 
     public function generateLibrary()
     {
-        $libraryName = $this->commandData->modelName;
-        $fileName = $libraryName.'.php';
+        $modelName = $this->commandData->modelName;
+        $FileName = ucfirst($modelName).'Lib.php';
         $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'libraries.stub');
-        $templateData = str_replace('$LIBNAME$', $libraryName, $templateData);
+        $templateData = str_replace('$LIBNAME$', ucfirst($modelName).'Lib', $templateData);
 
         FileUtils::createFile(
             $this->commandConfig->get('library'),
-            $fileName,
+            $FileName,
             $templateData
         );
 
         $this->commandData->commandComment("\nController created: ");
-        $this->commandData->commandInfo($libraryName);
+        $this->commandData->commandInfo($FileName);
     }
 
 

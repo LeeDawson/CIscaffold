@@ -1,12 +1,13 @@
 <?php
 
+include_once APPPATH.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'MY_Server.php';
+
 class $LIBNAME$ extends MY_Server
 {
 
     public function __construct()
     {
         parent::__construct();
-        //$this->load->model($MODEL_INCULDE_NAME$);
     }
 
 }

@@ -53,7 +53,7 @@ class ModelGenerator implements GeneratorInterface
         $templateData = $this->fillPrimaryName($this->commandConfig , $this->commandData , $templateData);
 
         FileUtils::createFile(
-            $this->commandConfig->get('model').$this->commandConfig->get('modules'),
+            $this->commandConfig->get('model'),
             $modelFileName,
             $templateData
         );
