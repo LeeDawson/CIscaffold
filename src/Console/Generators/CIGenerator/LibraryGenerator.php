@@ -25,7 +25,7 @@ class LibraryGenerator implements GeneratorInterface
     public function generate()
     {
         $modelName = $this->commandData->modelName;
-        $FileName = ucfirst($modelName).'Lib.php';
+        $FileName = ucfirst($modelName).'lib.php';
         $preModelName = 'M_'.$modelName;
         $modelIncludeName = $this->commandConfig->get('modules').$preModelName;
 
