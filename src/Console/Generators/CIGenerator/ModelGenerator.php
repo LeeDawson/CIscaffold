@@ -87,7 +87,6 @@ class ModelGenerator implements GeneratorInterface
         }
 
 
-
         $templateData = str_replace('$FILLABLE$', implode(','.infy_nl_tab(1, 2) , $fillable), $templateData);
         return $templateData;
     }

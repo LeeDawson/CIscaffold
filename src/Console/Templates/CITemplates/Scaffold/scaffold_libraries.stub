@@ -17,9 +17,8 @@ class $LIBNAME$ extends MY_Server
     public function getList( $data)
     {
         $cond = array();
-
-        !empty($data['$SOFTDELETE$']) && $cond['where'] = [ "$SOFTDELETE$" => 1];
-        !empty($data['keyword']) && $cond['like'] = array( 'key' => 'order_trade_no' , 'value' => $data['keyword']);
+        $SOFTDELETE$
+        // !empty($data['keyword']) && $cond['like'] = array( 'key' => 'order_trade_no' , 'value' => $data['keyword']);
 
         $total_rows = $this->$MODEL_NAME$->getTotalRows( $cond);
 
