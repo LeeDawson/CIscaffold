@@ -21,7 +21,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-sm-9">
                                         <div class="inputbtnbox ordingnum">
-                                            <label>商品名称</label>
+                                            <label>搜索</label>
                                             <div class="input-group ">
                                                 <input type="text" name="keyword" class="form-control">
                                                 <span class="input-group-btn"><button type="button" class=" searchbtn btn btn-info btn-flat">搜索</button></span>

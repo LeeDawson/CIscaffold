@@ -53,7 +53,7 @@ class LibraryGenerator implements GeneratorInterface
         if(!$timeStamp)
             return null;
 
-        return  '$cond["order_by"] = array( "key" => "'.$timeStamp.'" , "value" => "DESC")';
+        return  '$cond["order_by"] = array( "key" => "'.$timeStamp.'" , "value" => "DESC");';
     }
 
     private function getSoftDelete($softDelete)

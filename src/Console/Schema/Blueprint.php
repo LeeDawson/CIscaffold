@@ -57,11 +57,13 @@ class Blueprint
     public function activeSoftDelete($value)
     {
         $this->softDelete = $value;
+        return $this;
     }
 
     public function activeTimeStamp($value)
     {
         $this->timestamp = $value;
+        return $this;
     }
 
 
