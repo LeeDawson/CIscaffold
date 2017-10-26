@@ -82,10 +82,9 @@ class ModelGenerator implements GeneratorInterface
     {
         $fillable = [];
         foreach ($fillables as $item) {
-            if($item->isFillable)
+            if(!$item->isPrimary)
                 $fillable[] = "'".$item->name."'";
         }
-
 
         $templateData = str_replace('$FILLABLE$', implode(','.infy_nl_tab(1, 2) , $fillable), $templateData);
         return $templateData;

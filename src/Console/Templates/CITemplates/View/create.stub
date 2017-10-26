@@ -51,9 +51,9 @@ $FILEDS$
                 if( rsJson.status == 'success')
                       showSuccess( '操作成功' , rsJson.jumpurl);
                 else if(rsJson.status == 'error')
-                      showError( rsJson.msg);
-                else
                       showError( rsJson.data.errmsg.msg);
+                else
+                      showError( rsJson.msg);
 
             },debug:true
         });

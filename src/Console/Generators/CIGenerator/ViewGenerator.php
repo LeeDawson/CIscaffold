@@ -70,7 +70,7 @@ class ViewGenerator implements GeneratorInterface
         $templateData = $this->files->get($templatePath);
         $fields = array();
         foreach ($this->commandData->fields as $field) {
-            if($field->htmlType){
+            if($field->htmlType && $field->isFillable ){
                 $fields[] = HTMLFieldGenerator::generateHTML($field , $this->commandConfig , $this->files);
             }
         }
@@ -101,13 +101,14 @@ class ViewGenerator implements GeneratorInterface
         $templatePath = $this->commandConfig->getViewsPath('View/create.stub');
         $templateData = $this->files->get($templatePath);
         $fields = array();
+
         foreach ($this->commandData->fields as $field) {
-            if($field->htmlType){
+            if($field->htmlType && $field->isFillable ){
                 $fields[] = HTMLFieldGenerator::generateHTML($field , $this->commandConfig , $this->files);
             }
         }
 
-        $templateData = str_replace('$FILEDS$',implode(' '. infy_nl_tab(0,2),$fields) , $templateData);
+        $templateData = str_replace('$FILEDS$',implode(' '. infy_nl_tab(0,2) , $fields) , $templateData);
         $templateData = str_replace('$INDEX_RUL$' , $this->Urls['INDEX_RUL'] , $templateData);
         $templateData = str_replace('$STORE_URL$' , $this ->Urls['SOTRE_URL'] , $templateData);
 

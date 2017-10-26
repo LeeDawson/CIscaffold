@@ -7,7 +7,7 @@ use OutSource\Kernel\Application;
 $option = [
     "basePath" => dirname(__FILE__),
     "driver" => 'CI',
-    "modules" => "wechat"
+
 ];
 
 

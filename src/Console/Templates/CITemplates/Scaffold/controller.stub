@@ -1,9 +1,9 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-require_once  __DIR__ . DIRECTORY_SEPARATOR . 'Adminbase.php';
+require_once  __DIR__ . DIRECTORY_SEPARATOR . 'AdminBase.php';
 
 
-class $MODEL_NAME$ extends Adminbase
+class $MODEL_NAME$ extends AdminBase
 {
 
     public function __construct()

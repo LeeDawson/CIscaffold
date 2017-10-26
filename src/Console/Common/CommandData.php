@@ -93,7 +93,7 @@ class CommandData
         foreach ($schema->columns as $column) {
             //todo 第三种类型添加
             //多种类型的html支持
-            $fieldInputStr = implode(" " , [$column , $schema->htmlType[$column]]) ;
+            $fieldInputStr = implode(" " , [$column , $schema->htmlType[$column] , implode("," , $schema->options[$column]) ]) ;
             $validations = implode("|" , $schema->rule[$column]);
 
             $this->fields[] = GeneratorFieldsInputUtil::processFieldInput(

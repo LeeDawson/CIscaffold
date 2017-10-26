@@ -34,7 +34,8 @@ class LibraryGenerator implements GeneratorInterface
         $templateData = str_replace('$MODEL_INCULDE_NAME$', $preModelName, $templateData);
         $templateData = str_replace('$MODEL_NAME$', $preModelName, $templateData);
         $templateData = str_replace('$PRIMARY$', $this->commandData->getModelPrimaryKey(), $templateData);
-        $templateData = str_replace('$SOFTDELETE$', $this->getSoftDelete($this->commandConfig->softDelete), $templateData);
+        $templateData = str_replace('$SOFTDELETEWHERE$', $this->getSoftDelete($this->commandConfig->softDelete), $templateData);
+        $templateData = str_replace('$SOFTDELETE$', $this->commandConfig->softDelete, $templateData);
         $templateData = str_replace('$TIMESTAMPE$', $this->getTimeStamp($this->commandConfig->timeStamp), $templateData);
 
         FileUtils::createFile(

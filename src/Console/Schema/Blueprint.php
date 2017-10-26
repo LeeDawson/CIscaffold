@@ -21,6 +21,8 @@ class Blueprint
 
     public $timestamp;
 
+    public $options = [];
+
     public $columns = [];
 
     public $htmlType = [];
@@ -39,7 +41,7 @@ class Blueprint
         $this->primaryKey = $primaryKey;
     }
 
-    public function addColumn($columnName , $htmlType ,array $rule)
+    public function addColumn($columnName , $htmlType , array $rule = [] ,array $option = [])
     {
         if(empty($columnName))
             throw new InvalidArgumentException("columnName invalid ");
@@ -47,6 +49,7 @@ class Blueprint
         $this->columns[] = $columnName;
         $this->htmlType[$columnName] =  $htmlType;
         $this->rule[$columnName] =  $rule;
+        $this->options[$columnName] = $option;
 
         return $this;
     }

@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-2">
-                                        <button type="button" onclick="jumpTo('<?php echo base_url('$CREATE_RUL$') ?>'); return false;" class="btn btn-block btn-primary btn-sm sjdc_btn">添加商品</button>
+                                        <button type="button" onclick="jumpTo('<?php echo base_url('$CREATE_RUL$') ?>'); return false;" class="btn btn-block btn-primary btn-sm sjdc_btn">添加</button>
                                     </div>
                                     <div class="col-sm-10">
                                         <div id="pagi" class="dataTables_paginate paging_simple_numbers">
@@ -107,7 +107,7 @@
             $(e).parent().parent().remove();
         }
         else if (rsJson.status == 'error')
-            showError( rsJson.msg);
+            showError( rsJson.data.errmsg.msg);
         else
             showSuccess( '删除失败' , null);
     };
