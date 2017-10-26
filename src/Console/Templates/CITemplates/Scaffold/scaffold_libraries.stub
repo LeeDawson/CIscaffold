@@ -11,7 +11,7 @@ class $LIBNAME$ extends MY_Server
     public function __construct()
     {
         parent::__construct();
-        $this->load->model('$MODEL_INCULDE_NAME$');
+        $this->load->model('$MODEL_NAME$');
     }
 
     public function getList( $data)

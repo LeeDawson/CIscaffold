@@ -30,7 +30,7 @@ class ViewGenerator implements GeneratorInterface
     {
 
         $modelName = $this->commandData->modelName;
-        $this->viewPath = $this->commandConfig->get('views') . $this->commandConfig->get('modules') . $modelName ;
+        $this->viewPath = $this->commandConfig->get('views') . $this->commandConfig->get('modules') . ucfirst($modelName) ;
 
         $this->Urls = [
             'INDEX_RUL' => $this->commandConfig->get('modules') . ucfirst($modelName) . DIRECTORY_SEPARATOR . 'index',

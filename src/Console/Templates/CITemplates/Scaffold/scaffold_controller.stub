@@ -55,6 +55,7 @@ class $CONTROLER_NAME$ extends AdminBase
         if($this->_is_ajax){
             $postData = $this->input->post(null,true);
             $SAVESOFTDELETE$
+            $TIMESTAMP$
             //$postData['if_show'] = 1;
             $returnData = $this->$LIBRARY_NAME$->save($postData);
 

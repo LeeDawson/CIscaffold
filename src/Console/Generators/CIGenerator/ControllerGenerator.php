@@ -40,7 +40,7 @@ class ControllerGenerator implements GeneratorInterface
         $templateData = str_replace('$SOFTDELETE$', $this->commandConfig->softDelete ? "destory" : "delete"   , $templateData);
         $templateData = str_replace('$SHOWSOFTDELETE$', $this->commandConfig->softDelete ? '$this->_data["'.$this->commandConfig->softDelete.'"] = 1;' : " "   , $templateData);
         $templateData = str_replace('$SAVESOFTDELETE$', $this->commandConfig->softDelete ? '$postData["'.$this->commandConfig->softDelete.'"] = 1;' : " "   , $templateData);
-        $templateData = str_replace('$SOFTDELETE$', $this->commandConfig->softDelete ? "destory" : "delete"   , $templateData);
+        $templateData = str_replace('$TIMESTAMP$', $this->commandConfig->timeStamp ? '$postData["'. $this->commandConfig->timeStamp .'"] = time();' : " "   , $templateData);
 
         foreach ($replaceUrls as $Key => $replaceUrl) {
             $templateData = str_replace($Key, $replaceUrl, $templateData);
@@ -62,12 +62,14 @@ class ControllerGenerator implements GeneratorInterface
     public function generateController()
     {
         $controllerName = $this->commandData->modelName;
+
+        dd($controllerName);
         $fileName = $controllerName.'.php';
         $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'controller.stub');
         $templateData = str_replace('$MODEL_NAME$', $controllerName, $templateData);
 
         FileUtils::createFile(
-            $this->commandConfig->get('controller').$this->commandConfig->get('modules'),
+            $this->commandConfig->get('controller'),
             $fileName,
             $templateData
         );

@@ -26,12 +26,10 @@ class LibraryGenerator implements GeneratorInterface
     {
         $modelName = $this->commandData->modelName;
         $FileName = ucfirst($modelName).'lib.php';
-        $preModelName = 'M_'.$modelName;
-        $modelIncludeName = $this->commandConfig->get('modules').$preModelName;
+        $preModelName = 'M_'.ucfirst($modelName);
 
         $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'scaffold_libraries.stub');
         $templateData = str_replace('$LIBNAME$', ucfirst($modelName).'Lib', $templateData);
-        $templateData = str_replace('$MODEL_INCULDE_NAME$', $preModelName, $templateData);
         $templateData = str_replace('$MODEL_NAME$', $preModelName, $templateData);
         $templateData = str_replace('$PRIMARY$', $this->commandData->getModelPrimaryKey(), $templateData);
         $templateData = str_replace('$SOFTDELETEWHERE$', $this->getSoftDelete($this->commandConfig->softDelete), $templateData);

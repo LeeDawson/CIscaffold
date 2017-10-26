@@ -12,7 +12,7 @@ class AdminBase extends MY_Controller
 
     protected function loadView( $filename)
     {
-        $this->load->view( '$viewModulesHeader$');
+        $this->load->view( '$viewModulesHeader$' , $this->_data);
         $this->load->view( '$viewModules$' . $filename , $this->_data);
         $this->load->view( '$viewModulesFooter$');
     }
