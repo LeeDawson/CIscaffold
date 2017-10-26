@@ -62,8 +62,6 @@ class ControllerGenerator implements GeneratorInterface
     public function generateController()
     {
         $controllerName = $this->commandData->modelName;
-
-        dd($controllerName);
         $fileName = $controllerName.'.php';
         $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'controller.stub');
         $templateData = str_replace('$MODEL_NAME$', $controllerName, $templateData);
