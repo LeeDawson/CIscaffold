@@ -62,19 +62,35 @@ class ControllerGenerator implements GeneratorInterface
     public function generateController()
     {
         $controllerName = $this->commandData->modelName;
-        $fileName = $controllerName.'.php';
+        $files = $this->handlePath($controllerName);
+
         $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'controller.stub');
-        $templateData = str_replace('$MODEL_NAME$', $controllerName, $templateData);
+        $templateData = str_replace('$MODEL_NAME$', ucfirst($files['filename']) , $templateData);
 
         FileUtils::createFile(
-            $this->commandConfig->get('controller'),
-            $fileName,
+            $files['filePath'].DIRECTORY_SEPARATOR,
+            ucfirst($files['filename']).'.php',
             $templateData
         );
 
         $this->commandData->commandComment("\nController created: ");
         $this->commandData->commandInfo($controllerName);
         // TODO: Implement generate() method.
+    }
+
+    private function handlePath($path)
+    {
+        $filename = "";
+        if($path = explode(DIRECTORY_SEPARATOR , $path)){
+            $filename = array_pop($path);
+            $filePath =  $this->commandConfig->get('controller').implode('/',$path);
+            $this->files->createDirectoryIfNotExist($filePath);
+            return compact('filename','filePath');
+        } else {
+            $filename = $path;
+            $filePath = $this->commandConfig->get('controller');
+            return compact('filename','filePath');
+        }
     }
 
     /**
