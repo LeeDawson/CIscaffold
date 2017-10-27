@@ -55,6 +55,7 @@ class ScaffoldGeneratorCommand extends BaseCommand
             //从用户输入收集数据
             parent::handle();
 
+
             $this->generScaffold();
         }
     }

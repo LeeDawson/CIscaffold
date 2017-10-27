@@ -1,0 +1,12 @@
+<div class="fileupform" >
+   <p>
+        <label>图像</label>
+   </p>
+   <span class="btn btn-success fileinput-button">
+          <i class="glyphicon glyphicon-plus">
+          </i>
+               <span>添加图片</span>
+          <input id="fileupload_img1" type="file" name="files[]" multiple>
+   </span>
+   <div id="teacher_header_img" class="files files_box"> </div>
+</div>

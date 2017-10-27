@@ -75,7 +75,7 @@ class ViewGenerator implements GeneratorInterface
             }
         }
 
-        $templateData = str_replace('$FILEDS$',implode(' '. infy_nl_tab(0,1),$fields) , $templateData);
+        $templateData = str_replace('$FILEDS$',implode(' '. infy_nl_tab(0,1) , $fields ) , $templateData);
         $templateData = str_replace('$INDEX_RUL$' , $this->Urls['INDEX_RUL'] , $templateData);
         $templateData = str_replace('$STORE_URL$' , $this ->Urls['SOTRE_URL'] , $templateData);
         $templateData = str_replace('$FILEDID$' ,  sprintf('<?php echo @$data["%s"]?>' , $this->commandData->getModelPrimaryKey()) , $templateData);
@@ -108,7 +108,7 @@ class ViewGenerator implements GeneratorInterface
             }
         }
 
-        $templateData = str_replace('$FILEDS$',implode(' '. infy_nl_tab(0,2) , $fields) , $templateData);
+        $templateData = str_replace('$FILEDS$', implode(' '. infy_nl_tab(1,2) , $fields) , $templateData);
         $templateData = str_replace('$INDEX_RUL$' , $this->Urls['INDEX_RUL'] , $templateData);
         $templateData = str_replace('$STORE_URL$' , $this ->Urls['SOTRE_URL'] , $templateData);
 

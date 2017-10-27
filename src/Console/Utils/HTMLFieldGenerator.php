@@ -23,12 +23,65 @@ class HTMLFieldGenerator
             case 'textarea':
             case 'date':
             case 'file':
-            case 'email':
+            case 'radio':
+                $radioGroupPath =  $config->getViewsPath('Fields/radio_group.stub');
+                $radioGroupData = $file->get($radioGroupPath);
+
+                $radios = HTMLFieldGenerator::prepareKeyValueArrFromLabelValueStr($field->htmlValues);
+
+                $radioButtons = [];
+
+                foreach ($radios as $key => $radioValue) {
+                    $radioPath =  $config->getViewsPath('Fields/radio.stub');
+                    $radioData = $file->get($radioPath);
+                    $radioData = str_replace('$KEY$' , $field->name , $radioData);
+                    $radioData = str_replace('$VALUE$' , $radioValue  , $radioData);
+                    $radioButtons[] = $radioData;
+                }
+                $radioGroupData = str_replace('$KEY$' , $field->name  , $radioGroupData);
+                $radioGroupData = str_replace('$RADIOVALUES$' , implode(' '. infy_nl_tab(1,2), $radioButtons)  , $radioGroupData);
+                return $radioGroupData;
+                break;
+            case 'select':
+                $selectGroupPath =  $config->getViewsPath('Fields/select_group.stub');
+                $selectGroupData = $file->get($selectGroupPath);
+
+                $radios = HTMLFieldGenerator::prepareKeyValueArrFromLabelValueStr($field->htmlValues);
+                $radioButtons = [];
+
+                foreach ($radios as $key => $radioValue) {
+                    $selectPath =  $config->getViewsPath('Fields/select.stub');
+                    $selectData = $file->get($selectPath);
+                    $selectData = str_replace('$KEY$' , $field->name , $selectData);
+                    $selectData = str_replace('$VALUE$' , $radioValue  , $selectData);
+                    $radioButtons[] = $selectData;
+                }
+                $selectGroupData = str_replace('$KEY$' , $field->name  , $selectGroupData);
+                $selectGroupData = str_replace('$OPTIONS$' , implode(PHP_EOL, $radioButtons)  , $selectGroupData);
+                return $selectGroupData;
+                break;
             default :
                 break;
         }
 
         return $fieldTemplate;
+    }
+
+    public static function prepareKeyValueArrFromLabelValueStr($values)
+    {
+        $arr = [];
+
+        foreach ($values as $value) {
+            $labelValue = explode(':', $value);
+
+            if (count($labelValue) > 1) {
+                $arr[$labelValue[0]] = $labelValue[1];
+            } else {
+                $arr[$labelValue[0]] = $labelValue[0];
+            }
+        }
+
+        return $arr;
     }
 
 //    private static function getFieldsPath($views)

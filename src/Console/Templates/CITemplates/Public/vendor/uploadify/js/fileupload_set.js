@@ -10,7 +10,7 @@
 var upload_img_obj = {};
 var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
     upload_img_obj[files_box_id] = [];
-    console.log(upload_img_obj);
+    // console.log(upload_img_obj);
     //每一个上传文件列里面的一个透明的提交按钮，存在，不可见
     // uploadButton = $('<div/>')
     //     .addClass('hide_btn')
@@ -31,15 +31,15 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
     //     });
     //每一个上传文件列里面的删除按钮
     var closeButton = $("<div class='closebtn close_btn'><i class='iconfont cha-icon'></i></div>")
-                        .on('click', function () {
-                            var deleteinfo = $(this).closest(".item_box").attr('imginfo');
-                            var deleteindex = upload_img_obj[files_box_id].indexOf(deleteinfo);
-                            if (deleteindex > -1) {
-                                upload_img_obj[files_box_id].splice(deleteindex, 1);
-                            }
-                            console.log(upload_img_obj);
-                            $(this).closest(".item_box").remove();
-                        });
+        .on('click', function () {
+            var deleteinfo = $(this).closest(".item_box").attr('imginfo');
+            var deleteindex = upload_img_obj[files_box_id].indexOf(deleteinfo);
+            if (deleteindex > -1) {
+                upload_img_obj[files_box_id].splice(deleteindex, 1);
+            }
+            // console.log(upload_img_obj);
+            $(this).closest(".item_box").remove();
+        });
     $('#'+comp_id).fileupload({
         url: url,                                                  //服务器API
         dataType: 'json',                                          //期望从服务器得到json类型的返回数据
@@ -52,18 +52,9 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
     }).on('fileuploadadd', function (e, data) {                 //在图片添加时会触发事件fileuploadadd
         // alert("fileuploadadd");
 
-        var file_name = data.files[0].name;
+        // var file_name = data.files[0].name;
 
-        var str = "<div class='img_box item_box'>" +
-            "           <div class='imgup'>" +
-            "           </div>" +
-            "           <div class='infobox'>" +
-            "                <div class='loadstate'>" +
-            "                     <span></span>" +
-            "                 </div>" +
-            "             </div>" +
-            "       </div>";
-        data.context = $(str).appendTo('#'+files_box_id);
+
         // $.each(data.files, function (index, file) {             //上传的文件在data里，data.files是个数组，里面存放着file
         //     var node = $(data.context);
         //     if (!index) {
@@ -74,35 +65,73 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
 
     }).on('fileuploadprocessalways', function (e, data) {     //在文件添加过程中触发，在fileuploadadd之后
         // alert("这是fileuploadprocessalways");
+
         var index = data.index,
-            file = data.files[index],
-            node = $('.imgup',$(data.context));
-        if (file.preview) {             //加预览图片的canvas, file.preview是显示图片的canvas
-            $(file.preview).css({"position":"absolute","left":"0","transformOrigin":"0% 0%","transform":"scale(1.35,1.35)"}); //调整canvas尺寸使适合
-            node.prepend(file.preview);
-        }
+            file = data.files[index];
         if (file.error) {
             // node
             //     .append('<br>')
             //     .append($('<span class="text-danger"/>').text(file.error));
-            $(data.context).remove();
+            // $(data.context).remove();
             alert('上传失败');
         }
     }).on('fileuploaddone', function (e, data) {
         // alert("这是fileuploaddone");
-        $.each(data.files, function (index) {
+        // var this_parentid = $(data.context).closest('.files_box').attr("id");
+        // if(upload_img_obj[this_parentid]){
+        //     var curlength =  upload_img_obj[this_parentid].length;
+        //     if(curlength >= limit_num){
+        //         alert('最多只能传图'+limit_num+'张');
+        //         return false;
+        //     }
+        // }
 
-        });
         $.each(data.result.files, function (index, file) {
-            var succ = $("<i class='iconfont succ-icon'></i>");
-            $('.loadstate',$(data.context)).prepend(succ);
-            $('.infobox',$(data.context)).prepend(closeButton.clone(true));
-            $('.loadstate span',$(data.context)).text('上传成功');
+            if(upload_img_obj[files_box_id]){
+                // console.log('有了');
+                if(upload_img_obj[files_box_id].length < limit_num){
+                    var str = "<div class='img_box item_box'>" +
+                        "           <div class='imgup'>" +
+                        "           </div>" +
+                        "           <div class='infobox'>" +
+                        "                <div class='loadstate'>" +
+                        "                     <span></span>" +
+                        "                 </div>" +
+                        "             </div>" +
+                        "       </div>";
+                    data.context = $(str).appendTo('#'+files_box_id);
 
-            upload_img_obj[files_box_id].push(file.name);
-            $(data.context).attr("imginfo",file.name);
-            // console.log(file.name);
-            console.log(upload_img_obj);
+                    // var index = data.index,
+                    var _file = data.files[index],
+                        node = $('.imgup',$(data.context));
+                    if (_file.preview) {             //加预览图片的canvas, file.preview是显示图片的canvas
+                        $(_file.preview).css({"position":"absolute","left":"0","transformOrigin":"0% 0%","transform":"scale(1.35,1.35)"}); //调整canvas尺寸使适合
+                        node.prepend(_file.preview);
+                    }
+
+                    var succ = $("<i class='iconfont succ-icon'></i>");
+                    $('.loadstate',$(data.context)).prepend(succ);
+                    $('.infobox',$(data.context)).prepend(closeButton.clone(true));
+                    $('.loadstate span',$(data.context)).text('上传成功');
+
+                    upload_img_obj[files_box_id].push(file.name);
+                    $(data.context).attr("imginfo",file.name);
+                    $('#uploadimg_hidden').val(upload_img_obj);
+                    // console.log(file.name);
+                    // console.log(upload_img_obj);
+                    // console.log($(data.context));
+                    // console.log(upload_img_obj[this_parentid].length);
+
+                }else{
+                    // alert('最多只能传图'+limit_num+'张');
+                }
+
+            }else{
+                // console.log('没有');
+            }
+
+
+
         });
     }).on('fileuploadfail', function (e, data) {
         // alert("这是fileuploadfail");
@@ -118,7 +147,7 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
 
     //限制传图片
-    $('#'+files_box_id).on('click','.fileinput-button.img_upload_btn',function () {
+    $('#'+comp_id).on('click',function () {
         if(limit_num > 0){
             if(upload_img_obj[files_box_id].length > limit_num-1){
                 alert('最多只能传图'+limit_num+'张');

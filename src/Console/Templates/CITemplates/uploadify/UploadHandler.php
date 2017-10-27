@@ -1103,9 +1103,9 @@ class UploadHandler
             $file_size = $this->get_file_size($file_path, $append_file);
             if ($file_size === $file->size) {
                 $file->url = $this->get_download_url($file->name);
-                if ($this->is_valid_image_file($file_path)) {
-                    $this->handle_image_file($file_path, $file);
-                }
+//                if ($this->is_valid_image_file($file_path)) {
+//                    $this->handle_image_file($file_path, $file);
+//                }
             } else {
                 $file->size = $file_size;
                 if (!$content_range && $this->options['discard_aborted_uploads']) {
