@@ -23,6 +23,11 @@ class HTMLFieldGenerator
             case 'textarea':
             case 'date':
             case 'file':
+                $filePath =  $config->getViewsPath('Fields/file.stub');
+                $templateData = $file->get($filePath);
+                $templateData = str_replace('$FILEIMGID$' , $field->name.'_img' , $templateData);
+                $templateData = str_replace('$FILENAMEID$' , $field->name , $templateData);
+                return $templateData;
             case 'radio':
                 $radioGroupPath =  $config->getViewsPath('Fields/radio_group.stub');
                 $radioGroupData = $file->get($radioGroupPath);
@@ -34,12 +39,13 @@ class HTMLFieldGenerator
                 foreach ($radios as $key => $radioValue) {
                     $radioPath =  $config->getViewsPath('Fields/radio.stub');
                     $radioData = $file->get($radioPath);
-                    $radioData = str_replace('$KEY$' , $field->name , $radioData);
+                    $radioData = str_replace('$KEY$' , $key , $radioData);
                     $radioData = str_replace('$VALUE$' , $radioValue  , $radioData);
                     $radioButtons[] = $radioData;
                 }
                 $radioGroupData = str_replace('$KEY$' , $field->name  , $radioGroupData);
-                $radioGroupData = str_replace('$RADIOVALUES$' , implode(' '. infy_nl_tab(1,2), $radioButtons)  , $radioGroupData);
+                $radioGroupData = str_replace('$RADIOVALUES$' , implode(PHP_EOL, $radioButtons)  , $radioGroupData);
+
                 return $radioGroupData;
                 break;
             case 'select':
@@ -52,7 +58,7 @@ class HTMLFieldGenerator
                 foreach ($radios as $key => $radioValue) {
                     $selectPath =  $config->getViewsPath('Fields/select.stub');
                     $selectData = $file->get($selectPath);
-                    $selectData = str_replace('$KEY$' , $field->name , $selectData);
+                    $selectData = str_replace('$KEY$' , $key , $selectData);
                     $selectData = str_replace('$VALUE$' , $radioValue  , $selectData);
                     $radioButtons[] = $selectData;
                 }

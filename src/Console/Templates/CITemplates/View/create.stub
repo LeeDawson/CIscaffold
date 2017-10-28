@@ -1,3 +1,5 @@
+
+$RESOURCE$
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -22,7 +24,9 @@
             <!-- form start -->
             <form id="form">
                 <div class="box-header with-border">
+
 $FILEDS$
+                <input type="hidden" id="uploadimg_hidden" name="files" value="">
                 <div class="box-footer">
                     <button type="submit" onclick="jumpTo('<?php echo base_url('$INDEX_RUL$'); ?>'); return false;" class="btn btn-default">取消</button>
                     <button type="submit" class="btn btn-info pull-right">确定</button>

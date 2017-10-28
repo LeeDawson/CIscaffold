@@ -11,7 +11,7 @@ class create_$SCHEMA$_schema implements  SchemBaseInterface
         $table = new Blueprint( "$SCHEMA$" $PRIMARY$);
         //$table = new Blueprint( "$SCHEMA$", "ID" );
         //$table
-        //      ->addColumn('age' , [ 'radio' => [1,2,3,4,5] ] ,['required'] )
+        //      ->addColumn('age' ,  "select,1,2,3" ,['required'] )
         //      ->addColumn('name' , "text" ,['required'] )
         //      ->activeSoftDelete('if_show')
         //      ->activeTimeStamp('date_add');

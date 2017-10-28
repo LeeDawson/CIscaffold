@@ -55,13 +55,23 @@ class $LIBNAME$ extends MY_Server
         return $this->$MODEL_NAME$->delByPk( $id , true );
     }
 
-    public function update($where , $data)
+    public function update($where , $postDatas)
     {
-        return $this->$MODEL_NAME$->update($where , $data);
+        $postDatas = $this->fetchFiles($postDatas);
+        $preDatas = $this->preUpdateData($postDatas , $this->M_Teacher->fillAble);
+
+        $postDatas = Validation::checkDaraRule($preDatas , $this->M_Teacher->rules );//处理下
+
+        if(!$postDatas['result'])
+             return  $postDatas;
+
+        return $this->$MODEL_NAME$->update($where , $postDatas['correctData']);
     }
 
     public function save($postDatas)
     {
+        $postDatas = $this->fetchFiles($postDatas);
+
         $preDatas = $this->prePostData($postDatas , $this->$MODEL_NAME$->fillAble);
 
         $postDatas = Validation::checkDaraRule($preDatas , $this->$MODEL_NAME$->rules );//处理下
@@ -98,6 +108,28 @@ class $LIBNAME$ extends MY_Server
         ]);
     }
 
+    private function preUpdateData($postDatas , $fillAble)
+    {
+        foreach ($postDatas as $key => $postData) {
+            if(!in_array($key , $fillAble))
+                unset($postDatas[$key]);
+        }
+        return $postDatas;
+    }
+
+    public function fetchFiles($postDatas)
+    {
+        $files = isset( $postDatas['files'] ) ? json_decode( $postDatas['files'] , 1) : [];
+
+        if(empty($files))
+             return $postDatas;
+
+        foreach ($this->M_Teacher->fillAble as $fillable) {
+             isset($files[$fillable]) && $postDatas[$fillable] = json_encode( $files[$fillable] , JSON_UNESCAPED_UNICODE );
+        }
+
+        return $postDatas;
+    }
 
 
 

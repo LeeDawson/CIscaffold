@@ -1,4 +1,4 @@
-                        <div class="form-group">
-                             <label>$KEYS$</label>
-                             <input type="text" value="$VALUES$"  name="$KEYS$" class="form-control" placeholder="请输入 ...">
-                        </div>
+                <div class="form-group">
+                      <label>$KEYS$</label>
+                      <input type="text" value="$VALUES$"  name="$KEYS$" class="form-control" placeholder="请输入 ...">
+                </div>

@@ -1,6 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 define("ADMIN_PER_PAGE",10);
+define("TIMESTAMP",time());
 
 class MY_Model extends CI_Model
 {

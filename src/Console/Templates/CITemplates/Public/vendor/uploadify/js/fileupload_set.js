@@ -9,7 +9,11 @@
 //一个全局变量用来保存上传的图片信息
 var upload_img_obj = {};
 var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
-    upload_img_obj[files_box_id] = [];
+    if(upload_img_obj[files_box_id]){
+    }else{
+        upload_img_obj[files_box_id] = [];
+    }
+
     // console.log(upload_img_obj);
     //每一个上传文件列里面的一个透明的提交按钮，存在，不可见
     // uploadButton = $('<div/>')
@@ -37,7 +41,7 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
             if (deleteindex > -1) {
                 upload_img_obj[files_box_id].splice(deleteindex, 1);
             }
-            // console.log(upload_img_obj);
+            console.log(upload_img_obj);
             $(this).closest(".item_box").remove();
         });
     $('#'+comp_id).fileupload({
@@ -45,10 +49,13 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
         dataType: 'json',                                          //期望从服务器得到json类型的返回数据
         autoUpload: true,                                         //是否自动上传
         acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,              //文件格式限制
-        maxFileSize: 999000,                                      //文件最大
+        maxFileSize: 300000000,                                      //文件最大
         previewMaxWidth: 100,
         previewMaxHeight: 100,
-        previewCrop: true
+        previewCrop: true,
+        messages: {
+            maxFileSize: '超过允许的最大值！'
+        }
     }).on('fileuploadadd', function (e, data) {                 //在图片添加时会触发事件fileuploadadd
         // alert("fileuploadadd");
 
@@ -73,6 +80,7 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
             //     .append('<br>')
             //     .append($('<span class="text-danger"/>').text(file.error));
             // $(data.context).remove();
+            console.log(file.error);
             alert('上传失败');
         }
     }).on('fileuploaddone', function (e, data) {
@@ -87,8 +95,10 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
         // }
 
         $.each(data.result.files, function (index, file) {
+            // debugger;
+            // alert("执行！");
             if(upload_img_obj[files_box_id]){
-                // console.log('有了');
+                console.log('有了');
                 if(upload_img_obj[files_box_id].length < limit_num){
                     var str = "<div class='img_box item_box'>" +
                         "           <div class='imgup'>" +
@@ -116,18 +126,20 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
 
                     upload_img_obj[files_box_id].push(file.name);
                     $(data.context).attr("imginfo",file.name);
-                    $('#uploadimg_hidden').val(upload_img_obj);
                     // console.log(file.name);
-                    // console.log(upload_img_obj);
+                    console.log(upload_img_obj);
+                    $('#uploadimg_hidden').val(JSON.stringify(upload_img_obj) );
+
                     // console.log($(data.context));
                     // console.log(upload_img_obj[this_parentid].length);
 
-                }else{
-                    // alert('最多只能传图'+limit_num+'张');
+                }
+                else{
+                    //alert('最多只能传图'+limit_num+'张');
                 }
 
             }else{
-                // console.log('没有');
+                console.log('没有');
             }
 
 
@@ -148,7 +160,9 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
 
     //限制传图片
     $('#'+comp_id).on('click',function () {
+
         if(limit_num > 0){
+            console.log(limit_num);
             if(upload_img_obj[files_box_id].length > limit_num-1){
                 alert('最多只能传图'+limit_num+'张');
                 return false;
@@ -166,4 +180,43 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
 };
 
 
+//恢复函数
+var recoverUploadImg = function (img_id,img_arr) {
+    //var newImg_arr = img_arr.map(function (item) {
+    //    return url_pre + item;
+    //});
+    upload_img_obj[img_id] = img_arr;
+
+    for(var i = 0 ; i < upload_img_obj[img_id].length ; i++){
+        var str = "<div class='img_box item_box' imginfo='"+upload_img_obj[img_id][i]+"'>           " +
+            "    <div class='imgup'>" +
+            "        <img width='100' height='100' style='position: absolute; left: 0px; transform-origin: 0% 0% 0px; transform: scale(1.35, 1.35);' src='"+ url_pre + upload_img_obj[img_id][i]+"'/>           " +
+            "    </div>           " +
+            "    <div class='infobox'>" +
+            "        <div class='closebtn close_btn'>" +
+            "            <i class='iconfont cha-icon'></i>" +
+            "        </div>                " +
+            "        <div class='loadstate'>" +
+            "            <i class='iconfont succ-icon'></i>                     " +
+            "            <span>上传成功</span>                " +
+            "        </div>             " +
+            "    </div>       " +
+            "</div>";
+        $('#'+img_id).append(str);
+
+        $('.img_box').on('click','.close_btn',function () {
+            var deleteinfo = $(this).closest(".item_box").attr('imginfo');
+            var deleteindex = upload_img_obj[img_id].indexOf(deleteinfo);
+            if (deleteindex > -1) {
+                upload_img_obj[img_id].splice(deleteindex, 1);
+            }
+            console.log(upload_img_obj);
+            $(this).closest(".item_box").remove();
+            $('#uploadimg_hidden').val(JSON.stringify(upload_img_obj) );
+        })
+    }
+
+    $('#uploadimg_hidden').val(JSON.stringify(upload_img_obj) );
+
+};
 

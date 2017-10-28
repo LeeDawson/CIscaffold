@@ -1,3 +1,5 @@
+$RESOURCE$
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -22,8 +24,11 @@
             <!-- form start -->
             <form id="form">
                 <div class="box-header with-border">
+
 $FILEDS$
+
                 <input type="hidden" name="$PRIMARY$" value="$FILEDID$">
+                <input type="hidden" id="uploadimg_hidden" name="files" value="">
                 </div>
 
                 <div class="box-footer">

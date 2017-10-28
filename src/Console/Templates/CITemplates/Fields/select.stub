@@ -1,1 +1,1 @@
-                              <option value="$KEY$">$VALUE$</option>
+                            <option value="$VALUE$">$KEY$</option>

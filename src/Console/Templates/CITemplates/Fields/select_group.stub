@@ -1,6 +1,6 @@
-                        <div class="form-group">
-                            <label>$KEY$</label>
-                            <select class="form-control" name="$KEY$" >
-                                $OPTIONS$
-                            </select>
-                        </div>
+                <div class="form-group">
+                        <label>$KEY$</label>
+                        <select class="form-control" name="$KEY$" >
+$OPTIONS$
+                        </select>
+                </div>
