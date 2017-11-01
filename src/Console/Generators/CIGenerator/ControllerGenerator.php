@@ -41,7 +41,8 @@ class ControllerGenerator implements GeneratorInterface
         $templateData = str_replace('$SHOWSOFTDELETE$', $this->commandConfig->softDelete ? '$this->_data["'.$this->commandConfig->softDelete.'"] = 1;' : " "   , $templateData);
         $templateData = str_replace('$SAVESOFTDELETE$', $this->commandConfig->softDelete ? '$postData["'.$this->commandConfig->softDelete.'"] = 1;' : " "   , $templateData);
         $templateData = str_replace('$TIMESTAMP$', $this->commandConfig->timeStamp ? '$postData["'. $this->commandConfig->timeStamp .'"] = time();' : " "   , $templateData);
-
+        $templateData = str_replace('$MODEL_NAME$', ucfirst($controllerName) , $templateData);
+        
         foreach ($replaceUrls as $Key => $replaceUrl) {
             $templateData = str_replace($Key, $replaceUrl, $templateData);
         }
