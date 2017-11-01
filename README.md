@@ -8,18 +8,13 @@
 
 
 
-# 安装
+#### 安装
 
 composer require torvalds8462/ci-scaffold
 
-composer目录执行代码安装
 
-todo
 
-    1. 登录注册 分类 广告图模块功能
-    2. api快速生成
-
-# 怎么使用
+#### 使用
 
 在入口文件平行的目录建立一个文件 artisan 可以随意命名
 
@@ -37,13 +32,10 @@ $application->run();
 
 
 然后cli到这个目录 php artisan
-
 就看到了可用的命令界面
 
 
-
-
-# 现在支持的功能
+#### 现在支持的功能
 
  ## make
   * make:controller  Create a controller   //创建一个控制器
@@ -54,3 +46,12 @@ $application->run();
  ## publish
   * publish:init     Publishes init base   //初始化CI框架需要的资源
   * publish:layout   Publishes all template files   //导出css js 视图模板
+
+
+
+#### feature
+
+    还有好多需要做的功能
+
+        1. 登录注册 分类 广告图 分类 常用的模块功能
+        2. api快速生成
