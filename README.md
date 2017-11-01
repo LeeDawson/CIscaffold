@@ -24,6 +24,9 @@ $application->run();
 
 就看到了可用的命令界面
 
+
+
+
 # 现在支持的功能
 
  make
@@ -34,4 +37,4 @@ $application->run();
   make:schema      Create a schema       //创建一个规则文件
  publish
   publish:init     Publishes init base   //初始化CI框架需要的资源
-  publish:layout   Publishes all template files   //导出css js 视图模板 
+  publish:layout   Publishes all template files   //导出css js 视图模板
