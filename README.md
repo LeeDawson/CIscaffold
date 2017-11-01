@@ -18,7 +18,7 @@ $option = [
 ];
 $application = new Application($option);
 $application->run();
-<code>
+</pre>
 
 然后cli到这个目录 php artisan
 
