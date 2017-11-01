@@ -9,7 +9,7 @@ todo
 
 在入口文件平行的目录建立一个文件 artisan 可以随意命名
 
-<pre>
+<pre><code>
 include "./vendor/autoload.php";
 use OutSource\Kernel\Application;
 $option = [
@@ -18,7 +18,9 @@ $option = [
 ];
 $application = new Application($option);
 $application->run();
-</pre>
+
+</code></pre>
+
 
 然后cli到这个目录 php artisan
 
