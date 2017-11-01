@@ -10,7 +10,7 @@ class GeneratorFieldsInputUtil
     {
         $fieldInputs = explode(' ', $fieldInputStr);
 
-        if (count($fieldInputs) < 1) {
+        if (count($fieldInputs) <= 1) {
             return false;
         }
 

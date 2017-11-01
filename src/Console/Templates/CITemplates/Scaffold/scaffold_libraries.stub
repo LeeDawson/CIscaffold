@@ -1,7 +1,7 @@
 <?php
 
 include_once APPPATH.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'MY_Server.php';
-include_once APPPATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'Validation.php';
+include_once APPPATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'Validation'.DIRECTORY_SEPARATOR.'Validation.php';
 
 
 

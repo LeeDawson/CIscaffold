@@ -59,7 +59,7 @@ class Application extends Container
      */
     protected function registerConfig(array $config)
     {
-        $this['user_configs'] = array_merge($config,["applicationPath" => $this->applicationPath]);
+        $this['user_configs'] = array_merge($config , [ "applicationPath" => $this->applicationPath]);
         return $this;
     }
 

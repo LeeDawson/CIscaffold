@@ -61,14 +61,14 @@ class GeneratorPublishCommand extends PublishBaseCommand
     {
         $validation = FileUtils::getTemplateByPath($this->config->get('systemTemplates').'Validation'.DIRECTORY_SEPARATOR."Validation.php");
         FileUtils::createFile(
-            $this->config->get('library'),
+            $this->config->get('library').'/Validation/',
             "Validation.php",
             $validation
         );
 
         $validation = FileUtils::getTemplateByPath($this->config->get('systemTemplates').'Validation'.DIRECTORY_SEPARATOR."Rule.php");
         FileUtils::createFile(
-            $this->config->get('library'),
+            $this->config->get('library').'/Validation/',
             "Rule.php",
             $validation
         );

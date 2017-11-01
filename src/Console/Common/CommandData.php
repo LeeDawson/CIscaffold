@@ -106,25 +106,25 @@ class CommandData
 
     private function getInputFromConsole($input)
     {
-        $this->commandInfo('Specify fields for the model (skip id & timestamp fields, we will add it automatically)');
-        $this->commandInfo('Read docs carefully to specify field inputs)');
-        $this->commandInfo('Enter "exit" to finish');
+        //$this->commandInfo('Specify fields for the model (skip id & timestamp fields, we will add it automatically)');
+        $this->commandInfo('字段格式请查看文档');
+        $this->commandInfo('输入 "exit" 结束');
 
         $this->addPrimaryKey($input);
 
         while (true) {
-            $fieldInputStr = $this->commandObj->ask('Field: (name db_type html_type options)', '');
+            $fieldInputStr = $this->commandObj->ask('输入字段格式: (name html_type options)', '');
 
             if (empty($fieldInputStr) || $fieldInputStr == false || $fieldInputStr == 'exit') {
                 break;
             }
 
             if (!GeneratorFieldsInputUtil::validateFieldInput($fieldInputStr)) {
-                $this->commandError('Invalid Input. Try again');
+                $this->commandError('错误的输入. 请重新输入');
                 continue;
             }
 
-            $validations = $this->commandObj->ask('Enter validations: ', false);
+            $validations = $this->commandObj->ask('输入验证规则: ', false);
             $validations = ($validations == false) ? '' : $validations;
             $this->fields[] = GeneratorFieldsInputUtil::processFieldInput(
                 $fieldInputStr,

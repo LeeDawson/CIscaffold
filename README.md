@@ -54,6 +54,63 @@ publish
 
 * basePath 根目录地址这个是必须存在的,指向项目的根目录地址
 * driver   框架驱动,现在只支持了CI
+* modules  模块的名称默认使用admin
+
+1.2.2 创建控制器
+
+ php artisan make:controller controller_name
+
+1.2.3 创建脚手架
+
+ php artisan make:scaffold scaffold_name
+
+ --option
+
+ 1. tableName 指定表名
+
+ 2. primary   指定主键
+
+ 3. softdelete  指定软删除的键名
+
+ 4. schema      指定规则名生成脚手架
+
+ 5. timestamp   指定时间戳字段
+
+ 6. rollback    回滚删除掉生成的脚手架
+
+    字段格式: (name html_type options)
+
+    例如 age text
+
+    Enter validations:
+
+    required|max:20
+
+ 多个验证规则用 | 链接,暂时支持的验证规则
+
+
+ 1.2.4 验证规则
+
+ 1. required   属性必须存在
+
+ 2. max:20     属性最大不超过验证值
+
+ 3. min:20     属性最小不超过验证值
+
+ 4. number     该属性必须是数字
+
+ 5. email      该属性必须是邮箱格式
+
+ 6. ip         该属性必须是IP地址格式
+
+ 7. string     该属性必须是字符串
+
+
+
+
+
+
+
 
 
 
