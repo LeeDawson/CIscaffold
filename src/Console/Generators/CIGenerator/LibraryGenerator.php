@@ -65,7 +65,7 @@ class LibraryGenerator implements GeneratorInterface
     public function generateLibrary()
     {
         $modelName = $this->commandData->modelName;
-        $FileName = ucfirst($modelName).'Lib.php';
+        $FileName = ucfirst($modelName).'lib.php';
         $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'libraries.stub');
         $templateData = str_replace('$LIBNAME$', ucfirst($modelName).'Lib', $templateData);
 
