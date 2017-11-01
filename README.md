@@ -36,7 +36,7 @@ $application->run();
 
 
 #### 现在支持的功能
-
+<pre><code>
  ## make
   * make:controller  Create a controller   //创建一个控制器
   * make:library     Create a library      //创建一个类库
@@ -46,7 +46,7 @@ $application->run();
  ## publish
   * publish:init     Publishes init base   //初始化CI框架需要的资源
   * publish:layout   Publishes all template files   //导出css js 视图模板
-
+</code></pre>
 
 
 #### feature
