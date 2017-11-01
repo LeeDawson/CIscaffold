@@ -32,11 +32,11 @@ $application->run();
 # 现在支持的功能
 
  make
-  make:controller  Create a controller   //创建一个控制器
-  make:library     Create a library      //创建一个类库
-  make:model       Create a model        //创建一个model
-  make:scaffold    Create a full CRUD views for given model  //创建一个脚手架
-  make:schema      Create a schema       //创建一个规则文件
+  * make:controller  Create a controller   //创建一个控制器
+  * make:library     Create a library      //创建一个类库
+  * make:model       Create a model        //创建一个model
+  * make:scaffold    Create a full CRUD views for given model  //创建一个脚手架
+  * make:schema      Create a schema       //创建一个规则文件
  publish
-  publish:init     Publishes init base   //初始化CI框架需要的资源
-  publish:layout   Publishes all template files   //导出css js 视图模板
+  * publish:init     Publishes init base   //初始化CI框架需要的资源
+  * publish:layout   Publishes all template files   //导出css js 视图模板
