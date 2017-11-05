@@ -44,8 +44,7 @@ class SchemaGenerator implements GeneratorInterface
 
         $this->commandData->commandComment("\nSchema created: ");
         $this->commandData->commandInfo($fileName);
-
-        // TODO: Implement generate() method.
+        
     }
 
     public function rollback()

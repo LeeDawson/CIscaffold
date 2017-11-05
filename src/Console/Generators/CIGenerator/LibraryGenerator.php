@@ -88,7 +88,7 @@ class LibraryGenerator implements GeneratorInterface
     public function rollback()
     {
         $libraryName = $this->commandData->modelName;
-        $fileName = ucfirst($libraryName).'Lib.php';
+        $fileName = ucfirst($libraryName).'lib.php';
         $result = FileUtils::deleteFile(
             $this->commandConfig->get('library'),
             $fileName
