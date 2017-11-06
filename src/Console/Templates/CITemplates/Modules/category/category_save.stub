@@ -67,7 +67,6 @@
                 <!-- hidden start -->
                 <input type="hidden" value="1" name="category_type" />
                 <input type="hidden" value="<?php echo isset( $categoryData)?$categoryData['category_id']:0;?>" name="id" />
-                <?php csrf_hidden(); ?>
                 <!-- hidden end -->
             </form>
             <!-- form end -->
