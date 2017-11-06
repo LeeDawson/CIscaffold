@@ -60,7 +60,7 @@
                 </div>
 
                 <div class="box-footer">
-                    <button type="submit" onclick="jumpTo('<?php echo site_url( '$MODULES$/$MODELNAME$/categoryManage');?>'); return false;" class="btn btn-default">取消</button>
+                    <button type="submit" onclick="jumpTo('<?php echo site_url( '$MODULES$/category/categoryManage');?>'); return false;" class="btn btn-default">取消</button>
                     <button type="submit" class="btn btn-info pull-right">确定</button>
                 </div>
                 <!-- /.box-footer-->

@@ -57,6 +57,7 @@
 
     var data = '<?php echo $category_data;?>';
 
+
     data = JSON.parse( data);
 
     $('#tree').treeview({
@@ -65,8 +66,7 @@
         backColor: ''
     });
 
-    $(".btn").click(function (e)
-    {
+    $(".btn").click(function (e) {
         var arr = $('#tree').treeview('getSelected');
         var id = arr[0].id;
         if( uniIsnull( id))
@@ -79,13 +79,11 @@
         return false;
     });
 
-    function add()
-    {
+    function add(){
         window.location.href = baseUrl + '$MODULES$/$MODELNAME$/categorySave';
     }
 
-    function removeCategory( categoryID)
-    {
+    function removeCategory( categoryID){
         if( uniIsnull( categoryID))
             return false;
         if( window.confirm( '确认删除？')){

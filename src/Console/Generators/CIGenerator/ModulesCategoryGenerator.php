@@ -96,7 +96,7 @@ class ModulesCategoryGenerator implements GeneratorInterface
                 'category'. DIRECTORY_SEPARATOR . $key
             );
 
-            $templateData = str_replace('$MODEL$', $module , $templateData);
+            $templateData = str_replace('$MODULES$', $module , $templateData);
             $templateData = str_replace('$MODELNAME$', $moduleName, $templateData);
 
 
