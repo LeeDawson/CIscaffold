@@ -17,6 +17,8 @@ use OutSource\Console\Generators\CIGenerator\LibraryGenerator;
 use OutSource\Console\Generators\CIGenerator\ViewGenerator;
 use OutSource\Console\Commands\Scaffold\SchemaGeneratorCommand;
 use OutSource\Console\Generators\CIGenerator\SchemaGenerator;
+use OutSource\Console\Commands\Modules\CategoryModulesCommand;
+use OutSource\Console\Generators\CIGenerator\ModulesCategoryGenerator;
 
 
 class ServerProvider implements ServiceProviderInterface
@@ -36,7 +38,8 @@ class ServerProvider implements ServiceProviderInterface
         LayoutPublishCommand::class,
         ModelGeneratorCommand::class,
         LibraryGeneratorCommand::class,
-        SchemaGeneratorCommand::class
+        SchemaGeneratorCommand::class,
+        CategoryModulesCommand::class
     ];
 
 
@@ -73,7 +76,7 @@ class ServerProvider implements ServiceProviderInterface
     protected function initGenerator($pimple)
     {
         $dirver = $pimple['config']['driver'];
-        call_user_func([$this,"load".$dirver."Generators"],$pimple);
+        call_user_func([$this , "load".$dirver."Generators"] , $pimple);
     }
 
     private function loadCIGenerators($pimple)
@@ -83,6 +86,7 @@ class ServerProvider implements ServiceProviderInterface
         $pimple['generator.library'] = LibraryGenerator::class;
         $pimple['generator.view'] = ViewGenerator::class;
         $pimple['generator.schema'] = SchemaGenerator::class;
+        $pimple['generator.category'] = ModulesCategoryGenerator::class;
     }
 
 

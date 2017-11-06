@@ -1,0 +1,149 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class $MODEL$ extends MY_Model
+{
+
+    public function __construct(){
+        parent::__construct();
+        $this->_tablename = 'category';
+        $this->_pk = 'category_id';
+    }
+
+    public function getDataTree( $cate_type = 1)
+    {
+        $stack = $return_arr = array();
+        $data  = $this->getData( array( 'category_type' => $cate_type));
+        if( $data){
+            foreach ( $data as $k => $v){
+                if( intval( $v['category_pid']) === 0){
+                    array_push( $stack , array( 'data' => $v , 'dep' => 1));
+                }
+            }
+
+            do{
+                $rootNode = array_pop( $stack);
+                foreach ( $data as $k => $v) {
+                    if( $v['category_pid'] == $rootNode['data']['category_id'])
+                        array_push( $stack , array( 'data' => $v , 'dep' => $rootNode['dep'] + 1));
+                }
+                $rootNode['data']['dep'] = $rootNode['dep'];
+                $return_arr[] = $rootNode['data'];
+
+            } while( count( $stack) > 0);
+        }
+        return $return_arr;
+    }
+
+    public function getCategoryTreeView( $cate_type = 1 , $category_pid = 0)
+    {
+        $result = $this->getChildren( $cate_type, $category_pid);
+
+        $arr = false;
+
+        if( empty( $result))
+            return $arr;
+
+        foreach ( $result as $k => $v) {
+
+            $v['nodes'] = $this->getCategoryTreeView( $cate_type , $v['category_id']);
+
+            $v['id'] = $v['category_id'];
+
+            $v['text'] = $v['category_name'];
+
+            $arr[] = $v; //组合数组
+        }
+        return $arr;
+    }
+
+    public function getTopData( $cate_type)
+    {
+        $cond['where']['if_show'] = 1;
+        $cond['where']['category_pid'] = 0;
+        $cond['where']['category_type'] = $cate_type;
+        $rs = $this->getMsg( $cond);
+        return $rs;
+    }
+
+    public function getChildren( $category_type = 1 , $pid)
+    {
+        $cond['where']['if_show'] = 1;
+        $cond['where']['category_pid'] = $pid;
+        $cond['where']['category_type'] = $category_type;
+        return $this->getMsg( $cond);
+    }
+
+    public function categoryRemove( $category_id)
+    {
+        $msg = 'success';
+        $ids = $this->getChildrenIds( $category_id);
+        array_push( $ids , $category_id);
+        if( $this->hasGoods( $ids))
+            return '分类下包含商品，不可删除';
+        $this->db->where_in( 'category_id' , $ids);
+        if( $this->db->delete( $this->_tablename))
+            return $msg;
+    }
+
+    private function hasGoods( $ids){
+        return 0;
+    }
+
+    public function getChildrenIds( $category_id , $category_type = 1 , &$ids = array())
+    {
+        $children = $this->getChildren( $category_type , $category_id);
+        if( !empty( $children)){
+            foreach ( $children as $k => $v){
+                $ids[] = $v['category_id'];
+                $this->getChildrenIds( $v['category_id'] , $category_type , $ids);
+            }
+        }
+
+        return $ids;
+    }
+
+    public function categorySave( $data)
+    {
+        if( $data['category_id']){
+            $this->db->where( 'category_id' , $data['category_id']);
+            unset( $data['category_id']);
+            $data['date_update'] = TIMESTAMP;
+            return $this->db->update( $this->_tablename , $data);
+        }else{
+            $data['date_add'] = TIMESTAMP;
+            return $this->db->insert( $this->_tablename , $data);
+        }
+    }
+
+    public function advCategorySave( $data)
+    {
+        if( $data['category_id']){
+            $data['date_update'] = TIMESTAMP;
+            $this->db->where( 'category_id' , $data['category_id']);
+            unset( $data['category_id']);
+            return $this->db->update( $this->_tablename , $data);
+        }else{
+            $data['date_add'] = TIMESTAMP;
+            return $this->db->insert( $this->_tablename , $data);
+        }
+    }
+
+    public function getCategoryInfo( $param = array())
+    {
+        if( !empty( $param['category_id']))
+            $cond['where']['category_id'] = $param['category_id'];
+        $cond['where']['if_show'] = 1;
+        return $this->getOneMsg( $cond);
+    }
+
+    public function getCategoryData( $param = array())
+    {
+        $cond['where']['if_show'] = 1;
+        $cond['where']['category_type'] = $param['type'];
+        $cond['order_by']['key'] = 'date_add';
+        $cond['order_by']['value'] = 'DESC';
+        return $this->getMsg( $cond);
+    }
+
+
+}

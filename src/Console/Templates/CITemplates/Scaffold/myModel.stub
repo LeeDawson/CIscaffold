@@ -217,6 +217,11 @@ class MY_Model extends CI_Model
         return $data;
     }
 
+    public function getData( $param = array())
+    {
+        $param['where']['if_show'] = 1;
+        return $this->getMsg( $param);
+    }
 
 }
 ?>

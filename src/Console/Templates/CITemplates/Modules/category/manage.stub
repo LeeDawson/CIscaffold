@@ -1,0 +1,102 @@
+<script src="js/bootstrap-treeview.js"></script>
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            商品管理
+            <small>商品分类</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="<?php echo site_url( '$MODULES$/dashboard/index');?>">
+                    <i class="fa fa-dashboard"></i> 首页
+                </a>
+            </li>
+            <li>
+                <a href="<?php echo site_url( '$MODULES$/$MODELNAME$/categoryManage');?>">
+                    商品管理 / 商品分类
+                </a>
+            </li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="row filter-box box-header with-border">
+                    </div>
+
+                    <div class="box-body">
+                        <div id="tree"></div>
+
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <button process-type="edit" type="button" style="margin: 8px; 10px;" class="btn btn-sm btn-success pull-left">编辑</button>
+                            <button process-type="del"  type="button" style="margin: 8px; 10px;" class="btn btn-sm btn-danger pull-left">删除</button>
+                            <button  onclick="add(); return false;"  type="button" style="margin: 8px; 10px;" class="btn btn-sm btn-primary pull-left">添加</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="box-footer fenye clearfix"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.col -->
+        </div>
+
+    </section>
+    <!-- /.content -->
+</div>
+<script type="text/javascript">
+
+    var data = '<?php echo $category_data;?>';
+
+    data = JSON.parse( data);
+
+    $('#tree').treeview({
+        data: data,         // data is not optional
+        levels: 5,
+        backColor: ''
+    });
+
+    $(".btn").click(function (e)
+    {
+        var arr = $('#tree').treeview('getSelected');
+        var id = arr[0].id;
+        if( uniIsnull( id))
+            return false;
+        var type = $(this).attr('process-type');
+        if( type == 'edit')
+            window.location.href = baseUrl + '$MODULES$/$MODELNAME$/categorySave/' + id;
+        else if( type == 'del')
+            removeCategory( id);
+        return false;
+    });
+
+    function add()
+    {
+        window.location.href = baseUrl + '$MODULES$/$MODELNAME$/categorySave';
+    }
+
+    function removeCategory( categoryID)
+    {
+        if( uniIsnull( categoryID))
+            return false;
+        if( window.confirm( '确认删除？')){
+            var url = baseUrl + '$MODULES$/$MODELNAME$/categoryDel';
+            var data = 'category_id=' + categoryID;
+            var rsJson = uniAjax( url , data);
+            if( rsJson.status == 'success'){
+                showSuccess( '操作成功' , window.location.href);
+            }else if( rsJson.status == 'error'){
+                showError( rsJson.data.errmsg);
+            }
+        }
+    }
+</script>

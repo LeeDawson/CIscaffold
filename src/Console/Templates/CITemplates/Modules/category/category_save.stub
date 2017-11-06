@@ -1,0 +1,101 @@
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <?php echo $form_title;?>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="<?php echo site_url( '$MODULES$/user/index');?>"><i class="fa fa-dashboard"></i>主页</a></li>
+            <li><a href="#"><?php echo $form_title;?></a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="box">
+            <!-- form start -->
+            <form id="form">
+                <div class="box-header with-border">
+                    <!-- 文本输入框 -->
+                    <div class="form-group">
+                        <label>分类名称</label>
+                        <input type="text" value="<?php echo isset( $categoryData['category_name'])?$categoryData['category_name']:'';?>" name="category_name" class="form-control" placeholder="请输入 ...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>分类调用标签</label>
+                        <input type="text" value="<?php echo isset( $categoryData['category_meta'])?$categoryData['category_meta']:'';?>" name="category_meta" class="form-control" placeholder="请输入 ...">
+                    </div>
+
+                    <div class="form-group">
+                        <label>上级分类</label>
+                        <select class="form-control" name="category_pid">
+                            <option value="0">顶级分类</option>
+                            <?php
+                            if( !empty( $category_data)){
+                                foreach ( $category_data as $k => $v){
+                                    $step = str_repeat( '&nbsp;&nbsp;&nbsp;' , $v['dep']) . '┠━';
+                                    $sel = '';
+                                    if( !empty( $categoryData['category_pid']) && $categoryData['category_pid'] == $v['category_id'])
+                                        $sel = "selected='selected'";
+                                    else if( !empty($category_pid) && $category_pid == $v['category_id'])
+                                        $sel = "selected='selected'";
+                                    ?>
+                                    <option <?php echo $sel;?> value="<?php echo $v['category_id']?>"><?php echo $step . $v['category_name'];?></option>
+                                    <?php
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>排序</label>
+                        <input type="text" value="<?php echo isset( $categoryData['sortrank'])?$categoryData['sortrank']:'';?>" name="sortrank" class="form-control" placeholder="请输入 ...">
+                    </div>
+
+                </div>
+
+                <div class="box-footer">
+                    <button type="submit" onclick="jumpTo('<?php echo site_url( '$MODULES$/$MODELNAME$/categoryManage');?>'); return false;" class="btn btn-default">取消</button>
+                    <button type="submit" class="btn btn-info pull-right">确定</button>
+                </div>
+                <!-- /.box-footer-->
+                <!-- hidden start -->
+                <input type="hidden" value="1" name="category_type" />
+                <input type="hidden" value="<?php echo isset( $categoryData)?$categoryData['category_id']:0;?>" name="id" />
+                <?php csrf_hidden(); ?>
+                <!-- hidden end -->
+            </form>
+            <!-- form end -->
+        </div>
+        <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript">
+    $(document).ready( function(){
+        $( '#form').validate({
+            submitHandler:function(){
+                var url = baseUrl + '$MODULES$/$MODELNAME$/categorySave';
+                var data = $( '#form').serialize();
+                var rsJson = uniAjax( url , data);
+                if( rsJson.status == 'success')
+                    showSuccess( '操作成功' , rsJson.jumpurl);
+                else{
+                    showError( rsJson.data.errmsg);
+                    reSetToken( rsJson.data.token);
+                }
+            },
+            rules:{
+                'category_name':'required'
+            }
+        });
+    });
+</script>

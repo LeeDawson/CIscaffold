@@ -7,14 +7,27 @@ use Symfony\Component\Console\Exception\LogicException;
 class FileUtils
 {
 
-    public static function getTemplateScaffoldPath($systemTemplatePath,$name)
+    public static function getTemplateScaffoldPath($systemTemplatePath , $name)
     {
-        $systemTemplatePath = $systemTemplatePath.DIRECTORY_SEPARATOR.'Scaffold'.DIRECTORY_SEPARATOR.$name;
+        $systemTemplatePath = $systemTemplatePath . DIRECTORY_SEPARATOR . 'Scaffold' . DIRECTORY_SEPARATOR . $name;
 
         $result = file_get_contents($systemTemplatePath);
 
         if(empty($result)){
             throw new LogicException($name.'template not found,please check PATH');
+        }
+
+        return $result;
+    }
+
+    public static function getTemplateModulesPath($systemTemplatePath , $path)
+    {
+        $systemTemplatePath = $systemTemplatePath . DIRECTORY_SEPARATOR . 'Modules' . DIRECTORY_SEPARATOR . $path;
+
+        $result = file_get_contents($systemTemplatePath);
+
+        if(empty($result)){
+            throw new LogicException($path.'template not found,please check PATH');
         }
 
         return $result;

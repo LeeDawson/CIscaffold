@@ -1,0 +1,53 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+require_once  __DIR__ . DIRECTORY_SEPARATOR . 'Adminbase.php';
+
+class $MODULES$ extends Adminbase
+{
+
+    public function __construct(){
+
+        parent::__construct();
+        $this->load->model( '$MODULESNAME$');
+    }
+
+    public function categoryManage()
+    {
+        $this->_data['category_data'] = json_encode( $this->$MODULESNAME$->getCategoryTreeView( 1));
+        $this->loadView( '$MODULES$/manage');
+    }
+
+    public function categorySave()
+    {
+        if( $this->_is_ajax){
+            $this->_db_data['category_id'] = intval( $this->input->post( 'id'));
+            $this->_db_data['sortrank'] = intval( $this->input->post( 'sortrank'));
+            $this->_db_data['category_type'] = intval( $this->input->post( 'category_type'));
+            $this->_db_data['category_name'] = $this->input->post( 'category_name');
+            $this->_db_data['category_meta'] = $this->input->post( 'category_meta');
+            $this->_db_data['category_pid'] = intval( $this->input->post( 'category_pid'));
+            $this->$MODULESNAME$->saveData( $this->_db_data , $this->_db_data['category_id']) && ajaxReturn( site_url( 'admin/category/categoryManage'));
+        } else {
+            $category_id = intval( $this->uri->segment(4));
+            $this->_data['form_title'] = '添加分类';
+            if( $category_id){
+                $rs = $this->$MODULESNAME$->getByPk( $category_id);
+                empty( $rs) && show_404();
+                $this->_data['form_title'] = '编辑分类';
+                $this->_data['categoryData'] = $rs;
+                unset( $rs);
+            }
+            $this->_data['category_data'] = $this->$MODULESNAME$->getDataTree(1);
+            $this->loadView( '$MODULES$/category_save');
+        }
+    }
+
+    public function categoryDel()
+    {
+        if( $this->_is_ajax){
+            $id = intval( $this->input->post( 'category_id'));
+            $msg = $this->$MODULESNAME$->categoryRemove( $id);
+            $msg == 'success'? ajaxReturn():ajaxReturnError( $msg);
+        }
+    }
+}
