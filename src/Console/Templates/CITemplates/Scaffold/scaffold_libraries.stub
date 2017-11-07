@@ -47,7 +47,7 @@ class $LIBNAME$ extends MY_Server
 
     public function destory($id)
     {
-        return $this->update([ "$PRIMARY$" => $id ],[ "$SOFTDELETE$" => 0 ]);
+        return $this->$MODEL_NAME$->update([ "$PRIMARY$" => $id ],[ "$SOFTDELETE$" => 0 ]);
     }
 
     public function delete($id)
@@ -58,9 +58,9 @@ class $LIBNAME$ extends MY_Server
     public function update($where , $postDatas)
     {
         $postDatas = $this->fetchFiles($postDatas);
-        $preDatas = $this->preUpdateData($postDatas , $this->M_Teacher->fillAble);
+        $preDatas = $this->preUpdateData($postDatas , $this->$MODEL_NAME$->fillAble);
 
-        $postDatas = Validation::checkDaraRule($preDatas , $this->M_Teacher->rules );//处理下
+        $postDatas = Validation::checkDataRule($preDatas , $this->$MODEL_NAME$->rules );//处理下
 
         if(!$postDatas['result'])
              return  $postDatas;
@@ -74,7 +74,7 @@ class $LIBNAME$ extends MY_Server
 
         $preDatas = $this->prePostData($postDatas , $this->$MODEL_NAME$->fillAble);
 
-        $postDatas = Validation::checkDaraRule($preDatas , $this->$MODEL_NAME$->rules );//处理下
+        $postDatas = Validation::checkDataRule($preDatas , $this->$MODEL_NAME$->rules );//处理下
 
         if(!$postDatas['result'])
             return  $postDatas;

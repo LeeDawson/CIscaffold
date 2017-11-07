@@ -23,9 +23,10 @@ class Validation
      *
      * @return array  [ "result" => true , "msg" => "" ,"correctData" => ""];
      */
-    public static function checkDaraRule($preDatas, $rules)
+    public static function checkDataRule($preDatas, $rules)
     {
         $checkData = [ "result" => true , "msg" => "" ];
+        $correctData = ['correctData' => ''];
 
         if(empty($preDatas))
             throw new LogicException("待检查数组不能为空");
@@ -34,14 +35,43 @@ class Validation
             if( isset($preDatas[$key]) ) {
                 $waitData = $preDatas[$key]; //需要检查的数据
                 $checkData = Validation::startCheck($waitData , Validation::handleRule($rule) , $key);
-                if(!$checkData['result']){
+                if(!$checkData['result'])
                     return $checkData;
-                }
+
+                $correctData['correctData'][$key] = $waitData;
             }
         }
 
-        $checkData['correctData'] = $preDatas;
-        return $checkData;
+        return array_merge($checkData , $correctData);
+    }
+
+    public static function checkDataByRule($preDatas, $rules)
+    {
+
+        $checkData = [ "result" => true , "msg" => ''];
+        $correctData = ['correctData' => ''];
+
+        if(empty($preDatas))
+            throw new LogicException("待检查数组不能为空");
+
+
+        foreach ($rules as $key => $rule) {
+            if( isset($preDatas[$key]) ) {  // 输入的数据如果存在规则的字段 成功,不存在报错
+                $waitData = $preDatas[$key]; //等待被验证的值
+                $checkData = Validation::startCheck( $waitData , Validation::handleRule($rule) , $key);
+
+                if(!$checkData['result'])
+                    return $checkData;
+
+                $correctData['correctData'][$key] = $waitData;
+            } else {  //如果用户规则中的数据没有
+                $checkData['result'] = false;
+                $checkData['msg'] = $key .self::$correctRule['required'];
+                return $checkData;
+            }
+        }
+
+        return array_merge($checkData , $correctData);
     }
 
     /**
@@ -64,26 +94,24 @@ class Validation
                 if(in_array( $match[1] , array_keys(Validation::$correctRule)) )
                     $correct[] =  new Rule($match[1] , $match[2]);
             } else if( in_array($rule , array_keys(Validation::$correctRule)) ){
-                    $correct[] =  new Rule($rule);
+                $correct[] =  new Rule($rule);
             }
         }
 
         return $correct;
     }
 
-    protected static function startCheck($waitData , $preRules , $name)
+    protected static function startCheck(&$waitData , $preRules , $name)
     {
-        $result = true;
-        $msg = '';
         foreach ($preRules as $preRule) {
-            $checkReuslt = forward_static_call_array( [ self::class , $preRule->ruleName] ,[ $waitData , $preRule->ruleParamter]);
-            if(!$checkReuslt){
-                $result = false;
-                $msg = $name.Validation::$correctRule[$preRule->ruleName];
-                return compact('result','msg');
-            }
+            $checkReuslt = forward_static_call_array( [ self::class , $preRule->ruleName] , [ $waitData , $preRule->ruleParamter]);
+            if(!$checkReuslt)
+                return [ 'result' => false , 'msg' => $name.Validation::$correctRule[$preRule->ruleName] ];
+
+            $waitData = $checkReuslt;
         }
-        return compact('result','msg');
+
+        return  ['result' => true , 'msg' => ''];
     }
 
     private static function required($val , $param = [])
@@ -91,43 +119,55 @@ class Validation
         if(empty($val))
             return false;
 
-        return true;
+        return $val;
     }
 
     private static function max($val , $param)
     {
-         if(strlen($val) > $param)
-             return false;
+        if(strlen($val) > $param)
+            return $val;
 
-         return true;
+        return true;
     }
 
     private static function number($val , $param )
     {
-        return filter_var($val,FILTER_VALIDATE_INT);
-    }
-
-    private static function min($val , $param )
-    {
-        if(strlen($val) < $param)
-            return true;
-
+        if($result = filter_var($val , FILTER_VALIDATE_INT)){
+            return $val;
+        }
         return false;
     }
 
     public static function string( $val , $param)
     {
-        return filter_var($val , FILTER_SANITIZE_STRING);
+        if($result = filter_var($val , FILTER_SANITIZE_STRING))
+            return $result;
+
+        return false;
+    }
+
+    private static function min($val , $param )
+    {
+        if(strlen($val) < $param)
+            return $val;
+
+        return false;
     }
 
     public static function email( $val , $param)
     {
-        return filter_var($val , FILTER_VALIDATE_EMAIL);
+        if($result = filter_var($val , FILTER_VALIDATE_EMAIL))
+            return $val;
+
+        return false;
     }
 
     public function ip ($val , $param)
     {
-        return filter_var($val , FILTER_VALIDATE_IP);
+        if(filter_var($val , FILTER_VALIDATE_IP))
+            return $val;
+
+        return false;
     }
 
 

@@ -114,10 +114,10 @@ class $CONTROLER_NAME$ extends AdminBase
                 $postData
             );
 
-            if($returnData)
-                $this->ajaxReturn(base_url('$INDEXURL$/index'),$returnData);
+            if($returnData['result'])
+                $this->ajaxReturn(base_url('admin/activity/index') , $returnData);
             else
-               $this->ajaxReturnError('更新失败');
+               $this->ajaxReturnError($returnData['msg']);
         }
 
     }
