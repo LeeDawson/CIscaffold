@@ -65,7 +65,9 @@ class $LIBNAME$ extends MY_Server
         if(!$postDatas['result'])
              return  $postDatas;
 
-        return $this->$MODEL_NAME$->update($where , $postDatas['correctData']);
+        $update = $this->$MODEL_NAME$->update($where , $postDatas['correctData']);
+
+        return [ "result" => $update , "msg" => ''];
     }
 
     public function save($postDatas)
