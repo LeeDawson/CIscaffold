@@ -6,8 +6,6 @@ class AdminBase extends MY_Controller
     public function __construct()
     {
         parent::__construct();
-//        //判断登录状态
-//        Userlib::checkLogin();
     }
 
     protected function loadView( $filename)

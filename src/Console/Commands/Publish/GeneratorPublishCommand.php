@@ -48,7 +48,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->initControllerBase();    //初始化父类控制器
         $this->initPagination();        //初始化分页样式
         $this->initValidation();        //初始化验证类
-        $this->initUploadify();         //初始化文件类
+        $this->initUploadify();         //初始化上传文件类
 
         $this->Comment("\n init completed: ");
     }
@@ -166,6 +166,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
             $fileName,
             $templateData
         );
+
         $this->Info($fileName);
     }
 
