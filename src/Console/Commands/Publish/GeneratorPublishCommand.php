@@ -85,7 +85,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
     {
         $UploadHandler = FileUtils::getTemplateByPath($this->config->get('systemTemplates').'Uploadify'.DIRECTORY_SEPARATOR."UploadHandler.php");
         FileUtils::createFile(
-            $this->config->get('library'),
+            $this->config->get('library').'/uploadify/',
             "UploadHandler.php",
             $UploadHandler
         );

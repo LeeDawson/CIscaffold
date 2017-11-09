@@ -126,7 +126,7 @@ class $LIBNAME$ extends MY_Server
         if(empty($files))
              return $postDatas;
 
-        foreach ($this->M_Teacher->fillAble as $fillable) {
+        foreach ($this->$MODEL_NAME$->fillAble as $fillable) {
              isset($files[$fillable]) && $postDatas[$fillable] = json_encode( $files[$fillable] , JSON_UNESCAPED_UNICODE );
         }
 
