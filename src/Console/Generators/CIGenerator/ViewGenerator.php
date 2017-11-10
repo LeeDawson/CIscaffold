@@ -71,14 +71,18 @@ class ViewGenerator implements GeneratorInterface
         $templatePath = $this->commandConfig->getViewsPath('View/edit.stub');
         $templateData = $this->files->get($templatePath);
         $fields = array();
+        $resource = array();
+        $editfile = "";
         foreach ($this->commandData->fields as $field) {
             if($field->htmlType && $field->isFillable ){
                 $fields[] = HTMLFieldGenerator::generateHTML($field , $this->commandConfig , $this->files);
+                $resource[] = $this->includeFileResource($field);
             }
-            if($field->htmlType == "file"){
-                $editfileData = $this->includeFileResource("editfile");
-                $fields[] = str_replace('$ISLOADFILED$' ,  str_replace('$FILEIMGID$' , $field->name , $editfileData) , array_pop($fields));
 
+            if($field->htmlType == "file") {
+                $path = $this->commandConfig->getViewsPath('Fields/file_edit_resource.stub');
+                $editFileData =  $this->files->get($path);
+                $editfile = str_replace('$FILEIMGID$' , $field->name , $editFileData);
             }
         }
 
@@ -88,8 +92,10 @@ class ViewGenerator implements GeneratorInterface
         $templateData = str_replace('$FILEDID$' ,  sprintf('<?php echo @$data["%s"]?>' , $this->commandData->getModelPrimaryKey()) , $templateData);
         $templateData = str_replace('$PRIMARY$' ,  $this->commandData->getModelPrimaryKey() , $templateData);
         $templateData = str_replace('$UPDATE_URL$' ,  $this->Urls['UPDATE_URL'] , $templateData);
-        $templateData = str_replace('$RESOURCE$' , $this->includeFileResource("file") , $templateData);
-        $templateData = str_replace('$UPLOADURL$' , 'admin/' . ucfirst($this->commandData->modelName) . '/upload' , $templateData);
+        $templateData = str_replace('$RESOURCE$' , implode(PHP_EOL.PHP_EOL, $resource)  , $templateData);
+        //todo 处理下files
+        $templateData = str_replace('$ISLOADFILED$' , empty($editfile) ? "" : $editfile, $templateData);
+
 
         FileUtils::createFile(
             $this->viewPath . DIRECTORY_SEPARATOR,
@@ -100,29 +106,25 @@ class ViewGenerator implements GeneratorInterface
         $this->commandData->commandComment("Edit.php created: ");
     }
 
-
     private function generateCreate()
     {
         $templatePath = $this->commandConfig->getViewsPath('View/create.stub');
         $templateData = $this->files->get($templatePath);
         $fields = array();
-
+        $resource = array();
 
         foreach ($this->commandData->fields as $field) {
             if($field->htmlType && $field->isFillable ){
                 $fields[] = HTMLFieldGenerator::generateHTML($field , $this->commandConfig , $this->files);
-            }
-            if($field->htmlType == "file"){
-                $this->includeResource = "file";
+                $resource[] = $this->includeFileResource($field);
             }
         }
 
         $templateData = str_replace('$FILEDS$', implode(PHP_EOL.PHP_EOL, $fields) , $templateData);
         $templateData = str_replace('$INDEX_RUL$' , $this->Urls['INDEX_RUL'] , $templateData);
         $templateData = str_replace('$STORE_URL$' , $this ->Urls['SOTRE_URL'] , $templateData);
-        $templateData = str_replace('$RESOURCE$' , $this->includeFileResource("file") , $templateData);
+        $templateData = str_replace('$RESOURCE$' , implode(PHP_EOL.PHP_EOL, $resource) , $templateData);
         $templateData = str_replace('$ISLOADFILED$' , " ", $templateData);
-        $templateData = str_replace('$UPLOADURL$' , 'admin/' . ucfirst($this->commandData->modelName) . '/upload' , $templateData);
 
         FileUtils::createFile(
             $this->viewPath . DIRECTORY_SEPARATOR,
@@ -132,7 +134,6 @@ class ViewGenerator implements GeneratorInterface
 
         $this->commandData->commandComment("Create.php created: ");
     }
-
 
     private function generateIndex()
     {
@@ -195,14 +196,23 @@ class ViewGenerator implements GeneratorInterface
 
     private function includeFileResource($file)
     {
-        if($file == "file" ){
+
+        if($file->htmlType == "file" ){
             $path = $this->commandConfig->getViewsPath('Fields/file_resource.stub');
-            return $this->files->get($path);
+            $templateData =  $this->files->get($path);
+            $templateData = str_replace('$FILEIMGID$' , $file->name.'_imgs' , $templateData);
+            $templateData = str_replace('$FILENAMEID$' , $file->name , $templateData);
+            $templateData = str_replace('$UPLOADURL$' , $this->commandConfig->get('modules') . $this->commandData->modelName . '/upload' , $templateData);
+            return $templateData;
         }
 
-        if($file == "editfile" ){
-            $path = $this->commandConfig->getViewsPath('Fields/file_edit_resource.stub');
-            return $this->files->get($path);
+        if($file->htmlType == "fileOne")
+        {
+            $path = $this->commandConfig->getViewsPath('Fields/file_one_resource.stub');
+            $templateData =  $this->files->get($path);
+            $templateData = str_replace('$MODULES$', $this->commandConfig->get('modules')  , $templateData);
+            $templateData = str_replace('$MODEL$', $this->commandData->modelName , $templateData);
+            return $templateData;
         }
 
 

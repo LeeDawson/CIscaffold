@@ -23,11 +23,19 @@ class HTMLFieldGenerator
             case 'textarea':
             case 'date':
             case 'file':
+
                 $filePath =  $config->getViewsPath('Fields/file.stub');
                 $templateData = $file->get($filePath);
-                $templateData = str_replace('$FILEIMGID$' , $field->name.'_img' , $templateData);
+                $templateData = str_replace('$FILEIMGID$' , $field->name.'_imgs' , $templateData);
                 $templateData = str_replace('$FILENAMEID$' , $field->name , $templateData);
                 return $templateData;
+
+            case 'fileOne':
+                $filePath =  $config->getViewsPath('Fields/file_one.stub');
+                $templateData = $file->get($filePath);
+                $templateData = str_replace('$FILEID$' , $field->name , $templateData);
+                return $templateData;
+
             case 'radio':
                 $radioGroupPath =  $config->getViewsPath('Fields/radio_group.stub');
                 $radioGroupData = $file->get($radioGroupPath);

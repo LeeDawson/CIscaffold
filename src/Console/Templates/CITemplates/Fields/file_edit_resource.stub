@@ -1,2 +1,1 @@
-                    var url_pre = "<?php echo base_url('public/files/')?>";
-                    recoverUploadImg("$FILEIMGID$" , JSON.parse('<?php echo $data['$FILEIMGID$']?>'));
+recoverUploadImg("$FILEIMGID$" , JSON.parse('<?php echo $data['$FILEIMGID$']?>') , url_pre);

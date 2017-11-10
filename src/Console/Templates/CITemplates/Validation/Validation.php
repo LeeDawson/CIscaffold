@@ -42,7 +42,10 @@ class Validation
             }
         }
 
-        return array_merge($checkData , $correctData);
+        $correctData = array_merge($preDatas , $correctData['correctData']);
+        $checkData['correctData'] = $correctData;
+
+        return  $checkData;
     }
 
     public static function checkDataByRule($preDatas, $rules)

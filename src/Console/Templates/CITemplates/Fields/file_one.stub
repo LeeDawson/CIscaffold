@@ -1,0 +1,10 @@
+                <div class="fileupform appendContents" style="width: 30%" >
+                      <label>广告图</label>
+                      <input img-name="logo" data-default-file="<?php echo @$data["$FILEID$"] ? base_url($data["$FILEID$"]):'';?>"
+                              data-max-file-size="400k"
+                              data-allowed-file-extensions="jpg jpeg png gif" type="file"
+                              class="input-file" />
+                      <input type="hidden" name="$FILEID$" value="<?php echo @$data["$FILEID$"];?>" />
+                      <button class="file_upload btn btn-sm btn-success" style="width: 100%;">
+                        上传</button>
+                </div>

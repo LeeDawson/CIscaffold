@@ -181,7 +181,7 @@ var fileUploadSet_img = function (comp_id, files_box_id, limit_num, url) {
 
 
 //恢复函数
-var recoverUploadImg = function (img_id,img_arr) {
+var recoverUploadImg = function (img_id, img_arr , url_pre) {
     //var newImg_arr = img_arr.map(function (item) {
     //    return url_pre + item;
     //});

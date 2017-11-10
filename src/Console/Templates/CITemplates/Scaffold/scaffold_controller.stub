@@ -115,7 +115,7 @@ class $CONTROLER_NAME$ extends AdminBase
             );
 
             if($returnData['result'])
-                $this->ajaxReturn(base_url('admin/activity/index') , $returnData);
+                $this->ajaxReturn(base_url('admin/$MODEL_NAME$/index') , $returnData);
             else
                $this->ajaxReturnError($returnData['msg']);
         }

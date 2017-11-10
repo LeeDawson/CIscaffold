@@ -13,3 +13,10 @@
 <script src="<?php echo base_url('public/vendor/uploadify');?>/js/jquery.fileupload-image.js"></script>
 <script src="<?php echo base_url('public/vendor/uploadify');?>/js/jquery.fileupload-validate.js"></script>
 <script src="<?php echo base_url('public/vendor/uploadify');?>/js/fileupload_set.js"></script>
+<script type="text/javascript">
+    $(function() {
+        var url_pre = "<?php echo base_url('public/files/')?>";
+        fileUploadSet_img("$FILEIMGID$","$FILENAMEID$" , 3 , "<?php echo base_url('$UPLOADURL$')?>");
+        $ISLOADFILED$
+    });
+</script>
