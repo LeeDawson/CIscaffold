@@ -37,6 +37,8 @@ $application->run();
 
 ##### 1.1 现在支持的功能
 <pre><code>
+modules
+  modules:category  Create a category modules 创建分类模块
 make
    make:controller  Create a controller   //创建一个控制器
    make:library     Create a library      //创建一个类库
@@ -103,10 +105,23 @@ publish
 
  6. ip         该属性必须是IP地址格式
 
- 7. string     该属性必须是字符串
+ 7. string     该属性过滤掉所有特殊字符返回string
 
+1.2.5 html类型
 
+1. text   input text
 
+2. textarea  textarea
+
+3. date   时间类型
+
+4. file   可以上传多个图片的
+
+5. fileOne  上传单图
+
+6. radio    单选 支持radio,key,key 也可以支持 radio,name:value,name:value
+
+7. select   选择框 支持select,key,key 也可以支持 select,name:value,name:value
 
 
 
