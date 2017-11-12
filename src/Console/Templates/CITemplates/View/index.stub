@@ -43,7 +43,7 @@
                         <div class="box-body">
                             <div class="dataTables_wrapper">
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                   <div class="table-responsive">
                                         <table id="table1" class="table table-bordered table-striped">
                                             <thead>
                                             <tr>

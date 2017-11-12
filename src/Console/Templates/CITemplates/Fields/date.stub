@@ -1,0 +1,9 @@
+                <div class="form-group">
+                     <label>课程开始时间</label>
+                           <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                           </div>
+                     <input type="text"  data-date-format="yyyy-mm-dd" value="<?php echo @$data['$KEYS$'];?>" class="form-control pull-right datepicker" name="$KEYS$" >
+                     </div>
+                </div>

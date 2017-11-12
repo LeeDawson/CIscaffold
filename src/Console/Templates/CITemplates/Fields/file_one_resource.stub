@@ -2,35 +2,3 @@
 
 <script src="<?php echo base_url('public/vendor/dropify'); ?>/dropify.js"></script>
 
-<script>
-
-    $(function(){
-
-        $('.input-file').dropify({});
-
-        $('.file_upload').on('click', function( e){
-            var $this = $(this);
-            e.preventDefault();
-            var fd = new FormData();
-            fd.append('image_upload', $this.closest('.appendContents').find('.input-file').get(0).files[0]);
-            $.ajax({
-                url: baseUrl + '$MODULES$/$MODEL$/uploadOne',
-                type: 'POST',
-                data: fd,
-                contentType:false,
-                processData:false
-            }).done(function(result){
-                var rsJson = jQuery.parseJSON( result);
-                $( '#token').val( rsJson.data.token);
-                if( rsJson.status == 'success'){
-                    $( 'input:hidden',$this.closest('.appendContents')).val( rsJson.data.imgurl);
-                    alert( '上传成功');
-                }
-            }).fail(function(err){
-                console.log(err);
-            });
-        });
-    })
-
-
-</script>

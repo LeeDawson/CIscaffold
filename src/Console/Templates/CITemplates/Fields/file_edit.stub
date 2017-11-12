@@ -10,5 +10,7 @@
                 <script type="text/javascript">
                     $(function() {
                         fileUploadSet_img("$FILEIMGID$", "$FILENAMEID$" , 3 , "<?php echo base_url('$UPLOADURL$')?>");
+                        recoverUploadImg("$FILENAMEID$" , JSON.parse('<?php echo $data['$FILENAMEID$']?>') , "<?php echo base_url('public/files/');?>");
                     });
                 </script>
+

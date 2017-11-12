@@ -1,0 +1,6 @@
+        $('.datepicker').datetimepicker({
+               autoclose: true,
+               todayHighlight: true,
+               language:"zh-CN",
+               format:"yyyy-mm-dd hh:ii"
+        });

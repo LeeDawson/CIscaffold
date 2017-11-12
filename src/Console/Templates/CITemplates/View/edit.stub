@@ -50,6 +50,9 @@ $FILEDS$
 <script type="text/javascript">
     $(document).ready( function()
     {
+
+        $JS$
+
         $( '#form').validate({
             submitHandler:function(){
                 var url = baseUrl + '$UPDATE_URL$';
@@ -64,7 +67,8 @@ $FILEDS$
                        showError( rsJson.msg);
 
             },
-            debug:true
+            debug:true ,
+            ignore: ':file'
         });
     });
 

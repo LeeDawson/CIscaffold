@@ -105,8 +105,10 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $modulesHeader = $this->config->get('modules').'common_header';
         $modules = $this->config->get('modules').'';
         $modulesFooter = $this->config->get('modules').'common_footer';
-
+        $modulesMenu = $this->config->get('modules').'common_menu';
         $templateData = str_replace('$viewModulesHeader$',$modulesHeader,$templateData);
+        $templateData = str_replace('$viewModulesMenu$',$modulesMenu,$templateData);
+
         $templateData = str_replace('$viewModules$', $modules, $templateData);
         $templateData = str_replace('$viewModulesFooter$',$modulesFooter,$templateData);
 

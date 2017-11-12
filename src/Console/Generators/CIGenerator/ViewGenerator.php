@@ -18,7 +18,11 @@ class ViewGenerator implements GeneratorInterface
     protected $Urls;
     protected $viewPath;
 
-    protected $includeResource;
+    protected $specificType = [
+        "file" => false ,
+        "fileOne" => false,
+        "date" => false,
+    ];
 
     public function __construct($commandConfig, CommandData $commandData, Filesystem $file)
     {
@@ -71,30 +75,28 @@ class ViewGenerator implements GeneratorInterface
         $templatePath = $this->commandConfig->getViewsPath('View/edit.stub');
         $templateData = $this->files->get($templatePath);
         $fields = array();
-        $resource = array();
-        $editfile = "";
-        foreach ($this->commandData->fields as $field) {
-            if($field->htmlType && $field->isFillable ){
-                $fields[] = HTMLFieldGenerator::generateHTML($field , $this->commandConfig , $this->files);
-                $resource[] = $this->includeFileResource($field);
-            }
 
-            if($field->htmlType == "file") {
-                $path = $this->commandConfig->getViewsPath('Fields/file_edit_resource.stub');
-                $editFileData =  $this->files->get($path);
-                $editfile = str_replace('$FILEIMGID$' , $field->name , $editFileData);
+
+        foreach ($this->commandData->fields as &$field) {
+
+            if($field->htmlType && $field->isFillable ){
+
+                $field->htmlType == "file" && $field->htmlType = "editFile";
+
+                $fields[] = HTMLFieldGenerator::generateHTML($field , $this->commandConfig , $this->files);
+                !isset($this->specificType[$field->htmlType]) ? : $this->specificType[$field->htmlType] = true;
             }
         }
 
+        $templateData = str_replace('$RESOURCE$' , $this->handleSpecificTypeResouce($this->specificType) , $templateData);
+        $templateData = str_replace('$JS$' , $this->handleSpecificTypeJS($this->specificType) , $templateData);
         $templateData = str_replace('$FILEDS$' , implode(PHP_EOL.PHP_EOL, $fields) , $templateData);
         $templateData = str_replace('$INDEX_RUL$' , $this->Urls['INDEX_RUL'] , $templateData);
         $templateData = str_replace('$STORE_URL$' , $this ->Urls['SOTRE_URL'] , $templateData);
         $templateData = str_replace('$FILEDID$' ,  sprintf('<?php echo @$data["%s"]?>' , $this->commandData->getModelPrimaryKey()) , $templateData);
         $templateData = str_replace('$PRIMARY$' ,  $this->commandData->getModelPrimaryKey() , $templateData);
         $templateData = str_replace('$UPDATE_URL$' ,  $this->Urls['UPDATE_URL'] , $templateData);
-        $templateData = str_replace('$RESOURCE$' , implode(PHP_EOL.PHP_EOL, $resource)  , $templateData);
-        //todo 处理下files
-        $templateData = str_replace('$ISLOADFILED$' , empty($editfile) ? "" : $editfile, $templateData);
+        $templateData = str_replace('$UPLOADFILEONE$' , $this->commandConfig->get('modules') . $this->commandData->modelName . '/uploadOne' , $templateData);
 
 
         FileUtils::createFile(
@@ -111,20 +113,21 @@ class ViewGenerator implements GeneratorInterface
         $templatePath = $this->commandConfig->getViewsPath('View/create.stub');
         $templateData = $this->files->get($templatePath);
         $fields = array();
-        $resource = array();
+
 
         foreach ($this->commandData->fields as $field) {
             if($field->htmlType && $field->isFillable ){
-                $fields[] = HTMLFieldGenerator::generateHTML($field , $this->commandConfig , $this->files);
-                $resource[] = $this->includeFileResource($field);
+                $fields[] = $filed = HTMLFieldGenerator::generateHTML($field , $this->commandConfig , $this->files);
+                !isset($this->specificType[$field->htmlType]) ? : $this->specificType[$field->htmlType] = true;
             }
         }
 
+        $templateData = str_replace('$RESOURCE$' , $this->handleSpecificTypeResouce($this->specificType) , $templateData);
+        $templateData = str_replace('$JS$' , $this->handleSpecificTypeJS($this->specificType) , $templateData);
         $templateData = str_replace('$FILEDS$', implode(PHP_EOL.PHP_EOL, $fields) , $templateData);
         $templateData = str_replace('$INDEX_RUL$' , $this->Urls['INDEX_RUL'] , $templateData);
         $templateData = str_replace('$STORE_URL$' , $this ->Urls['SOTRE_URL'] , $templateData);
-        $templateData = str_replace('$RESOURCE$' , implode(PHP_EOL.PHP_EOL, $resource) , $templateData);
-        $templateData = str_replace('$ISLOADFILED$' , " ", $templateData);
+        $templateData = str_replace('$UPLOADFILEONE$' , $this->commandConfig->get('modules') . $this->commandData->modelName . '/uploadOne' , $templateData);
 
         FileUtils::createFile(
             $this->viewPath . DIRECTORY_SEPARATOR,
@@ -133,6 +136,55 @@ class ViewGenerator implements GeneratorInterface
         );
 
         $this->commandData->commandComment("Create.php created: ");
+    }
+
+    private function handleSpecificTypeResouce($specificTypes)
+    {
+        $resource = [];
+        foreach ($specificTypes as $key => $specificType) {
+                $specificType && $resource[] = $this->includeResource($key);
+        }
+
+
+        return empty($resource) ? "" : implode(PHP_EOL.PHP_EOL, $resource);
+    }
+
+    private function handleSpecificTypeJS($specificTypes)
+    {
+        $js = [];
+        foreach ($specificTypes as $key => $specificType) {
+            $specificType && $js[] = $this->includeJs($key);
+        }
+
+        return empty($js) ? "" : implode(PHP_EOL.PHP_EOL, $js);
+    }
+
+    private function includeJs($type)
+    {
+        $stubs = [
+            "fileOne" => "file_one_js.stub" ,
+            "date" => "date_js.stub"
+        ];
+        if(!isset($stubs[$type]))
+            return '';
+
+        $filePath =  $this->commandConfig->getViewsPath("Fields/".$stubs[$type]);
+        return $this->files->get($filePath);
+    }
+
+    private function includeResource($type)
+    {
+        $stubs = [
+            "file" => "file_resource.stub",
+            "fileOne" => "file_one_resource.stub" ,
+            "date" => "date_resource.stub"
+        ];
+
+        if(!isset($stubs[$type]))
+            return '';
+
+        $filePath =  $this->commandConfig->getViewsPath("Fields/".$stubs[$type]);
+        return $this->files->get($filePath);
     }
 
     private function generateIndex()
@@ -162,11 +214,12 @@ class ViewGenerator implements GeneratorInterface
     {
         $content = [];
         $content[] = "'<tr>'";
-
+        $index = 1;
         foreach ($this->commandData->fields as $field) {
             if (!$field->inIndex) {
                 continue;
             }
+            $content[] = "<th scope='row'>".++$index."</th>";
             $content[] =sprintf("'<td>'+ rsData[i].%s+'</td>'",$field->name) ;
         }
 

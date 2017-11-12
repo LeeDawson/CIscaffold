@@ -9,6 +9,7 @@ class HTMLFieldGenerator
 
     public static function generateHTML(GeneratorField $field, $config, $file )
     {
+
         $fieldTemplate = '';
 
         switch ($field->htmlType) {
@@ -22,12 +23,27 @@ class HTMLFieldGenerator
                 break;
             case 'textarea':
             case 'date':
+                $filePath =  $config->getViewsPath('Fields/date.stub');
+                $templateData = $file->get($filePath);
+                $templateData = str_replace('$KEYS$' , $field->name , $templateData);
+                return $templateData;
+                break;
             case 'file':
 
                 $filePath =  $config->getViewsPath('Fields/file.stub');
                 $templateData = $file->get($filePath);
                 $templateData = str_replace('$FILEIMGID$' , $field->name.'_imgs' , $templateData);
                 $templateData = str_replace('$FILENAMEID$' , $field->name , $templateData);
+                $templateData = str_replace('$UPLOADURL$' , $config->get('modules') .$config->mName . '/upload' , $templateData);
+                return $templateData;
+
+            case 'editFile':
+
+                $filePath =  $config->getViewsPath('Fields/file_edit.stub');
+                $templateData = $file->get($filePath);
+                $templateData = str_replace('$FILEIMGID$' , $field->name.'_imgs' , $templateData);
+                $templateData = str_replace('$FILENAMEID$' , $field->name , $templateData);
+                $templateData = str_replace('$UPLOADURL$' , $config->get('modules') .$config->mName . '/upload' , $templateData);
                 return $templateData;
 
             case 'fileOne':

@@ -34,6 +34,7 @@ class CommandData
 
     public $fieldNamesMapping = [];
 
+
     /** @var CommandData */
     protected static $instance = null;
 
@@ -130,7 +131,6 @@ class CommandData
                 $fieldInputStr,
                 $validations
             );
-
         }
 
     }
