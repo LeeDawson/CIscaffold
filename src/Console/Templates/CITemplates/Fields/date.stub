@@ -4,6 +4,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                            </div>
-                     <input type="text"  data-date-format="yyyy-mm-dd" value="<?php echo @$data['$KEYS$'];?>" class="form-control pull-right datepicker" name="$KEYS$" >
+                     <input type="text"  data-date-format="yyyy-mm-dd" value="<?php echo date('Y-m-d H:i',empty($data['$KEYS$']) ? time() : $data['$KEYS$'] );?>" class="form-control pull-right datepicker" >
+                     <input type="hidden" name="$KEYS$" value="<?php echo empty($data['$KEYS$']) ? time() : $data['$KEYS$']; ?>" >
                      </div>
                 </div>

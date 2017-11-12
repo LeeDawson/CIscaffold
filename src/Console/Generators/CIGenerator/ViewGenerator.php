@@ -214,8 +214,6 @@ class ViewGenerator implements GeneratorInterface
     {
         $content = [];
         $content[] = "'<tr>'";
-        $index = 1;
-        $content[] = "<th scope='row'>".++$index."</th>";
         foreach ($this->commandData->fields as $field) {
             if (!$field->inIndex) {
                 continue;

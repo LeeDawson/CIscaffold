@@ -1,6 +1,9 @@
         $('.datepicker').datetimepicker({
-               autoclose: true,
-               todayHighlight: true,
-               language:"zh-CN",
-               format:"yyyy-mm-dd hh:ii"
+                    autoclose: true,
+                    todayHighlight: true,
+                    language:"zh-CN",
+                    format:"yyyy-mm-dd hh:ii"
+                }).on("changeDate",function(ev){
+                    var timeStamp = ev.date.valueOf();
+                    $(this).parent().find("input:hidden").val(timeStamp/1000);
         });

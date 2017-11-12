@@ -1,6 +1,6 @@
                      <div class="radio">
                             <label>
                                 <input type="radio" name="$KEY$" value="$VALUE$">
-                                $VALUE$
+                                $VALUEHTML$
                             </label>
                      </div>

@@ -1,6 +1,9 @@
                 <div class="form-group">
                         <label>$KEY$</label>
-                        <select class="form-control" name="$KEY$" >
+                        <select class="form-control" name="$KEY$" id="select_$KEY$" >
 $OPTIONS$
                         </select>
                 </div>
+                <script>
+                      $("#select_$KEY$").val(<?php echo empty($data['$KEY$']) ? 0 : $data['$KEY$'];?>);
+                </script>

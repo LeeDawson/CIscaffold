@@ -22,6 +22,11 @@ class HTMLFieldGenerator
                 return $templateData;
                 break;
             case 'textarea':
+                $filePath =  $config->getViewsPath('Fields/textarea.stub');
+                $templateData = $file->get($filePath);
+                $templateData = str_replace('$KEYS$' , $field->name , $templateData);
+                return $templateData;
+                break;
             case 'date':
                 $filePath =  $config->getViewsPath('Fields/date.stub');
                 $templateData = $file->get($filePath);
@@ -29,14 +34,12 @@ class HTMLFieldGenerator
                 return $templateData;
                 break;
             case 'file':
-
                 $filePath =  $config->getViewsPath('Fields/file.stub');
                 $templateData = $file->get($filePath);
                 $templateData = str_replace('$FILEIMGID$' , $field->name.'_imgs' , $templateData);
                 $templateData = str_replace('$FILENAMEID$' , $field->name , $templateData);
                 $templateData = str_replace('$UPLOADURL$' , $config->get('modules') .$config->mName . '/upload' , $templateData);
                 return $templateData;
-
             case 'editFile':
 
                 $filePath =  $config->getViewsPath('Fields/file_edit.stub');
@@ -45,13 +48,11 @@ class HTMLFieldGenerator
                 $templateData = str_replace('$FILENAMEID$' , $field->name , $templateData);
                 $templateData = str_replace('$UPLOADURL$' , $config->get('modules') .$config->mName . '/upload' , $templateData);
                 return $templateData;
-
             case 'fileOne':
                 $filePath =  $config->getViewsPath('Fields/file_one.stub');
                 $templateData = $file->get($filePath);
                 $templateData = str_replace('$FILEID$' , $field->name , $templateData);
                 return $templateData;
-
             case 'radio':
                 $radioGroupPath =  $config->getViewsPath('Fields/radio_group.stub');
                 $radioGroupData = $file->get($radioGroupPath);
@@ -63,8 +64,9 @@ class HTMLFieldGenerator
                 foreach ($radios as $key => $radioValue) {
                     $radioPath =  $config->getViewsPath('Fields/radio.stub');
                     $radioData = $file->get($radioPath);
-                    $radioData = str_replace('$KEY$' , $key , $radioData);
+                    $radioData = str_replace('$KEY$' , $field->name , $radioData);
                     $radioData = str_replace('$VALUE$' , $radioValue  , $radioData);
+                    $radioData = str_replace('$VALUEHTML$' , $key  , $radioData);
                     $radioButtons[] = $radioData;
                 }
                 $radioGroupData = str_replace('$KEY$' , $field->name  , $radioGroupData);

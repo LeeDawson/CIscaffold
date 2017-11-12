@@ -1,0 +1,6 @@
+                <div class="form-group">
+                       <label>$KEYS$</label>
+                       <textarea name="$KEYS$"  rows="5"   class="form-control" ><?php echo @$data["$KEYS$"]?>
+
+                       </textarea>
+                </div>

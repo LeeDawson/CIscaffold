@@ -2,3 +2,6 @@
                     <label>$KEY$</label>
 $RADIOVALUES$
                 </div>
+                <script>
+                    $("input[name='$KEY$'][value=<?php echo empty($data['$KEY$']) ? 0 : $data['$KEY$']; ?>]").attr("checked",true);
+                </script>
