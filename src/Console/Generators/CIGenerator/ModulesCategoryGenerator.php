@@ -28,10 +28,30 @@ class ModulesCategoryGenerator implements GeneratorInterface
         $this->generateController();
         $this->generateModel();
         $this->generateVies();
+        $this->generateSql();
 
 
         //todo 4. 导出数据库
         //todo 5. 看看是不是需要生成数据库的;
+    }
+
+    protected function generateSql()
+    {
+        $templateType = $this->commandConfig->get('applicationTemplates'); //系统路径
+
+        $templateData = FileUtils::getTemplateModulesPath(
+            $this->commandConfig->get('systemTemplates') ,
+            'category'. DIRECTORY_SEPARATOR . 'category.sql'
+        );
+
+        FileUtils::createFile(
+            $templateType.'modules/' ,
+            "category.sql",
+            $templateData
+        );
+
+
+        $this->commandData->commandComment("\n sql created: ".$templateType.'modules/');
     }
 
     protected function generateController()
@@ -117,6 +137,55 @@ class ModulesCategoryGenerator implements GeneratorInterface
      */
     public function rollback()
     {
-        // TODO: Implement rollback() method.
+         $this->deleteController();
+         $this->deleteModel();
+         $this->deleteViews();
+    }
+
+    protected function deleteController()
+    {
+        $controllerName = ucfirst($this->commandData->modulesName);
+        $controllerFileName = $controllerName.'.php';
+
+        $controllerDeleteResult = FileUtils::deleteFile(
+            $this->commandConfig->get('controller').$this->commandConfig->get('modules'),
+            $controllerFileName
+        );
+
+        $this->commandData->commandComment($controllerFileName." delete ");
+    }
+
+    protected function deleteModel()
+    {
+        $moduleName = ucfirst($this->commandData->modulesName);
+        $moduleFileName = 'M_' . $moduleName.'.php';
+
+        $controllerDeleteResult = FileUtils::deleteFile(
+            $this->commandConfig->get('model'),
+            $moduleFileName
+        );
+
+        $this->commandData->commandComment($moduleFileName." delete ");
+    }
+
+    protected function deleteViews()
+    {
+        $views = [
+            'manage.stub' => 'manage.php' ,
+            'category_save.stub' => 'category_save.php'
+        ];
+
+        $moduleName = ucfirst($this->commandData->modulesName);
+
+        foreach ($views as $key => $view) {
+
+            $viewPath = $this->commandConfig->get('views') . $this->commandConfig->get('modules') . $moduleName . DIRECTORY_SEPARATOR;
+
+            $controllerDeleteResult = FileUtils::deleteFile(
+                $viewPath,
+                $view
+            );
+            $this->commandData->commandComment($viewPath.$view." delete ");
+        }
     }
 }

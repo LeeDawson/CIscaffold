@@ -38,12 +38,15 @@ class CategoryModulesCommand extends ModulesCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
         //处理公用的option
         $this->commandData = new ModulesData( $this );
 
         $generator = new $this->container['generator.category']($this->config , $this->commandData , $this->container['files']);
-
-        $generator->generate();
+        if( $this->option('rollback') )
+            $generator->rollback();
+        else
+            $generator->generate();
 
     }
 
@@ -58,7 +61,7 @@ class CategoryModulesCommand extends ModulesCommand
 
             ['moduleName', null, InputOption::VALUE_REQUIRED, 'modify category modules name'] ,
             ['sqldump', null, InputOption::VALUE_REQUIRED, 'deafult dump sql '] ,
-
+            ['rollback', null, InputOption::VALUE_NONE, 'delete scaffold'],
         ];
     }
 

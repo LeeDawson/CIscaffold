@@ -19,14 +19,14 @@ class $MODULES$ extends Adminbase
 
     public function categorySave()
     {
-        if( $this->_is_ajax){
+        if( $this->_is_ajax) {
             $this->_db_data['category_id'] = intval( $this->input->post( 'id'));
             $this->_db_data['sortrank'] = intval( $this->input->post( 'sortrank'));
             $this->_db_data['category_type'] = intval( $this->input->post( 'category_type'));
             $this->_db_data['category_name'] = $this->input->post( 'category_name');
             $this->_db_data['category_meta'] = $this->input->post( 'category_meta');
             $this->_db_data['category_pid'] = intval( $this->input->post( 'category_pid'));
-            $this->$MODULESNAME$->saveData( $this->_db_data , $this->_db_data['category_id']) && ajaxReturn( site_url( 'admin/category/categoryManage'));
+            $this->$MODULESNAME$->saveData( $this->_db_data , $this->_db_data['category_id']) && $this->ajaxReturn( site_url( 'admin/category/categoryManage'));
         } else {
             $category_id = intval( $this->uri->segment(4));
             $this->_data['form_title'] = '添加分类';
@@ -47,7 +47,7 @@ class $MODULES$ extends Adminbase
         if( $this->_is_ajax){
             $id = intval( $this->input->post( 'category_id'));
             $msg = $this->$MODULESNAME$->categoryRemove( $id);
-            $msg == 'success'? ajaxReturn():ajaxReturnError( $msg);
+            $msg == 'success'? $this->ajaxReturn() : $this->ajaxReturnError( $msg);
         }
     }
 }
