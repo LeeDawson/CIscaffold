@@ -95,6 +95,9 @@ class MY_Model extends CI_Model
         if( isset( $param['select']) && !empty( $param['select']))
             $this->db->select( $param['select']);
 
+        if( isset( $param['where_in']) && !empty( $param['where_in']))
+            $this->db->where_in( $param['where_in']['key'],$param['where_in']['value']);
+
         if( isset( $param['join']) && is_array( $param['join'])) {
             foreach( $param['join'] as $join){
                 $this->db->join( $join['join_table'] , $join['join_cond'] , $join['join_type']);

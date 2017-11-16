@@ -127,13 +127,21 @@ class LayoutPublishCommand extends BaseCommand
     private function getFields()
     {
         return [
-            'fields/text'                   => 'Fields/text.stub',
-            'fields/file_edit_resource'     => 'Fields/file_edit_resource.stub',
+            'fields/date'                   => 'Fields/date.stub',
+            'fields/date_js'                => 'Fields/date_js.stub',
+            'fields/date_resource'          => 'Fields/date_resource.stub',
             'fields/file'                   => 'Fields/file.stub',
+            'fields/file_edit'              => 'Fields/file_edit.stub',
+            'fields/file_one'               => 'Fields/file_one.stub',
+            'fields/file_one_js'            => 'Fields/file_one_js.stub',
+            'fields/file_one_resource'      => 'Fields/file_one_resource.stub',
+            'fields/file_resource'          => 'Fields/file_resource.stub',
             'fields/radio'                  => 'Fields/radio.stub',
             'fields/radio_group'            => 'Fields/radio_group.stub',
             'fields/select'                 => 'Fields/select.stub',
             'fields/select_group'           => 'Fields/select_group.stub',
+            'fields/text'                   => 'Fields/text.stub',
+            'fields/textarea'               => 'Fields/textarea.stub',
         ];
     }
 
