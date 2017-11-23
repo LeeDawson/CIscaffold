@@ -1,5 +1,5 @@
                 <div class="fileupform" >
-                    <p><label>图像</label></p>
+                    <p><label>$KEYS$</label></p>
                     <span class="btn btn-success fileinput-button">
                           <i class="glyphicon glyphicon-plus">
                           </i> <span>添加图片</span>

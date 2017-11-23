@@ -18,13 +18,19 @@ class HTMLFieldGenerator
                 $templateData = $file->get($filePath);
                 $templateData = str_replace('$KEYS$' , $field->name , $templateData);
                 $templateData = str_replace('$VALUES$' , sprintf('<?php echo @$data["%s"]?>',$field->name) , $templateData);
-
                 return $templateData;
                 break;
             case 'textarea':
                 $filePath =  $config->getViewsPath('Fields/textarea.stub');
                 $templateData = $file->get($filePath);
                 $templateData = str_replace('$KEYS$' , $field->name , $templateData);
+                return $templateData;
+                break;
+            case 'editor':
+                $filePath =  $config->getViewsPath('Fields/editor.stub');
+                $templateData = $file->get($filePath);
+                $templateData = str_replace('$KEYS$' , $field->name , $templateData);
+                $templateData = str_replace('$FILEURL$' ,  $config->get('modules') .$config->mName , $templateData);
                 return $templateData;
                 break;
             case 'date':
@@ -36,14 +42,15 @@ class HTMLFieldGenerator
             case 'file':
                 $filePath =  $config->getViewsPath('Fields/file.stub');
                 $templateData = $file->get($filePath);
+                $templateData = str_replace('$KEYS$' , $field->name , $templateData);
                 $templateData = str_replace('$FILEIMGID$' , $field->name.'_imgs' , $templateData);
                 $templateData = str_replace('$FILENAMEID$' , $field->name , $templateData);
                 $templateData = str_replace('$UPLOADURL$' , $config->get('modules') .$config->mName . '/upload' , $templateData);
                 return $templateData;
             case 'editFile':
-
                 $filePath =  $config->getViewsPath('Fields/file_edit.stub');
                 $templateData = $file->get($filePath);
+                $templateData = str_replace('$KEYS$' , $field->name , $templateData);
                 $templateData = str_replace('$FILEIMGID$' , $field->name.'_imgs' , $templateData);
                 $templateData = str_replace('$FILENAMEID$' , $field->name , $templateData);
                 $templateData = str_replace('$UPLOADURL$' , $config->get('modules') .$config->mName . '/upload' , $templateData);
@@ -51,6 +58,7 @@ class HTMLFieldGenerator
             case 'fileOne':
                 $filePath =  $config->getViewsPath('Fields/file_one.stub');
                 $templateData = $file->get($filePath);
+                $templateData = str_replace('$KEYS$' , $field->name , $templateData);
                 $templateData = str_replace('$FILEID$' , $field->name , $templateData);
                 return $templateData;
             case 'radio':

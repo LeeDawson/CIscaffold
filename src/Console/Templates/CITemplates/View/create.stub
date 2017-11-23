@@ -7,11 +7,16 @@ $RESOURCE$
             <?php echo @$form_title;?>
         </h1>
         <ol class="breadcrumb">
-            <li><a href="$INDEX_RUL$">
-                    <i class="fa fa-dashboard"></i>主页
-                </a>
+            <li>
+                 <a href="#">
+                      <i class="fa fa-dashboard"></i>主页
+                 </a>
             </li>
-            <li><a href="#"><?php echo @$form_title;?></a></li>
+            <li>
+                 <a href="<?php echo site_url('$INDEX_RUL$');?>">
+                      <?php echo @$form_title;?>
+                 </a>
+            </li>
         </ol>
     </section>
 

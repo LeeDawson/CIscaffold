@@ -6,13 +6,14 @@ class Validation
 {
 
     private static $correctRule = [
-        "required" => "该属性必须存在",
-        "min"      => "该属性必须小于设置值",
-        "max"      => "该属性不能大于设置值",
-        "number"   => "该属性必须是数字" ,
-        "email"    => "该属性必须是邮箱格式",
-        "ip"       => "该属性必须是IP地址格式",
-        "string"   => "该属性必须是字符串",
+        "required"   => "该属性必须存在",
+        "min"        => "该属性必须小于设置值",
+        "max"        => "该属性不能大于设置值",
+        "number"     => "该属性必须是数字" ,
+        "email"      => "该属性必须是邮箱格式",
+        "ip"         => "该属性必须是IP地址格式",
+        "string"     => "该属性必须是字符串",
+        "allowEmpty" => ""
     ];
 
     /**
@@ -56,7 +57,6 @@ class Validation
 
         if(empty($preDatas))
             throw new LogicException("待检查数组不能为空");
-
 
         foreach ($rules as $key => $rule) {
             if( isset($preDatas[$key]) ) {  // 输入的数据如果存在规则的字段 成功,不存在报错
@@ -128,9 +128,9 @@ class Validation
     private static function max($val , $param)
     {
         if(strlen($val) > $param)
-            return $val;
+            return false;
 
-        return true;
+        return $val;
     }
 
     private static function number($val , $param )
@@ -171,6 +171,12 @@ class Validation
             return $val;
 
         return false;
+    }
+
+
+    public function allowEmpty($val , $param)
+    {
+        return $val;
     }
 
 

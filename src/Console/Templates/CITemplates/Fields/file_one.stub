@@ -1,5 +1,5 @@
                 <div class="fileupform appendContents" style="width: 30%" >
-                      <label>广告图</label>
+                      <label>$KEYS$</label>
                       <input img-name="logo" data-default-file="<?php echo @$data["$FILEID$"] ? base_url($data["$FILEID$"]):'';?>"
                               data-max-file-size="400k"
                               data-allowed-file-extensions="jpg jpeg png gif" type="file"

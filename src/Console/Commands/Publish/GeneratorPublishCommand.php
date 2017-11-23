@@ -49,6 +49,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         $this->initPagination();        //初始化分页样式
         $this->initValidation();        //初始化验证类
         $this->initUploadify();         //初始化上传文件类
+        $this->initViews();             //初始化模板
 
         $this->Comment("\n init completed: ");
     }
@@ -75,6 +76,25 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
         $this->Info("Validation.php");
         $this->Info("Rule.php");
+    }
+
+    private function initViews()
+    {
+        $views = [
+            "common_footer.stub" => "common_footer.php" ,
+            "common_header.stub" => "common_header.php" ,
+            "common_menu.stub"   => "common_menu.php"
+        ];
+
+        foreach ($views as $layout => $view) {
+            $templateData = FileUtils::fileExistWithFetch($this->config, $layout );
+            FileUtils::createFile(
+                $this->config->get('views') . $this->config->get('modules'),
+                $view,
+                $templateData
+            );
+            $this->Info($view.'create');
+        }
     }
 
     /**

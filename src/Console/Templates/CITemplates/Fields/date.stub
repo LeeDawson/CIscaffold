@@ -1,5 +1,5 @@
                 <div class="form-group">
-                     <label>课程开始时间</label>
+                     <label>$KEYS$</label>
                            <div class="input-group date">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>

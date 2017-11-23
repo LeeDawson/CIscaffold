@@ -1,0 +1,4 @@
+<!-- editor start -->
+<link rel="stylesheet" href="<?php echo base_url('public/vendor/wangeditor'); ?>/wangEditor.min.css">
+<script src="<?php echo base_url('public/vendor/wangeditor'); ?>/wangEditor.min.js"></script>
+<!-- editor end -->

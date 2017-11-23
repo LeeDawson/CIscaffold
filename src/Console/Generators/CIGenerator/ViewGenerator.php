@@ -22,6 +22,7 @@ class ViewGenerator implements GeneratorInterface
         "file" => false ,
         "fileOne" => false,
         "date" => false,
+        "editor" => false,
     ];
 
     public function __construct($commandConfig, CommandData $commandData, Filesystem $file)
@@ -177,7 +178,8 @@ class ViewGenerator implements GeneratorInterface
         $stubs = [
             "file" => "file_resource.stub",
             "fileOne" => "file_one_resource.stub" ,
-            "date" => "date_resource.stub"
+            "date" => "date_resource.stub",
+            "editor" => "editor_resource.stub"
         ];
 
         if(!isset($stubs[$type]))

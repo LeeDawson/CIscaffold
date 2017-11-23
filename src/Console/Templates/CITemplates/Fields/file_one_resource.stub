@@ -1,4 +1,4 @@
+<!-- file one start -->
 <link rel="stylesheet" href="<?php echo base_url('public/vendor/dropify'); ?>/dropify.min.css">
-
 <script src="<?php echo base_url('public/vendor/dropify'); ?>/dropify.js"></script>
-
+<!-- file one end -->

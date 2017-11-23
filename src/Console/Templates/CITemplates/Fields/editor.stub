@@ -1,0 +1,16 @@
+                <div class="form-group">
+                      <label>$KEYS$</label>
+                      <div id="$KEYS$">
+                          <?php echo @$data["$KEYS$"]?>
+                      </div>
+                      <input type="hidden" name="$KEYS$" >
+                </div>
+                <script>
+                        var editor1 = new window.wangEditor('#$KEYS$');
+                        editor1.customConfig.uploadFileName = 'image_upload';
+                        editor1.customConfig.uploadImgServer = '/$FILEURL$/uploadEditorImg';
+                        editor1.customConfig.onchange = function (html) {
+                               $('input[name="$KEYS$"]').val(html);
+                        }
+                        editor1.create();
+                </script>
