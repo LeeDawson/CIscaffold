@@ -15,7 +15,7 @@ class ServerProvider implements ServiceProviderInterface
 
     protected function registerNativeFilesystem($app)
     {
-        $app['files'] = function($app){
+        $app['files'] = function ($app) {
             return new FileSystem($app['config']);
         };
     }

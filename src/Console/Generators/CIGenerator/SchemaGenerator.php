@@ -31,7 +31,7 @@ class SchemaGenerator implements GeneratorInterface
         $templateData = FileUtils::getTemplateByPath($this->commandConfig->get('systemTemplates') . DIRECTORY_SEPARATOR . 'Schema' . DIRECTORY_SEPARATOR . 'schema.stub');
         $templateData = str_replace('$SCHEMA$', ucfirst($schemaName), $templateData);
 
-        $primary = isset( $this->commandConfig->options['primary'] ) ? ',"'.$this->commandConfig->options['primary'].'"' : " ";
+        $primary = isset($this->commandConfig->options['primary']) ? ',"'.$this->commandConfig->options['primary'].'"' : " ";
 
 
         $templateData = str_replace('$PRIMARY$', $primary, $templateData);

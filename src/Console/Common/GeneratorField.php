@@ -6,22 +6,30 @@ use OutSource\Kernel\Support\Str;
 
 class GeneratorField
 {
-    /** @var string */
+    /**
+     * @var string 
+     */
     public $name;
     public $dbInput;
     public $htmlInput;
     public $htmlType;
     public $fieldType;
 
-    /** @var array */
+    /**
+     * @var array 
+     */
     public $htmlValues;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     public $migrationText;
     public $foreignKeyText;
     public $validations;
 
-    /** @var bool */
+    /**
+     * @var bool 
+     */
     public $isSearchable = true;
     public $isFillable = true;
     public $isPrimary = false;

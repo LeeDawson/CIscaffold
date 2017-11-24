@@ -278,7 +278,7 @@ class Collection implements ArrayAccess, Countable, IteratorAggregate, JsonSeria
      * (PHP 5 &gt;= 5.1.0)<br/>
      * Constructs the object.
      *
-     * @see  http://php.net/manual/en/serializable.unserialize.php
+     * @see http://php.net/manual/en/serializable.unserialize.php
      *
      * @param string $serialized <p>
      *                           The string representation of the object.

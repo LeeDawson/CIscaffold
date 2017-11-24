@@ -24,7 +24,7 @@ class SchemaGeneratorCommand extends BaseCommand
         parent::__construct();
         $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD);
         $this->container = $pimple;
-        $this->config = new GeneratorConfig($this->commandData , $pimple['config']);
+        $this->config = new GeneratorConfig($this->commandData, $pimple['config']);
     }
 
 
@@ -35,8 +35,9 @@ class SchemaGeneratorCommand extends BaseCommand
 
         $schemaName = $input->getArgument('name');
 
-        if(empty($schemaName))
+        if(empty($schemaName)) {
             $this->error('controller name not empty');
+        }
 
         $this->commandData->modelName = $schemaName;
 

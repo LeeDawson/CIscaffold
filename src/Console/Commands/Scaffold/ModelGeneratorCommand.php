@@ -22,7 +22,7 @@ class ModelGeneratorCommand extends BaseCommand
     public function __construct($pimple)
     {
         parent::__construct();
-        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD );
+        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD);
         $this->container = $pimple;
         $this->config = $pimple['config'];
     }
@@ -30,20 +30,20 @@ class ModelGeneratorCommand extends BaseCommand
     /**
      * 命令行的启动入口
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     *
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $model = $input->getArgument('name');
 
-        if(empty($model))
+        if(empty($model)) {
             $this->error('model name not empty');
+        }
 
         $this->commandData->modelName = $model;
 
-        $this->preConfig($input,$this->config);
+        $this->preConfig($input, $this->config);
 
         $generator = new $this->container['generator.model']($this->config , $this->commandData , $this->container['files']);
         $generator->generate();
@@ -62,8 +62,8 @@ class ModelGeneratorCommand extends BaseCommand
             $this->tableName = $input->getOption('tableName');
         }
 
-        $this->config->set('primaryName',$primaryName);
-        $this->config->set('tableName',$tableName);
+        $this->config->set('primaryName', $primaryName);
+        $this->config->set('tableName', $tableName);
 
     }
 

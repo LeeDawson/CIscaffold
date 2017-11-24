@@ -17,8 +17,8 @@ trait Macroable
     /**
      * Register a custom macro.
      *
-     * @param  string    $name
-     * @param  callable  $macro
+     * @param  string   $name
+     * @param  callable $macro
      * @return void
      */
     public static function macro($name, callable $macro)
@@ -29,7 +29,7 @@ trait Macroable
     /**
      * Checks if macro is registered.
      *
-     * @param  string  $name
+     * @param  string $name
      * @return bool
      */
     public static function hasMacro($name)
@@ -40,8 +40,8 @@ trait Macroable
     /**
      * Dynamically handle calls to the class.
      *
-     * @param  string  $method
-     * @param  array   $parameters
+     * @param  string $method
+     * @param  array  $parameters
      * @return mixed
      *
      * @throws \BadMethodCallException
@@ -62,8 +62,8 @@ trait Macroable
     /**
      * Dynamically handle calls to the class.
      *
-     * @param  string  $method
-     * @param  array   $parameters
+     * @param  string $method
+     * @param  array  $parameters
      * @return mixed
      *
      * @throws \BadMethodCallException

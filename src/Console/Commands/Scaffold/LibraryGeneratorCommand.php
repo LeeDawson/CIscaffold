@@ -26,7 +26,7 @@ class LibraryGeneratorCommand extends BaseCommand
     {
         parent::__construct();
 
-        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD );
+        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD);
         $this->container = $pimple;
         $this->config = $pimple['config'];
     }
@@ -34,16 +34,16 @@ class LibraryGeneratorCommand extends BaseCommand
     /**
      * 命令行的启动入口
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     *
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $libraryName = $input->getArgument('name');
 
-        if(empty($libraryName))
+        if(empty($libraryName)) {
             $this->error('library name not empty');
+        }
 
         $this->commandData->modelName = $libraryName;
         $generator = new $this->container['generator.library']($this->config , $this->commandData , $this->container['files']);
@@ -63,8 +63,8 @@ class LibraryGeneratorCommand extends BaseCommand
             $this->tableName = $input->getOption('tableName');
         }
 
-        $this->config->set('primaryName',$primaryName);
-        $this->config->set('tableName',$tableName);
+        $this->config->set('primaryName', $primaryName);
+        $this->config->set('tableName', $tableName);
 
     }
 

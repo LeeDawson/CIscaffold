@@ -22,7 +22,7 @@ class ControllerGeneratorCommand extends BaseCommand
     public function __construct($pimple)
     {
         parent::__construct();
-        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD );
+        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD);
         $this->container = $pimple;
         $this->config = $pimple['config'];
     }
@@ -30,16 +30,16 @@ class ControllerGeneratorCommand extends BaseCommand
     /**
      * 命令行的启动入口
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     *
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $controller = $input->getArgument('name');
 
-        if(empty($controller))
+        if(empty($controller)) {
             $this->error('controller name not empty');
+        }
 
         $this->commandData->modelName = $controller;
         $generator = new $this->container['generator.controller']($this->config , $this->commandData , $this->container['files']);

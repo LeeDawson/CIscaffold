@@ -43,8 +43,9 @@ class Blueprint
 
     public function addColumn($columnName , $htmlType , array $rule = [] ,array $option = [])
     {
-        if(empty($columnName))
+        if(empty($columnName)) {
             throw new InvalidArgumentException("columnName invalid ");
+        }
 
         $this->columns[] = $columnName;
         $this->htmlType[$columnName] =  $htmlType;

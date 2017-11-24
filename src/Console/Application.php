@@ -11,7 +11,7 @@ class Application extends SymfonyApplication
 
     public function __construct()
     {
-        parent::__construct("outSource","v1.0");
+        parent::__construct("outSource", "v1.0");
     }
 
 

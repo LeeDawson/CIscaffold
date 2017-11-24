@@ -24,33 +24,35 @@ class ModelGenerator implements GeneratorInterface
 
     /**
      * 生成函数
-     *
      */
     public function generate()
     {
         $modelName = $this->commandData->modelName;
         $modelFileName = 'M_'.ucfirst($modelName).'.php';
-        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'models.stub');
+        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'), 'models.stub');
         $templateData = str_replace('$MODEL_NAME$', 'M_'.ucfirst($modelName), $templateData);
 
-        $templateData = str_replace('$TABLE_NAME$',
-            $this->commandConfig->tableName ? : $modelName ,
+        $templateData = str_replace(
+            '$TABLE_NAME$',
+            $this->commandConfig->tableName ? : $modelName,
             $templateData
         );
 
-        $templateData = str_replace('$SOFTDELETE$',
-            $this->commandConfig->softDelete ? : "false" ,
+        $templateData = str_replace(
+            '$SOFTDELETE$',
+            $this->commandConfig->softDelete ? : "false",
             $templateData
         );
 
-        $templateData = str_replace('$TIMESTAMPS$',
-            $this->commandConfig->timeStamp ? "true" : "false" ,
+        $templateData = str_replace(
+            '$TIMESTAMPS$',
+            $this->commandConfig->timeStamp ? "true" : "false",
             $templateData
         );
 
         $templateData = $this->fillable($this->commandData->fields, $templateData);
         $templateData = $this->fillRule($this->commandData->fields, $templateData);
-        $templateData = $this->fillPrimaryName($this->commandConfig , $this->commandData , $templateData);
+        $templateData = $this->fillPrimaryName($this->commandConfig, $this->commandData, $templateData);
 
         FileUtils::createFile(
             $this->commandConfig->get('model'),
@@ -65,14 +67,14 @@ class ModelGenerator implements GeneratorInterface
 
     public function fillPrimaryName($commandConfig , $commandData , $templateData)
     {
-        if($commandConfig->get('primaryName')){
-            $templateData = str_replace('$TABLE_ID$', $commandConfig->get('primaryName') , $templateData);
+        if($commandConfig->get('primaryName')) {
+            $templateData = str_replace('$TABLE_ID$', $commandConfig->get('primaryName'), $templateData);
             return $templateData;
         }
 
         foreach ($commandData->fields as $field) {
-            if($field->isPrimary){
-                $templateData = str_replace('$TABLE_ID$', $field->name , $templateData);
+            if($field->isPrimary) {
+                $templateData = str_replace('$TABLE_ID$', $field->name, $templateData);
                 return $templateData;
             }
         }
@@ -82,11 +84,12 @@ class ModelGenerator implements GeneratorInterface
     {
         $fillable = [];
         foreach ($fillables as $item) {
-            if(!$item->isPrimary)
+            if(!$item->isPrimary) {
                 $fillable[] = "'".$item->name."'";
+            }
         }
 
-        $templateData = str_replace('$FILLABLE$', implode(','.infy_nl_tab(1, 2) , $fillable), $templateData);
+        $templateData = str_replace('$FILLABLE$', implode(','.infy_nl_tab(1, 2), $fillable), $templateData);
         return $templateData;
     }
 
@@ -99,7 +102,7 @@ class ModelGenerator implements GeneratorInterface
                 $rules[] = $rule;
             }
         }
-        $templateData = str_replace('$RULES$', implode(','.infy_nl_tab(1, 2) , $rules), $templateData);
+        $templateData = str_replace('$RULES$', implode(','.infy_nl_tab(1, 2), $rules), $templateData);
         return $templateData;
     }
 

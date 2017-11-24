@@ -26,27 +26,26 @@ class ScaffoldGeneratorCommand extends BaseCommand
     {
         parent::__construct();
         $this->container = $pimple;
-        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD );
-        $this->config = new GeneratorConfig($this->commandData , $pimple['config']);
+        $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD);
+        $this->config = new GeneratorConfig($this->commandData, $pimple['config']);
     }
 
     /**
      * 命令行的启动入口
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     *
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
         $this->commandData->modelName = $this->input->getArgument('model');
 
-        if( $this->option('rollback') ){
+        if($this->option('rollback') ) {
 
             $this->rollbackScaffold();
 
-        } elseif( $this->option('schema') ){
+        } elseif($this->option('schema') ) {
             //从schema 收集数据
             $this->generScaffoldBySchema();
 
@@ -71,20 +70,21 @@ class ScaffoldGeneratorCommand extends BaseCommand
 
     private function parseInput($invoke)
     {
-       $invoke->table && $this->config->setOption("tableName",$invoke->table);
-       $invoke->primaryKey && $this->config->setOption("primary",$invoke->primaryKey);
-       $invoke->softDelete && $this->config->setOption("softdelete",$invoke->softDelete);
-       $invoke->timestamp &&  $this->config->setOption("timestamp",$invoke->timestamp);
+        $invoke->table && $this->config->setOption("tableName", $invoke->table);
+        $invoke->primaryKey && $this->config->setOption("primary", $invoke->primaryKey);
+        $invoke->softDelete && $this->config->setOption("softdelete", $invoke->softDelete);
+        $invoke->timestamp &&  $this->config->setOption("timestamp", $invoke->timestamp);
     }
 
     private function loadSchema()
     {
         $schemaName = "create_". ucfirst($this->option('schema')). "_schema";
         $schemaPath = $this->config->get('schema').$schemaName.".php";
-        if(file_exists($schemaPath))
+        if(file_exists($schemaPath)) {
             include $schemaPath;
-        else
+        } else {
             throw new InvalidArgumentException("未能找到".$schemaPath.'这个文件');
+        }
 
         $class =  new $schemaName();
         $invoke = $class->up();
@@ -145,7 +145,6 @@ class ScaffoldGeneratorCommand extends BaseCommand
 
     /**
      * 删除掉模型和类库
-     *
      */
     private function rollbackScaffoldItems()
     {
@@ -167,11 +166,11 @@ class ScaffoldGeneratorCommand extends BaseCommand
     public function getOptions()
     {
         return [
-//            ['fieldsFile', null, InputOption::VALUE_REQUIRED, 'Fields input as json file'],
-//            ['jsonFromGUI', null, InputOption::VALUE_REQUIRED, 'Direct Json string while using GUI interface'],
+        //            ['fieldsFile', null, InputOption::VALUE_REQUIRED, 'Fields input as json file'],
+        //            ['jsonFromGUI', null, InputOption::VALUE_REQUIRED, 'Direct Json string while using GUI interface'],
             ['tableName', null, InputOption::VALUE_REQUIRED, 'Table Name'],
-//            ['fromTable', null, InputOption::VALUE_NONE, 'Generate from existing table'],
-//            ['save', null, InputOption::VALUE_NONE, 'Save model schema to file'],
+        //            ['fromTable', null, InputOption::VALUE_NONE, 'Generate from existing table'],
+        //            ['save', null, InputOption::VALUE_NONE, 'Save model schema to file'],
             ['primary', null, InputOption::VALUE_REQUIRED, 'Custom primary key'],
             ['softdelete', null, InputOption::VALUE_REQUIRED, 'open softdelete'],
             ['schema', null, InputOption::VALUE_REQUIRED, 'from schema generator'],

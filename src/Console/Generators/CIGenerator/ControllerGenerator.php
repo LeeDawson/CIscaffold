@@ -33,15 +33,15 @@ class ControllerGenerator implements GeneratorInterface
             '$CREATEVIEW$' => ucfirst($controllerName).DIRECTORY_SEPARATOR.'create',
             '$INDEXVIEW$' => ucfirst($controllerName).DIRECTORY_SEPARATOR.'index',
         ];
-        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'scaffold_controller.stub');
+        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'), 'scaffold_controller.stub');
         $templateData = str_replace('$CONTROLER_NAME$', ucfirst($controllerName), $templateData);
         $templateData = str_replace('$LIBRARY_NAME$', strtolower($controllerName).'lib', $templateData);
         $templateData = str_replace('$PRIMARY$', $this->commandData->getModelPrimaryKey(), $templateData);
-        $templateData = str_replace('$SOFTDELETE$', $this->commandConfig->softDelete ? "destory" : "delete"   , $templateData);
-        $templateData = str_replace('$SHOWSOFTDELETE$', $this->commandConfig->softDelete ? '$this->_data["'.$this->commandConfig->softDelete.'"] = 1;' : " "   , $templateData);
-        $templateData = str_replace('$SAVESOFTDELETE$', $this->commandConfig->softDelete ? '$postData["'.$this->commandConfig->softDelete.'"] = 1;' : " "   , $templateData);
-        $templateData = str_replace('$TIMESTAMP$', $this->commandConfig->timeStamp ? '$postData["'. $this->commandConfig->timeStamp .'"] = time();' : " "   , $templateData);
-        $templateData = str_replace('$MODEL_NAME$', ucfirst($controllerName) , $templateData);
+        $templateData = str_replace('$SOFTDELETE$', $this->commandConfig->softDelete ? "destory" : "delete", $templateData);
+        $templateData = str_replace('$SHOWSOFTDELETE$', $this->commandConfig->softDelete ? '$this->_data["'.$this->commandConfig->softDelete.'"] = 1;' : " ", $templateData);
+        $templateData = str_replace('$SAVESOFTDELETE$', $this->commandConfig->softDelete ? '$postData["'.$this->commandConfig->softDelete.'"] = 1;' : " ", $templateData);
+        $templateData = str_replace('$TIMESTAMP$', $this->commandConfig->timeStamp ? '$postData["'. $this->commandConfig->timeStamp .'"] = time();' : " ", $templateData);
+        $templateData = str_replace('$MODEL_NAME$', ucfirst($controllerName), $templateData);
 
         foreach ($replaceUrls as $Key => $replaceUrl) {
             $templateData = str_replace($Key, $replaceUrl, $templateData);
@@ -58,15 +58,14 @@ class ControllerGenerator implements GeneratorInterface
 
     /**
      * 生成函数
-     *
      */
     public function generateController()
     {
         $controllerName = $this->commandData->modelName;
         $files = $this->handlePath($controllerName);
 
-        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'controller.stub');
-        $templateData = str_replace('$MODEL_NAME$', ucfirst($files['filename']) , $templateData);
+        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'), 'controller.stub');
+        $templateData = str_replace('$MODEL_NAME$', ucfirst($files['filename']), $templateData);
 
         FileUtils::createFile(
             $files['filePath'].DIRECTORY_SEPARATOR,
@@ -82,21 +81,20 @@ class ControllerGenerator implements GeneratorInterface
     private function handlePath($path)
     {
         $filename = "";
-        if($path = explode(DIRECTORY_SEPARATOR , $path)){
+        if($path = explode(DIRECTORY_SEPARATOR, $path)) {
             $filename = array_pop($path);
-            $filePath =  $this->commandConfig->get('controller').implode('/',$path);
+            $filePath =  $this->commandConfig->get('controller').implode('/', $path);
             $this->files->createDirectoryIfNotExist($filePath);
-            return compact('filename','filePath');
+            return compact('filename', 'filePath');
         } else {
             $filename = $path;
             $filePath = $this->commandConfig->get('controller');
-            return compact('filename','filePath');
+            return compact('filename', 'filePath');
         }
     }
 
     /**
      * 回滚函数
-     *
      */
     public function rollback()
     {

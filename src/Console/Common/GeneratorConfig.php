@@ -10,7 +10,6 @@ use Symfony\Component\Console\Input\InputInterface;
  *
  * @param CommandData &$commandData
  * @param Config $config
- *
  */
 class GeneratorConfig
 {
@@ -27,7 +26,9 @@ class GeneratorConfig
 
     public $timeStamp = false;
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     public $primaryName;
 
     public $tableName;
@@ -56,7 +57,7 @@ class GeneratorConfig
         $this->preparePrimaryName();
         $this->prepareTableName();
         $this->prepareModel();
-//        $commandData = $this->loadDynamicVariables($this->commandData);
+        //        $commandData = $this->loadDynamicVariables($this->commandData);
     }
 
 
@@ -78,13 +79,13 @@ class GeneratorConfig
         } else {
             $this->primaryName = 'id';
         }
-        $this->config->set('primary',$this->primaryName);
+        $this->config->set('primary', $this->primaryName);
     }
 
     public function prepareModel()
     {
         if ($this->getOption('softdelete')) {
-           $this->softDelete = $this->getOption('softdelete');
+            $this->softDelete = $this->getOption('softdelete');
         }
 
         if ($this->getOption('timestamp')) {
@@ -102,7 +103,7 @@ class GeneratorConfig
             $this->tableName = $this->mName;
         }
 
-        $this->config->set('tableName',$this->tableName);
+        $this->config->set('tableName', $this->tableName);
     }
 
 
@@ -124,8 +125,9 @@ class GeneratorConfig
     public function setOptions(InputInterface $input)
     {
         foreach ($input->getOptions() as $key => $option) {
-            if($option)
-                $this->setOption($key , $option);
+            if($option) {
+                $this->setOption($key, $option);
+            }
         }
     }
 
@@ -158,7 +160,7 @@ class GeneratorConfig
     public function getViewsPath($views)
     {
         $viewPath = $this->get('applicationTemplates');
-        if(file_exists($viewPath.$views)){
+        if(file_exists($viewPath.$views)) {
             return $viewPath.$views;
         } else {
             $viewPath = $this->get('systemTemplates');

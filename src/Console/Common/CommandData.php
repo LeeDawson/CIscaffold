@@ -9,33 +9,44 @@ use Symfony\Component\Console\Output\OutputInterface;
 use OutSource\Console\Utils\GeneratorFieldsInputUtil;
 /**
  *  拿到命令行中数据存入
- *
  */
 class CommandData
 {
     public static $COMMAND_TYPE_SCAFFOLD = 'scaffold';
 
-    /** @var string */
+    /**
+     * @var string 
+     */
     public $modelName;
 
     public $commandType;
 
-    /** @var GeneratorConfig */
+    /**
+     * @var GeneratorConfig 
+     */
     public $config;
 
-    /** @var GeneratorField[] */
+    /**
+     * @var GeneratorField[] 
+     */
     public $fields = [];
 
-    /** @var Command */
+    /**
+     * @var Command 
+     */
     public $commandObj;
 
-    /** @var array */
+    /**
+     * @var array 
+     */
     public $dynamicVars = [];
 
     public $fieldNamesMapping = [];
 
 
-    /** @var CommandData */
+    /**
+     * @var CommandData 
+     */
     protected static $instance = null;
 
     public static function getInstance()
@@ -94,8 +105,8 @@ class CommandData
         foreach ($schema->columns as $column) {
 
             //多种类型的html支持
-            $fieldInputStr = implode(" " , [$column , $schema->htmlType[$column] , implode("," , $schema->options[$column]) ]) ;
-            $validations = implode("|" , $schema->rule[$column]);
+            $fieldInputStr = implode(" ", [$column , $schema->htmlType[$column] , implode(",", $schema->options[$column]) ]);
+            $validations = implode("|", $schema->rule[$column]);
 
             $this->fields[] = GeneratorFieldsInputUtil::processFieldInput(
                 $fieldInputStr,
@@ -190,8 +201,9 @@ class CommandData
     public function getModelPrimaryKey()
     {
         foreach ($this->fields as $field) {
-            if($field->isPrimary)
+            if($field->isPrimary) {
                 return $field->name;
+            }
         }
 
         throw new LogicException("We can not live without primary key");

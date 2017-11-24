@@ -28,7 +28,7 @@ class LibraryGenerator implements GeneratorInterface
         $FileName = ucfirst($modelName).'lib.php';
         $preModelName = 'M_'.ucfirst($modelName);
 
-        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'scaffold_libraries.stub');
+        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'), 'scaffold_libraries.stub');
         $templateData = str_replace('$LIBNAME$', ucfirst($modelName).'Lib', $templateData);
         $templateData = str_replace('$MODEL_NAME$', $preModelName, $templateData);
         $templateData = str_replace('$PRIMARY$', $this->commandData->getModelPrimaryKey(), $templateData);
@@ -48,16 +48,18 @@ class LibraryGenerator implements GeneratorInterface
 
     private function getTimeStamp($timeStamp)
     {
-        if(!$timeStamp)
+        if(!$timeStamp) {
             return null;
+        }
 
         return  '$cond["order_by"] = array( "key" => "'.$timeStamp.'" , "value" => "DESC");';
     }
 
     private function getSoftDelete($softDelete)
     {
-        if(!$softDelete)
+        if(!$softDelete) {
             return null;
+        }
 
         return '!empty($data["'.$softDelete.'"]) && $cond["where"] = [ "'.$softDelete.'" => 1 ];';
     }
@@ -66,7 +68,7 @@ class LibraryGenerator implements GeneratorInterface
     {
         $modelName = $this->commandData->modelName;
         $FileName = ucfirst($modelName).'lib.php';
-        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'),'libraries.stub');
+        $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'), 'libraries.stub');
         $templateData = str_replace('$LIBNAME$', ucfirst($modelName).'Lib', $templateData);
 
         FileUtils::createFile(
@@ -83,7 +85,6 @@ class LibraryGenerator implements GeneratorInterface
 
     /**
      * 回滚函数
-     *
      */
     public function rollback()
     {

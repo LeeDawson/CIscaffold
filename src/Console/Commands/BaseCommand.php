@@ -81,7 +81,6 @@ class BaseCommand extends SymfonyCommand
     /**
      * config info
      *
-     *
      * @var object
      */
     protected $config;
@@ -108,33 +107,38 @@ class BaseCommand extends SymfonyCommand
      *
      * @param array $argument
      *
-     * @return  InputArgument
+     * @return InputArgument
      */
     protected function parseArgument($argument)
     {
-        if(count($argument) < 3)
+        if(count($argument) < 3) {
             throw new InvalidArgumentException('argument least three');
+        }
 
         list($name,$model,$description) = $argument;
 
-        if( empty($name) ||
-            empty( $description) || (
-            !in_array($model,[
+        if(empty($name) 
+            || empty($description) || (!in_array(
+                $model, [
                 InputArgument::OPTIONAL,
                 InputArgument::REQUIRED,
                 InputArgument::IS_ARRAY,
-            ]))
-        )
+                ]
+            ))
+        ) {
             throw new InvalidArgumentException('argument error');
+        }
 
-        if($model == InputArgument::OPTIONAL && empty($argument[3]))
+        if($model == InputArgument::OPTIONAL && empty($argument[3])) {
             throw new InvalidArgumentException('The default value (for self::OPTIONAL mode only)');
+        }
 
 
 
-        return new InputArgument($name ,
-            $model ,
-            $description ,
+        return new InputArgument(
+            $name,
+            $model,
+            $description,
             $model == InputArgument::OPTIONAL ? $argument[3]: null
         );
     }
@@ -144,31 +148,35 @@ class BaseCommand extends SymfonyCommand
      *
      * @param array $argument
      *
-     * @return  InputArgument
+     * @return InputArgument
      */
     protected function parseOption($options)
     {
 
-        if(count($options) < 4)
+        if(count($options) < 4) {
             throw new InvalidArgumentException('argument least four');
+        }
 
         list($name,$shortcut,$model,$description) = $options;
 
-        if( empty($name) ||
-            empty( $description) || (
-            !in_array($model,[
+        if(empty($name) 
+            || empty($description) || (!in_array(
+                $model, [
                 InputOption::VALUE_NONE,
                 InputOption::VALUE_REQUIRED,
                 InputOption::VALUE_OPTIONAL,
                 InputOption::VALUE_IS_ARRAY
-            ]))
-        )
+                ]
+            ))
+        ) {
             throw new InvalidArgumentException('argument error');
+        }
 
-        return new InputOption($name ,
+        return new InputOption(
+            $name,
             $shortcut,
-            $model ,
-            $description ,
+            $model,
+            $description,
             $model == InputOption::VALUE_NONE  ? null: null
         );
     }
@@ -196,8 +204,8 @@ class BaseCommand extends SymfonyCommand
     /**
      * Run the console command.
      *
-     * @param  \Symfony\Component\Console\Input\InputInterface  $input
-     * @param  \Symfony\Component\Console\Output\OutputInterface  $output
+     * @param  \Symfony\Component\Console\Input\InputInterface   $input
+     * @param  \Symfony\Component\Console\Output\OutputInterface $output
      * @return int
      */
     public function run(InputInterface $input, OutputInterface $output)
@@ -210,8 +218,8 @@ class BaseCommand extends SymfonyCommand
     /**
      * Confirm a question with the user.
      *
-     * @param  string  $question
-     * @param  bool    $default
+     * @param  string $question
+     * @param  bool   $default
      * @return bool
      */
     public function confirm($question, $default = false)
@@ -222,8 +230,8 @@ class BaseCommand extends SymfonyCommand
     /**
      * Prompt the user for input.
      *
-     * @param  string  $question
-     * @param  string  $default
+     * @param  string $question
+     * @param  string $default
      * @return string
      */
     public function ask($question, $default = null)
@@ -236,8 +244,8 @@ class BaseCommand extends SymfonyCommand
     /**
      * Prompt the user for input but hide the answer from the console.
      *
-     * @param  string  $question
-     * @param  bool    $fallback
+     * @param  string $question
+     * @param  bool   $fallback
      * @return string
      */
     public function secret($question, $fallback = true)
@@ -252,11 +260,11 @@ class BaseCommand extends SymfonyCommand
     /**
      * Give the user a single choice from an array of answers.
      *
-     * @param  string  $question
-     * @param  array   $choices
-     * @param  string  $default
-     * @param  mixed   $attempts
-     * @param  bool    $multiple
+     * @param  string $question
+     * @param  array  $choices
+     * @param  string $default
+     * @param  mixed  $attempts
+     * @param  bool   $multiple
      * @return string
      */
     public function choice($question, array $choices, $default = null, $attempts = null, $multiple = null)
@@ -271,9 +279,9 @@ class BaseCommand extends SymfonyCommand
     /**
      * Format input to textual table.
      *
-     * @param  array   $headers
-     * @param  \Illuminate\Contracts\Support\Arrayable|array  $rows
-     * @param  string  $style
+     * @param  array                                         $headers
+     * @param  \Illuminate\Contracts\Support\Arrayable|array $rows
+     * @param  string                                        $style
      * @return void
      */
     public function table(array $headers, $rows, $style = 'default')
@@ -290,8 +298,8 @@ class BaseCommand extends SymfonyCommand
     /**
      * Write a string as information output.
      *
-     * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  string          $string
+     * @param  null|int|string $verbosity
      * @return void
      */
     public function info($string, $verbosity = null)
@@ -302,9 +310,9 @@ class BaseCommand extends SymfonyCommand
     /**
      * Write a string as standard output.
      *
-     * @param  string  $string
-     * @param  string  $style
-     * @param  null|int|string  $verbosity
+     * @param  string          $string
+     * @param  string          $style
+     * @param  null|int|string $verbosity
      * @return void
      */
     public function line($string, $style = null, $verbosity = null)
@@ -317,8 +325,8 @@ class BaseCommand extends SymfonyCommand
     /**
      * Write a string as comment output.
      *
-     * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  string          $string
+     * @param  null|int|string $verbosity
      * @return void
      */
     public function comment($string, $verbosity = null)
@@ -329,8 +337,8 @@ class BaseCommand extends SymfonyCommand
     /**
      * Write a string as question output.
      *
-     * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  string          $string
+     * @param  null|int|string $verbosity
      * @return void
      */
     public function question($string, $verbosity = null)
@@ -341,8 +349,8 @@ class BaseCommand extends SymfonyCommand
     /**
      * Write a string as error output.
      *
-     * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  string          $string
+     * @param  null|int|string $verbosity
      * @return void
      */
     public function error($string, $verbosity = null)
@@ -353,8 +361,8 @@ class BaseCommand extends SymfonyCommand
     /**
      * Write a string as warning output.
      *
-     * @param  string  $string
-     * @param  null|int|string  $verbosity
+     * @param  string          $string
+     * @param  null|int|string $verbosity
      * @return void
      */
     public function warn($string, $verbosity = null)
@@ -371,7 +379,7 @@ class BaseCommand extends SymfonyCommand
     /**
      * Get the verbosity level in terms of Symfony's OutputInterface level.
      *
-     * @param  string|int  $level
+     * @param  string|int $level
      * @return int
      */
     protected function parseVerbosity($level = null)
@@ -405,7 +413,7 @@ class BaseCommand extends SymfonyCommand
     /**
      * Get the value of a command argument.
      *
-     * @param  string|null  $key
+     * @param  string|null $key
      * @return string|array
      */
     public function argument($key = null)
@@ -419,7 +427,7 @@ class BaseCommand extends SymfonyCommand
 
     /**
      * @param $fileName
-     * @param string $prompt
+     * @param string   $prompt
      *
      * @return bool
      */
@@ -435,7 +443,7 @@ class BaseCommand extends SymfonyCommand
     /**
      * Get the value of a command option.
      *
-     * @param  string  $key
+     * @param  string $key
      * @return string|array
      */
     public function option($key = null)

@@ -22,7 +22,7 @@ class ModulesData
         $this->modulesName = $commands->modulesName;
 
         foreach ($commands->options() as $key => $option) {
-            $this->setOption($key , $option);
+            $this->setOption($key, $option);
         }
 
         $this->handleOption();
@@ -30,11 +30,13 @@ class ModulesData
 
     public function handleOption()
     {
-        if($this->getOption('moduleName'))
+        if($this->getOption('moduleName')) {
             $this->modulesName = $this->getOption('moduleName');
+        }
 
-        if($this->getOption('sqldump'))
+        if($this->getOption('sqldump')) {
             $this->sqlDump = false;
+        }
     }
 
     public function getOption($key)

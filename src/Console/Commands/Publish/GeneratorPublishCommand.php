@@ -9,7 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * 生成父类
- *
  */
 class GeneratorPublishCommand extends PublishBaseCommand
 {
@@ -56,7 +55,6 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * 初始化验证代码
-     *
      */
     private function initValidation()
     {
@@ -87,7 +85,7 @@ class GeneratorPublishCommand extends PublishBaseCommand
         ];
 
         foreach ($views as $layout => $view) {
-            $templateData = FileUtils::fileExistWithFetch($this->config, $layout );
+            $templateData = FileUtils::fileExistWithFetch($this->config, $layout);
             FileUtils::createFile(
                 $this->config->get('views') . $this->config->get('modules'),
                 $view,
@@ -99,7 +97,6 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * 初始化文件类
-     *
      */
     private function initUploadify()
     {
@@ -116,21 +113,20 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * 初始化基础的控制器
-     *
      */
     private function initControllerBase()
     {
-        $templateData = FileUtils::getTemplateScaffoldPath($this->config->get('systemTemplates'),'adminBase.stub');
-        $fileName = ucfirst(rtrim($this->config->get('modules'),DIRECTORY_SEPARATOR))."Base.php";
+        $templateData = FileUtils::getTemplateScaffoldPath($this->config->get('systemTemplates'), 'adminBase.stub');
+        $fileName = ucfirst(rtrim($this->config->get('modules'), DIRECTORY_SEPARATOR))."Base.php";
         $modulesHeader = $this->config->get('modules').'common_header';
         $modules = $this->config->get('modules').'';
         $modulesFooter = $this->config->get('modules').'common_footer';
         $modulesMenu = $this->config->get('modules').'common_menu';
-        $templateData = str_replace('$viewModulesHeader$',$modulesHeader,$templateData);
-        $templateData = str_replace('$viewModulesMenu$',$modulesMenu,$templateData);
+        $templateData = str_replace('$viewModulesHeader$', $modulesHeader, $templateData);
+        $templateData = str_replace('$viewModulesMenu$', $modulesMenu, $templateData);
 
         $templateData = str_replace('$viewModules$', $modules, $templateData);
-        $templateData = str_replace('$viewModulesFooter$',$modulesFooter,$templateData);
+        $templateData = str_replace('$viewModulesFooter$', $modulesFooter, $templateData);
 
         FileUtils::createFile(
             $this->config->get('controller').$this->config->get('modules'),
@@ -142,11 +138,10 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * 初始化服务层的基础控制器
-     *
      */
     private function initServerBase()
     {
-        $templateData = FileUtils::getTemplateScaffoldPath($this->config->get('systemTemplates'),'myServer.stub');
+        $templateData = FileUtils::getTemplateScaffoldPath($this->config->get('systemTemplates'), 'myServer.stub');
         $fileName = "MY_Server.php";
 
         FileUtils::createFile(
@@ -159,11 +154,10 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * 初始化model层
-     *
      */
     private function initModelCoreBase()
     {
-        $templateData = FileUtils::getTemplateScaffoldPath($this->config->get('systemTemplates'),'myModel.stub');
+        $templateData = FileUtils::getTemplateScaffoldPath($this->config->get('systemTemplates'), 'myModel.stub');
         $fileName = "MY_Model.php";
 
         FileUtils::createFile(
@@ -176,11 +170,10 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * 初始化控制器核心
-     *
      */
     private function initControllerCoreBase()
     {
-        $templateData = FileUtils::getTemplateScaffoldPath($this->config->get('systemTemplates'),'myController.stub');
+        $templateData = FileUtils::getTemplateScaffoldPath($this->config->get('systemTemplates'), 'myController.stub');
         $fileName = "MY_Controller.php";
 
         FileUtils::createFile(
@@ -194,12 +187,11 @@ class GeneratorPublishCommand extends PublishBaseCommand
 
     /**
      * 初始化分页的配置
-     *
      */
     private function initPagination()
     {
         $name = "pagination.stub";
-        $templateData = FileUtils::fileExistWithFetch($this->config, $name );
+        $templateData = FileUtils::fileExistWithFetch($this->config, $name);
 
         FileUtils::createFile(
             $this->config->get('config'),

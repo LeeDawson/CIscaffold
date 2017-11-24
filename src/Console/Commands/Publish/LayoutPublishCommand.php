@@ -58,20 +58,20 @@ class LayoutPublishCommand extends BaseCommand
         
         foreach ($this->getResource() as $name => $addr) {
             $dirname = dirname($viewsPath).DIRECTORY_SEPARATOR.$modules.$addr;
-            $this->files->copyDirectory($templateType.$name , $dirname);
+            $this->files->copyDirectory($templateType.$name, $dirname);
             $this->comment($name.' published');
             $this->info(dirname($viewsPath).$addr);
         }
 
         foreach ($this->getLayout() as $name => $addr) {
-            $this->files->copy($templateType.$name.'.stub' , $viewsPath.$addr);
+            $this->files->copy($templateType.$name.'.stub', $viewsPath.$addr);
             $this->comment($addr.' published');
             $this->info($viewsPath);
         }
 
         foreach ($this->getVendor() as $name => $addr) {
             $dirname = dirname($viewsPath) . DIRECTORY_SEPARATOR . $addr;
-            $this->files->copyDirectory($templateType.$name , $dirname);
+            $this->files->copyDirectory($templateType.$name, $dirname);
             $this->comment($name.' published');
             $this->info(dirname($viewsPath).$addr);
         }
@@ -87,7 +87,7 @@ class LayoutPublishCommand extends BaseCommand
         $this->createDirectories($viewsPath);
         $views = $this->getView();
         foreach ($views as $name => $addr) {
-            $this->files->copy($templateType.$name.'.stub' , $viewsPath.$addr);
+            $this->files->copy($templateType.$name.'.stub', $viewsPath.$addr);
             $this->comment($addr.' published');
             $this->info($viewsPath);
         }
@@ -100,7 +100,7 @@ class LayoutPublishCommand extends BaseCommand
         $this->createDirectories($viewsPath);
         $fields = $this->getFields();
         foreach ($fields as $name => $addr) {
-            $this->files->copy($templateType.$name.'.stub' , $viewsPath.$addr);
+            $this->files->copy($templateType.$name.'.stub', $viewsPath.$addr);
             $this->comment($addr.' published');
             $this->info($viewsPath);
         }
@@ -108,10 +108,10 @@ class LayoutPublishCommand extends BaseCommand
 
     private function createDirectories($viewsPath)
     {
-        $this->files->createDirectoryIfNotExist($viewsPath,false);
-        $this->files->createDirectoryIfNotExist($viewsPath.'Layouts',false);
-        $this->files->createDirectoryIfNotExist($viewsPath.'View',false);
-        $this->files->createDirectoryIfNotExist($viewsPath.'Fields',false);
+        $this->files->createDirectoryIfNotExist($viewsPath, false);
+        $this->files->createDirectoryIfNotExist($viewsPath.'Layouts', false);
+        $this->files->createDirectoryIfNotExist($viewsPath.'View', false);
+        $this->files->createDirectoryIfNotExist($viewsPath.'Fields', false);
     }
 
     private function getLayout()

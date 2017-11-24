@@ -12,8 +12,6 @@ class Application extends Container
      * 核心启动项目
      *
      * \OutSource\Console\ServerProvider::class  console
-     *
-     *
      */
     public $baseProviders = [
         \OutSource\Config\ServerProvider::class,
@@ -59,7 +57,7 @@ class Application extends Container
      */
     protected function registerConfig(array $config)
     {
-        $this['user_configs'] = array_merge($config , [ "applicationPath" => $this->applicationPath]);
+        $this['user_configs'] = array_merge($config, [ "applicationPath" => $this->applicationPath]);
         return $this;
     }
 

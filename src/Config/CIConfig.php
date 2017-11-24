@@ -10,12 +10,10 @@ class CIConfig implements ConfigInterface
     protected $basePath = "";
     /**
      * 项目名称
-     *
      */
     protected $rootPath = "application";
     /**
      * 默认的CI路径
-     *
      */
     protected $ciPath = [
         "controller" => "controllers",
@@ -48,7 +46,7 @@ class CIConfig implements ConfigInterface
 
     protected function getBaseUrl($item)
     {
-        if( empty($item) || !isset($item['basePath']) || ( isset($item['basePath']) && empty($item['basePath']))){
+        if(empty($item) || !isset($item['basePath']) || ( isset($item['basePath']) && empty($item['basePath']))) {
             throw new InvalidArgumentException("basePath must exist");
         }
 
@@ -62,11 +60,12 @@ class CIConfig implements ConfigInterface
 
     /**
      * 合并用户自定义数据
-     * @param array  $args
+     *
+     * @param array $args
      */
     protected function setSystemPath($item)
     {
-        $this->ciPath =  array_merge($this->ciPath,$item);
+        $this->ciPath =  array_merge($this->ciPath, $item);
     }
 
     public function getConfigs()
@@ -91,7 +90,7 @@ class CIConfig implements ConfigInterface
 
     protected function rootPaths($path)
     {
-        if(!$this->checkPath($path)){
+        if(!$this->checkPath($path)) {
             throw new InvalidArgumentException($path."error");
         }
         return $this->basePath . DIRECTORY_SEPARATOR . $this->rootPath . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
@@ -104,11 +103,12 @@ class CIConfig implements ConfigInterface
 
     private function checkPath($path)
     {
-        $paths = explode('/',$path);
-        if(count($path) > 1)
+        $paths = explode('/', $path);
+        if(count($path) > 1) {
             return false;
+        }
 
-        return trim($path,DIRECTORY_SEPARATOR);
+        return trim($path, DIRECTORY_SEPARATOR);
     }
 
 }

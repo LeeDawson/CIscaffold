@@ -40,12 +40,12 @@ class ModulesCategoryGenerator implements GeneratorInterface
         $templateType = $this->commandConfig->get('applicationTemplates'); //系统路径
 
         $templateData = FileUtils::getTemplateModulesPath(
-            $this->commandConfig->get('systemTemplates') ,
+            $this->commandConfig->get('systemTemplates'),
             'category'. DIRECTORY_SEPARATOR . 'category.sql'
         );
 
         FileUtils::createFile(
-            $templateType.'modules/' ,
+            $templateType.'modules/',
             "category.sql",
             $templateData
         );
@@ -60,7 +60,7 @@ class ModulesCategoryGenerator implements GeneratorInterface
         $fileName = $moduleName.'.php';
 
         $templateData = FileUtils::getTemplateModulesPath(
-            $this->commandConfig->get('systemTemplates') ,
+            $this->commandConfig->get('systemTemplates'),
             'category'. DIRECTORY_SEPARATOR . 'controller.stub'
         );
 
@@ -82,14 +82,14 @@ class ModulesCategoryGenerator implements GeneratorInterface
         $fileName = 'M_' . $moduleName.'.php';
 
         $templateData = FileUtils::getTemplateModulesPath(
-            $this->commandConfig->get('systemTemplates') ,
+            $this->commandConfig->get('systemTemplates'),
             'category'. DIRECTORY_SEPARATOR . 'model.stub'
         );
 
         $templateData = str_replace('$MODEL$', 'M_'.$moduleName, $templateData);
 
         FileUtils::createFile(
-            $this->commandConfig->get('model') ,
+            $this->commandConfig->get('model'),
             $fileName,
             $templateData
         );
@@ -112,11 +112,11 @@ class ModulesCategoryGenerator implements GeneratorInterface
             $viewPath = $this->commandConfig->get('views') . $this->commandConfig->get('modules') . $moduleName . DIRECTORY_SEPARATOR;
 
             $templateData = FileUtils::getTemplateModulesPath(
-                $this->commandConfig->get('systemTemplates') ,
+                $this->commandConfig->get('systemTemplates'),
                 'category'. DIRECTORY_SEPARATOR . $key
             );
 
-            $templateData = str_replace('$MODULES$', $module , $templateData);
+            $templateData = str_replace('$MODULES$', $module, $templateData);
             $templateData = str_replace('$MODELNAME$', $moduleName, $templateData);
 
 
@@ -133,7 +133,6 @@ class ModulesCategoryGenerator implements GeneratorInterface
 
     /**
      * 回滚函数
-     *
      */
     public function rollback()
     {

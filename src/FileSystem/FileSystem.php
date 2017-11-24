@@ -16,7 +16,7 @@ class FileSystem
     /**
      * Determine if a file or directory exists.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return bool
      */
     public function exists($path)
@@ -27,8 +27,8 @@ class FileSystem
     /**
      * Get the contents of a file.
      *
-     * @param  string  $path
-     * @param  bool  $lock
+     * @param  string $path
+     * @param  bool   $lock
      * @return string
      *
      * @throws OutSource\Kernel\Exceptions\FileNotFoundException;
@@ -45,7 +45,7 @@ class FileSystem
     /**
      * Get contents of a file with shared access.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return string
      */
     public function sharedGet($path)
@@ -74,7 +74,7 @@ class FileSystem
     /**
      * Get the returned value of a file.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return mixed
      *
      * @throws OutSource\Kernel\Exceptions\FileNotFoundException;
@@ -82,7 +82,7 @@ class FileSystem
     public function getRequire($path)
     {
         if ($this->isFile($path)) {
-            return require $path;
+            return include $path;
         }
 
         throw new FileNotFoundException("File does not exist at path {$path}");
@@ -91,18 +91,18 @@ class FileSystem
     /**
      * Require the given file once.
      *
-     * @param  string  $file
+     * @param  string $file
      * @return mixed
      */
     public function requireOnce($file)
     {
-        require_once $file;
+        include_once $file;
     }
 
     /**
      * Get the MD5 hash of the file at the given path.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return string
      */
     public function hash($path)
@@ -113,9 +113,9 @@ class FileSystem
     /**
      * Write the contents of a file.
      *
-     * @param  string  $path
-     * @param  string  $contents
-     * @param  bool  $lock
+     * @param  string $path
+     * @param  string $contents
+     * @param  bool   $lock
      * @return int
      */
     public function put($path, $contents, $lock = false)
@@ -126,8 +126,8 @@ class FileSystem
     /**
      * Prepend to a file.
      *
-     * @param  string  $path
-     * @param  string  $data
+     * @param  string $path
+     * @param  string $data
      * @return int
      */
     public function prepend($path, $data)
@@ -142,8 +142,8 @@ class FileSystem
     /**
      * Append to a file.
      *
-     * @param  string  $path
-     * @param  string  $data
+     * @param  string $path
+     * @param  string $data
      * @return int
      */
     public function append($path, $data)
@@ -154,8 +154,8 @@ class FileSystem
     /**
      * Get or set UNIX mode of a file or directory.
      *
-     * @param  string  $path
-     * @param  int  $mode
+     * @param  string $path
+     * @param  int    $mode
      * @return mixed
      */
     public function chmod($path, $mode = null)
@@ -170,7 +170,7 @@ class FileSystem
     /**
      * Delete the file at a given path.
      *
-     * @param  string|array  $paths
+     * @param  string|array $paths
      * @return bool
      */
     public function delete($paths)
@@ -195,8 +195,8 @@ class FileSystem
     /**
      * Move a file to a new location.
      *
-     * @param  string  $path
-     * @param  string  $target
+     * @param  string $path
+     * @param  string $target
      * @return bool
      */
     public function move($path, $target)
@@ -207,8 +207,8 @@ class FileSystem
     /**
      * Copy a file to a new location.
      *
-     * @param  string  $path
-     * @param  string  $target
+     * @param  string $path
+     * @param  string $target
      * @return bool
      */
     public function copy($path, $target)
@@ -219,8 +219,8 @@ class FileSystem
     /**
      * Create a hard link to the target file or directory.
      *
-     * @param  string  $target
-     * @param  string  $link
+     * @param  string $target
+     * @param  string $link
      * @return void
      */
     public function link($target, $link)
@@ -237,7 +237,7 @@ class FileSystem
     /**
      * Extract the file name from a file path.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return string
      */
     public function name($path)
@@ -248,7 +248,7 @@ class FileSystem
     /**
      * Extract the trailing name component from a file path.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return string
      */
     public function basename($path)
@@ -259,7 +259,7 @@ class FileSystem
     /**
      * Extract the parent directory from a file path.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return string
      */
     public function dirname($path)
@@ -270,7 +270,7 @@ class FileSystem
     /**
      * Extract the file extension from a file path.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return string
      */
     public function extension($path)
@@ -281,7 +281,7 @@ class FileSystem
     /**
      * Get the file type of a given file.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return string
      */
     public function type($path)
@@ -292,7 +292,7 @@ class FileSystem
     /**
      * Get the mime-type of a given file.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return string|false
      */
     public function mimeType($path)
@@ -303,7 +303,7 @@ class FileSystem
     /**
      * Get the file size of a given file.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return int
      */
     public function size($path)
@@ -314,7 +314,7 @@ class FileSystem
     /**
      * Get the file's last modification time.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return int
      */
     public function lastModified($path)
@@ -325,7 +325,7 @@ class FileSystem
     /**
      * Determine if the given path is a directory.
      *
-     * @param  string  $directory
+     * @param  string $directory
      * @return bool
      */
     public function isDirectory($directory)
@@ -336,7 +336,7 @@ class FileSystem
     /**
      * Determine if the given path is readable.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return bool
      */
     public function isReadable($path)
@@ -347,7 +347,7 @@ class FileSystem
     /**
      * Determine if the given path is writable.
      *
-     * @param  string  $path
+     * @param  string $path
      * @return bool
      */
     public function isWritable($path)
@@ -358,7 +358,7 @@ class FileSystem
     /**
      * Determine if the given path is a file.
      *
-     * @param  string  $file
+     * @param  string $file
      * @return bool
      */
     public function isFile($file)
@@ -369,8 +369,8 @@ class FileSystem
     /**
      * Find path names matching a given pattern.
      *
-     * @param  string  $pattern
-     * @param  int     $flags
+     * @param  string $pattern
+     * @param  int    $flags
      * @return array
      */
     public function glob($pattern, $flags = 0)
@@ -381,7 +381,7 @@ class FileSystem
     /**
      * Get an array of all files in a directory.
      *
-     * @param  string  $directory
+     * @param  string $directory
      * @return array
      */
     public function files($directory)
@@ -395,16 +395,18 @@ class FileSystem
         // To get the appropriate files, we'll simply glob the directory and filter
         // out any "files" that are not truly files so we do not end up with any
         // directories in our list, but only true files within the directory.
-        return array_filter($glob, function ($file) {
-            return filetype($file) == 'file';
-        });
+        return array_filter(
+            $glob, function ($file) {
+                return filetype($file) == 'file';
+            }
+        );
     }
 
     /**
      * Get all of the files from the given directory (recursive).
      *
-     * @param  string  $directory
-     * @param  bool  $hidden
+     * @param  string $directory
+     * @param  bool   $hidden
      * @return array
      */
     public function allFiles($directory, $hidden = false)
@@ -415,7 +417,7 @@ class FileSystem
     /**
      * Get all of the directories within a given directory.
      *
-     * @param  string  $directory
+     * @param  string $directory
      * @return array
      */
     public function directories($directory)
@@ -432,10 +434,10 @@ class FileSystem
     /**
      * Create a directory.
      *
-     * @param  string  $path
-     * @param  int     $mode
-     * @param  bool    $recursive
-     * @param  bool    $force
+     * @param  string $path
+     * @param  int    $mode
+     * @param  bool   $recursive
+     * @param  bool   $force
      * @return bool
      */
     public function makeDirectory($path, $mode = 0755, $recursive = false, $force = false)
@@ -450,9 +452,9 @@ class FileSystem
     /**
      * Move a directory.
      *
-     * @param  string  $from
-     * @param  string  $to
-     * @param  bool  $overwrite
+     * @param  string $from
+     * @param  string $to
+     * @param  bool   $overwrite
      * @return bool
      */
     public function moveDirectory($from, $to, $overwrite = false)
@@ -469,9 +471,9 @@ class FileSystem
     /**
      * Copy a directory from one location to another.
      *
-     * @param  string  $directory
-     * @param  string  $destination
-     * @param  int     $options
+     * @param  string $directory
+     * @param  string $destination
+     * @param  int    $options
      * @return bool
      */
     public function copyDirectory($directory, $destination, $options = null)
@@ -523,8 +525,8 @@ class FileSystem
      *
      * The directory itself may be optionally preserved.
      *
-     * @param  string  $directory
-     * @param  bool    $preserve
+     * @param  string $directory
+     * @param  bool   $preserve
      * @return bool
      */
     public function deleteDirectory($directory, $preserve = false)
@@ -561,7 +563,7 @@ class FileSystem
     /**
      * Empty the specified directory of all files and folders.
      *
-     * @param  string  $directory
+     * @param  string $directory
      * @return bool
      */
     public function cleanDirectory($directory)

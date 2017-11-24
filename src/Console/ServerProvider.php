@@ -46,15 +46,15 @@ class ServerProvider implements ServiceProviderInterface
     function register(Container $pimple)
     {
         $this->initGenerator($pimple);
-        return $pimple['console'] = function() use($pimple){
-           return  $this->initKernlConsole($pimple);
+        return $pimple['console'] = function () use ($pimple) {
+            return  $this->initKernlConsole($pimple);
         };
 
     }
 
     public function initKernlConsole($pimple)
     {
-        $this->addCommands($this->commands , $pimple);
+        $this->addCommands($this->commands, $pimple);
         return $this->getContainer();
     }
 
@@ -67,8 +67,9 @@ class ServerProvider implements ServiceProviderInterface
 
     protected function getContainer()
     {
-        if(! self::$container instanceof Application)
+        if(! self::$container instanceof Application) {
             self::$container = new Application();
+        }
 
         return self::$container;
     }
@@ -76,7 +77,7 @@ class ServerProvider implements ServiceProviderInterface
     protected function initGenerator($pimple)
     {
         $dirver = $pimple['config']['driver'];
-        call_user_func([$this , "load".$dirver."Generators"] , $pimple);
+        call_user_func([$this , "load".$dirver."Generators"], $pimple);
     }
 
     private function loadCIGenerators($pimple)

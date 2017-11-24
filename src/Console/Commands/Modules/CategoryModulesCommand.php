@@ -8,7 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use OutSource\Console\Common\ModulesData;
 /**
  * 生成父类
- *
  */
 class CategoryModulesCommand extends ModulesCommand
 {
@@ -32,21 +31,21 @@ class CategoryModulesCommand extends ModulesCommand
     /**
      * 命令行的启动入口
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
-     *
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
         //处理公用的option
-        $this->commandData = new ModulesData( $this );
+        $this->commandData = new ModulesData($this);
 
         $generator = new $this->container['generator.category']($this->config , $this->commandData , $this->container['files']);
-        if( $this->option('rollback') )
+        if($this->option('rollback') ) {
             $generator->rollback();
-        else
+        } else {
             $generator->generate();
+        }
 
     }
 

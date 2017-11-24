@@ -13,7 +13,7 @@ class FileUtils
 
         $result = file_get_contents($systemTemplatePath);
 
-        if(empty($result)){
+        if(empty($result)) {
             throw new LogicException($name.'template not found,please check PATH');
         }
 
@@ -26,7 +26,7 @@ class FileUtils
 
         $result = file_get_contents($systemTemplatePath);
 
-        if(empty($result)){
+        if(empty($result)) {
             throw new LogicException($path.'template not found,please check PATH');
         }
 
@@ -38,7 +38,7 @@ class FileUtils
 
         $result = file_get_contents($systemTemplatePath);
 
-        if(empty($result)){
+        if(empty($result)) {
             throw new LogicException($systemTemplatePath.'template not found,please check PATH');
         }
 
@@ -53,11 +53,13 @@ class FileUtils
         $applicaitonTemplatePath = $config->get('applicationTemplates').'Layouts'.DIRECTORY_SEPARATOR.$name;
         $systemTemplatePath = $config->get('systemTemplates').'Layouts'.DIRECTORY_SEPARATOR.$name;
 
-        if(file_exists($applicaitonTemplatePath))
+        if(file_exists($applicaitonTemplatePath)) {
             return file_get_contents($applicaitonTemplatePath);
+        }
 
-        if(file_exists($systemTemplatePath))
+        if(file_exists($systemTemplatePath)) {
             return file_get_contents($systemTemplatePath);
+        }
 
         throw new LogicException('没有找到分页模板');
 
