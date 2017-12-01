@@ -46,3 +46,26 @@
     display: inline-block;
 }
 /*导航处小红点 end*/
+
+/*登录页面 begin*/
+body.login-page{
+    background: url("../images/login_bg5.jpg") no-repeat;
+    background-size: 100% auto;
+}
+.login-page .has-feedback .l-captcha{
+    position: relative;
+    margin: 0 auto;
+}
+.login-page .has-feedback input{
+    width: 300px;
+    height: 44px;
+    position: relative;
+    margin: 0 auto;
+}
+.login-page .has-feedback .glyphicon{
+    right:10px;
+    top: 5px;
+}
+.login-page .login-logo{font-size: 33px;margin-bottom: 15px;}
+.login-page .loginbtn{width: 91%;}
+/*登录页面 end*/

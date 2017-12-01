@@ -43,6 +43,7 @@ class ServerProvider implements ServiceProviderInterface
     ];
 
 
+
     function register(Container $pimple)
     {
         $this->initGenerator($pimple);
@@ -52,11 +53,17 @@ class ServerProvider implements ServiceProviderInterface
 
     }
 
+    /**
+     * load kernel commands
+     *
+     */
     public function initKernlConsole($pimple)
     {
         $this->addCommands($this->commands, $pimple);
         return $this->getContainer();
     }
+
+
 
     protected function addCommands($commands , $pimple)
     {
