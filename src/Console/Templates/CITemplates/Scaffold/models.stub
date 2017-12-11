@@ -11,6 +11,11 @@ class $MODEL_NAME$ extends MY_Model
          $RULES$
     ];
 
+    public $ruleMessage = [
+//         'mini_app_secret.required' => '商户标题必须存在',
+//         'mini_app_secret.min' => '商户标题必须小于10'
+    ];
+
     public $softDelete = "$SOFTDELETE$";
 
     public $timestamps = "$TIMESTAMPS$";

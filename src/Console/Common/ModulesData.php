@@ -20,7 +20,7 @@ class ModulesData
         $this->commandObj = $commands;
 
         $this->modulesName = $commands->modulesName;
-
+        
         foreach ($commands->options() as $key => $option) {
             $this->setOption($key, $option);
         }

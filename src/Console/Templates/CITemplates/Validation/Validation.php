@@ -16,6 +16,8 @@ class Validation
         "allowEmpty" => ""
     ];
 
+    private static $message = [];
+
     /**
      * 用验证规则来验证数据
      *
@@ -24,8 +26,9 @@ class Validation
      *
      * @return array  [ "result" => true , "msg" => "" ,"correctData" => ""];
      */
-    public static function checkDataRule($preDatas, $rules)
+    public static function checkDataRule($preDatas, $rules , $message = [])
     {
+        self::$message = $message;
         $checkData = [ "result" => true , "msg" => "" ];
         $correctData = ['correctData' => ''];
 
@@ -51,21 +54,19 @@ class Validation
         return  $checkData;
     }
 
-    public static function checkDataByRule($preDatas, $rules)
+    public static function checkDataByRule($preDatas, $rules , $message = [])
     {
-
+        self::$message = $message;
         $checkData = [ "result" => true , "msg" => ''];
         $correctData = ['correctData' => ''];
 
         if(empty($preDatas)) {
             throw new LogicException("待检查数组不能为空");
         }
-
         foreach ($rules as $key => $rule) {
             if(isset($preDatas[$key]) ) {  // 输入的数据如果存在规则的字段 成功,不存在报错
                 $waitData = $preDatas[$key]; //等待被验证的值
                 $checkData = Validation::startCheck($waitData, Validation::handleRule($rule), $key);
-
                 if(!$checkData['result']) {
                     return $checkData;
                 }
@@ -73,7 +74,7 @@ class Validation
                 $correctData['correctData'][$key] = $waitData;
             } else {  //如果用户规则中的数据没有
                 $checkData['result'] = false;
-                $checkData['msg'] = $key .self::$correctRule['required'];
+                $checkData['msg'] = Validation::prinfError($key , 'required' );
                 return $checkData;
             }
         }
@@ -115,7 +116,7 @@ class Validation
         foreach ($preRules as $preRule) {
             $checkReuslt = forward_static_call_array([ self::class , $preRule->ruleName], [ $waitData , $preRule->ruleParamter]);
             if(!$checkReuslt) {
-                return [ 'result' => false , 'msg' => $name.Validation::$correctRule[$preRule->ruleName] ];
+                return [ 'result' => false , 'msg' => Validation::prinfError($name , $preRule->ruleName ) ];
             }
 
             $waitData = $checkReuslt;
@@ -123,6 +124,17 @@ class Validation
 
         return  ['result' => true , 'msg' => ''];
     }
+
+    protected static function prinfError($name , $ruleName)
+    {
+
+        if(isset(Validation::$message[$name.'.'.$ruleName])) {
+            return Validation::$message[$name.'.'.$ruleName];
+        }
+
+        return $name.Validation::$correctRule[$ruleName];
+    }
+
 
     private static function required($val , $param = [])
     {
@@ -133,13 +145,20 @@ class Validation
         return $val;
     }
 
+    /**
+     * max验证 值必须小于等于限定值
+     *
+     */
     private static function max($val , $param)
     {
-        if(strlen($val) > $param) {
-            return false;
+        if(!is_numeric($val)  && strlen($val) <= $param) {
+            return $val;
         }
 
-        return $val;
+        if(is_numeric($val) && $val <= $param)
+            return $val;
+
+        return false;
     }
 
     private static function number($val , $param )
@@ -159,11 +178,17 @@ class Validation
         return false;
     }
 
+    /**
+     * min验证 值必须大于等于限定值
+     *
+     */
     private static function min($val , $param )
     {
-        if(strlen($val) < $param) {
+        if(!is_numeric($val)  && strlen($val) >= $param)
             return $val;
-        }
+
+        if(is_numeric($val) && $val >= $param)
+            return $val;
 
         return false;
     }
@@ -177,7 +202,7 @@ class Validation
         return false;
     }
 
-    public function ip($val , $param)
+    public static function ip($val , $param)
     {
         if(filter_var($val, FILTER_VALIDATE_IP)) {
             return $val;
@@ -187,7 +212,7 @@ class Validation
     }
 
 
-    public function allowEmpty($val , $param)
+    public static function allowEmpty($val , $param)
     {
         return $val;
     }
