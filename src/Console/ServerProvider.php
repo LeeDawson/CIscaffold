@@ -43,7 +43,7 @@ class ServerProvider implements ServiceProviderInterface
         LibraryGeneratorCommand::class,
         SchemaGeneratorCommand::class,
         CategoryModulesCommand::class ,
-        AuthModulesCommand::class ,
+//        AuthModulesCommand::class ,
         AdvModulesCommand::class
     ];
 
@@ -100,7 +100,7 @@ class ServerProvider implements ServiceProviderInterface
         $pimple['generator.view'] = ViewGenerator::class;
         $pimple['generator.schema'] = SchemaGenerator::class;
         $pimple['generator.category'] = ModulesCategoryGenerator::class;
-        $pimple['generator.auth'] = ModulesAuthGenerator::class;
+//        $pimple['generator.auth'] = ModulesAuthGenerator::class;
         $pimple['generator.adv'] = ModulesAdvGenerator::class;
     }
 
