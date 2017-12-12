@@ -21,6 +21,8 @@ use OutSource\Console\Commands\Modules\CategoryModulesCommand;
 use OutSource\Console\Generators\CIGenerator\ModulesCategoryGenerator;
 use OutSource\Console\Commands\Modules\AuthModulesCommand;
 use OutSource\Console\Generators\CIGenerator\ModulesAuthGenerator;
+use OutSource\Console\Generators\CIGenerator\ModulesAdvGenerator;
+use OutSource\Console\Commands\Modules\AdvModulesCommand;
 
 class ServerProvider implements ServiceProviderInterface
 {
@@ -41,7 +43,8 @@ class ServerProvider implements ServiceProviderInterface
         LibraryGeneratorCommand::class,
         SchemaGeneratorCommand::class,
         CategoryModulesCommand::class ,
-        AuthModulesCommand::class
+        AuthModulesCommand::class ,
+        AdvModulesCommand::class
     ];
 
 
@@ -98,6 +101,7 @@ class ServerProvider implements ServiceProviderInterface
         $pimple['generator.schema'] = SchemaGenerator::class;
         $pimple['generator.category'] = ModulesCategoryGenerator::class;
         $pimple['generator.auth'] = ModulesAuthGenerator::class;
+        $pimple['generator.adv'] = ModulesAdvGenerator::class;
     }
 
 

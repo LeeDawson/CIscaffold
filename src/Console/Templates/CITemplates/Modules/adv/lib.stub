@@ -1,0 +1,226 @@
+<?php
+
+include_once APPPATH.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'MY_Server.php';
+include_once APPPATH.DIRECTORY_SEPARATOR.'libraries'.DIRECTORY_SEPARATOR.'Validation'.DIRECTORY_SEPARATOR.'Validation.php';
+
+
+
+class $MODULESNAME$ extends MY_Server
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('$MODEL$');
+    }
+
+    public function getOneAdv(array $param){
+        return $this->$MODEL$->getOneMsg($param);
+    }
+
+    public function getList( $data)
+    {
+
+        $cond = array();
+        !empty($data["if_show"]) && $cond["where"] = [ "if_show" => 1 ];
+        !empty($data['keyword']) && $cond['like'] = array( 'key' => 'adv_name' , 'value' => $data['keyword']);
+        !empty($data['adv_meta']) && $cond['like'] = array( 'key' => 'adv_meta' , 'value' => $data['adv_meta']);
+        $total_rows = $this->$MODEL$->getTotalRows( $cond);
+        if( $total_rows) {
+            $cond['cur_page'] = $data['cur_page'];
+            $cond['limit'] = ADMIN_PER_PAGE;
+            $cond['offset'] = ( $data['cur_page'] - 1) * $cond['limit'];
+            $res = $this->$MODEL$->getMsg( $cond);
+            $rs['msg'] = $res;
+            if( ADMIN_PER_PAGE < $total_rows){
+                $cond['total_rows'] = $total_rows;
+                $cond['cur_page'] = $data['cur_page'];
+                $cond['base_url'] = site_url( '$ROOTMODULES$/$MODULESNAME$/index');
+                $cond['per_page'] = ADMIN_PER_PAGE;
+                $cond['data_page_attr'] = 'data-page';
+                $this->load->library( 'pagination');
+                $this->pagination->initialize( $cond );
+                $rs['pagination'] = $this->pagination->create_links();
+            }
+            return $rs;
+        } else { // no data
+            return false;
+        }
+    }
+
+    public function getField($model='',array $where,$fieldName){
+        $result  =$this->$model->getOneMsg(
+            ['where'=>$where,'select'=>$fieldName]
+        );
+        if($result){
+            return $result["{$fieldName}"];
+        }else{
+            return '';
+        }
+
+    }
+
+    public function destory($id)
+    {
+        return $this->update([ "adv_id" => $id ],["if_show" => 0]);
+    }
+
+    public function delete($id)
+    {
+        return $this->$MODEL$->delByPk( $id , true );
+    }
+
+    public function update($where , $postDatas)
+    {
+        $postDatas = $this->fetchFiles($postDatas);
+        $preDatas = $this->preUpdateData($postDatas , $this->$MODEL$->fillAble);
+        $postDatas = Validation::checkDataRule($preDatas , $this->$MODEL$->rules );//处理下
+        if(!$postDatas['result'])
+             return  $postDatas;
+        return $this->$MODEL$->update($where , $postDatas['correctData']);
+    }
+
+    public function save($postDatas)
+    {
+        $postDatas = $this->fetchFiles($postDatas);
+        $preDatas = $this->prePostData($postDatas , $this->$MODEL$->fillAble);
+
+        $postDatas = Validation::checkDataRule($preDatas , $this->$MODEL$->rules );//处理下
+
+        if(!$postDatas['result'])
+            return  $postDatas;
+        $insertResult  = $this->$MODEL$->insert($postDatas['correctData']);
+
+        if($insertResult)
+            return ["result" => true ,"msg" => $insertResult];
+    }
+
+    /**
+     * 检查插入属性是否是模型中定义的
+     *
+     * @param array  $postDatas
+     * @param array  $fillAble
+     *
+     * @return bool result
+     */
+    private function prePostData($postDatas,$fillAble)
+    {
+        $preDatas = array();
+        foreach ($fillAble as $fill) {
+            $preDatas[$fill] = in_array($fill,array_keys($postDatas)) ? $postDatas[$fill] : 0;
+        }
+        return $preDatas;
+    }
+
+
+    public function createGrade($postData)
+    {
+        $postData['class_start_time'] = strtotime($postData['class_start_time']);
+        $postData['class_end_time'] = strtotime($postData['class_end_time']);
+        $postData["if_show"] = 1;
+
+        $cateogry_id = intval( $postData['class_category_1'] ) ;
+        $curren_cateogry_id = isset($postData['class_category_2']) ? intval( $postData['class_category_2'] ) : 0;
+
+        if($curren_cateogry_id)
+            $categoryMsg = $this->m_Category->getOneMsg([
+                'where' => [
+                    "category_id" => $curren_cateogry_id,
+                    "if_show" => 1
+                ],
+            ]);
+
+        if( empty($categoryMsg) )
+            return "分类有问题";
+        //1存放当前ID 有二级存二级,没二级存一级
+        //2 存父ID
+
+        if($curren_cateogry_id == 0){
+            $postData['class_category_1'] = $cateogry_id;
+            $postData['class_category_2'] = $cateogry_id;
+        }
+        //用户选择的二级分类
+        if($categoryMsg['category_pid'] != 0){
+            $postData['class_category_1'] = $curren_cateogry_id;
+            $postData['class_category_2'] = $categoryMsg['category_pid'];
+        }
+
+        return $this->save($postData);
+    }
+
+    /**
+     * 添加分类
+     */
+    public function addGrade($postData){
+        $postData['class_start_time'] = strtotime($postData['class_start_time']);
+        $postData['class_end_time'] = strtotime($postData['class_end_time']);
+        $postData["if_show"] = 1;
+        return $this->save($postData);
+    }
+
+    public function queryOne($id)
+    {
+        return $this->$MODEL$->getOneMsg([
+            "where" => ['adv_id' => $id]
+        ]);
+    }
+
+    private function preUpdateData($postDatas , $fillAble)
+    {
+        foreach ($postDatas as $key => $postData) {
+            if(!in_array($key , $fillAble))
+                unset($postDatas[$key]);
+        }
+        return $postDatas;
+    }
+
+    public function fetchFiles($postDatas)
+    {
+        $files = isset( $postDatas['files'] ) ? json_decode( $postDatas['files'] , true) : [];
+        if(empty($files))
+             return $postDatas;
+        foreach ($this->$MODEL$->fillAble as $fillable) {
+             isset($files[$fillable]) && $postDatas[$fillable] = json_encode( $files[$fillable] , JSON_UNESCAPED_UNICODE );
+        }
+
+        return $postDatas;
+    }
+
+
+    public function getGradeById($category_id)
+    {
+        return $this->$MODEL$->getMsg([
+           "where" => [ 'class_category_1' => $category_id ,"if_show" => 1 ]
+        ]);
+    }
+
+    /**
+     * 得到banner图
+     */
+    public function get_banner_adv($adv_meta='',$limit=''){
+        $adv_imgs = $this->$MODEL$->getOneMsg(
+            ['where'=>['adv_meta'=>$adv_meta,'is_show'=>1],'select'=>['adv_imgs']]
+        );
+        if($adv_imgs){
+            $adv_imgsArr = json_decode($adv_imgs['adv_imgs'],true);
+            $count = count($adv_imgsArr);
+            if(!empty($limit)){
+                $count>$limit?$count=$limit:'';
+            }
+            $advArr  = [];
+            for($i=0;$i<$count;$i++){
+                $advArr[] = $adv_imgsArr[$i];
+            }
+            return $advArr;
+        }else{
+            return false;
+        }
+    }
+
+
+
+
+
+
+
+}

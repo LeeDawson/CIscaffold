@@ -1,0 +1,152 @@
+<div class="content-wrapper">
+
+    <section class="content-header">
+        <h1>
+            <?php echo @$form_title;?>
+        </h1>
+        <ol class="breadcrumb">
+            <li>
+                <a href="<?php echo site_url('$MODULES$$MODELNAME$/index');?>">
+                <i class="fa fa-dashboard"></i>主页</a>
+            </li>
+        </ol>
+    </section>
+
+    <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="containerbox">
+                            <form id="form">
+                                <div class="row">
+                                    <div class="col-md-6 col-sm-9">
+                                        <div class="inputbtnbox ordingnum">
+                                            <label>广告位名称</label>
+                                            <div class="input-group ">
+                                                <input type="text" name="keyword" class="form-control">
+                                                <span class="input-group-btn"><button type="button" class=" searchbtn btn btn-info btn-flat">搜索</button></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1 col-sm-3">
+                                        <div class="clearbtnbox">
+                                            <button type="button" class="btn btn-block btn-success btn-flat resetbtn">清除</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="box-body">
+                            <div class="dataTables_wrapper">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="table1" class="table table-bordered table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>广告名称</th>
+                                                <th>广告调用标签</th>
+                                                <th>广告文字</th>
+                                                <th>添加时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="content-wrapper">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+<!--                                        <button type="button" onclick="jumpTo('-->
+<!--                                        --><?php //echo base_url('$MODULES$$MODELNAME$/create') ?>
+<!--                                                '); return false;" class="btn btn-block btn-primary btn-sm sjdc_btn">添加</button>-->
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <div id="pagi" class="dataTables_paginate paging_simple_numbers">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready( function()
+    {
+        $( '.searchbtn').click( function(){
+            getContents(1);
+        });
+
+        getContents(1);
+
+        $('.clearbtnbox').click(function(){
+            $("input[name='keyword']").val('');
+            getContents(1);
+        });
+    });
+
+    $(document).on( 'click' , '#pagi a' , function(){
+        var curPage = $(this).attr( 'data-page');
+        getContents( curPage);
+        return false;
+    });
+
+    function remove( goodsId ,e)
+    {
+        if( !confirm( '确认删除?'))
+            return false;
+        var url = baseUrl + "$MODULES$/$MODELNAME$/destory";
+        var data = 'adv_id=' + goodsId;
+        var rsJson = uniAjax( url , data);
+        if( rsJson.status == 'success'){
+            showSuccess( '操作成功' , null);
+            $(e).parent().parent().remove();
+        }
+        else if (rsJson.status == 'error')
+            showError( rsJson.msg);
+        else
+            showSuccess( '删除失败' , null);
+    };
+
+    var getContents = function( curPage)
+    {
+        var data = $( '#form').serialize();
+        data += '&cur_page=' + curPage;
+        var url = baseUrl + '$MODULES$/$MODELNAME$/adv_list';
+        var rsJson = uniAjax( url ,data);
+        if( rsJson.status == 'success'){
+            var html = '';
+            if( !uniIsnull(rsJson.data.msg)) {
+                var rsData = rsJson.data.msg;
+                for( i in rsJson.data.msg) {
+                    var editUrl = baseUrl + '$MODULES$/$MODELNAME$/edit/' ;
+                    html += '<tr>'+
+                                '<td>'+ rsData[i].adv_name+'</td>'+
+                                '<td>'+ rsData[i].adv_meta+'</td>'+
+                                '<td>'+ rsData[i].adv_text+'</td>'+
+                                '<td>'+ getLocalTime(rsData[i].date_add)+'</td>'+
+                                '<td>' +
+                        '<a href='+ editUrl + rsData[i].adv_id +'>编辑 &nbsp;&nbsp;</a>' +
+//                        '<a onclick="remove('+ rsData[i].adv_id +',this)">删除</a>' +
+                        '</td>' +
+                        '</tr>' ;
+                }
+            }
+            $( '#content-wrapper').html( html);
+            var pagination = '';
+            if( !uniIsnull( rsJson.data.pagination))
+                pagination = rsJson.data.pagination;
+            $( '#pagi').html( pagination);
+        }
+    };
+
+    $('.paytime #reservationtime').val("");
+
+</script>

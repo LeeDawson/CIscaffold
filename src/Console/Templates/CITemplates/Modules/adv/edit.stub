@@ -1,0 +1,191 @@
+<link rel="stylesheet" href="<?php echo base_url('public/vendor/dropify'); ?>/dropify.min.css">
+
+<script src="<?php echo base_url('public/vendor/dropify'); ?>/dropify.js"></script>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            <?php echo @$form_title;?>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="$MODULES$$MODELNAME$/index">
+                    <i class="fa fa-dashboard"></i>主页
+                </a>
+            </li>
+            <li><a href="#"><?php echo @$form_title;?></a></li>
+        </ol>
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="box">
+            <!-- form start -->
+            <form id="form">
+                <div class="box-header with-border">
+                    <div class="form-group">
+                        <label>广告位名称：</label>
+                        <input type="text" value="<?php echo @$data["adv_name"]?>"  name="adv_name" class="form-control" placeholder="请输入 ...">
+                    </div>
+                    <div class="form-group">
+                        <label>广告调用标签</label>
+                        <input type="text" value="<?php echo @$data["adv_meta"]?>"  name="adv_meta" class="form-control" placeholder="请输入 ...">
+                    </div>
+                    <div class="form-group">
+                        <label>广告文字</label>
+                        <input type="text" value="<?php echo @$data["adv_text"]?>"  name="adv_text" class="form-control" placeholder="请输入 ...">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="button" name="add" value="上传文件" />
+                    </div>
+
+                    <div class="files-group" >
+                        <input type="hidden" id="uploadimg_hidden" name="adv_imgs" value="">
+
+                        <?php foreach ($data['adv_imgs'] as $item) :?>
+                            <div style="padding-top:15px;padding-bottom:5px;" class="col-md-3 appendContents">
+                                <div class="fileupform">
+                                    <label onclick="deleteAdv(this)">广告图</label>
+                                    <input img-name="logo" data-default-file="<?php echo base_url() . $item['imgs'];?>"
+                                           data-max-file-size="400k"
+                                           data-allowed-file-extensions="jpg jpeg png gif" type="file"
+                                           class="input-file" />
+                                    <input type="hidden" name="imgs" value="<?php echo $item['imgs'];?>" />
+                                    <button class="file_upload_logo1 btn btn-sm btn-success" style="width: 100%;">上传</button> </div>
+                                <label style="margin-top: 8px;">跳转链接</label><input placeholder="http://" value="<?php echo $item['jumpurls'];?>" type="text" class="form-control" name="jumpurls" />
+                                <label style="margin-top: 8px;">排序</label><input placeholder="" type="text" value="<?php echo $item['sortranks'];?>" value=0 class="form-control" name="sortranks" />
+                                <label style="margin-top: 8px;">文字描述</label><input placeholder="" type="text" value="<?php echo $item['description'];?>"  class="form-control" name="description" />
+                            </div>
+                        <?php endforeach?>
+                    </div>
+
+                    <input type="hidden" name="adv_id" value="<?php echo @$data["adv_id"]?>">
+
+                    <div class="box-footer">
+                        <button type="submit" onclick="jumpTo('<?php echo base_url('$MODULES$$MODELNAME$/index'); ?>'); return false;" class="btn btn-default">取消</button>
+                        <button type="submit" class="btn btn-info pull-right">确定</button>
+                    </div>
+                    <!-- hidden end -->
+            </form>
+            <!-- form end -->
+        </div>
+        <!-- /.box -->
+
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<script type="text/javascript">
+
+    function deleteAdv(e)
+    {
+        $(e).parent().parent().remove();
+    }
+    $(document).ready( function()
+    {
+        $( '#form').validate({
+            submitHandler:function(){
+                var url = baseUrl + '$MODULES$$MODELNAME$/update';
+
+                var div = $('.files-group .appendContents');
+                var objs = new Array();
+                div.each(function(index, item){
+                    var $item = $(item);
+                    var obj = {};
+                    obj.jumpurls = $('input[name="jumpurls"]',$item).val();
+                    obj.sortranks = $('input[name="sortranks"]',$item).val();
+                    obj.description = $('input[name="description"]',$item).val();
+                    obj.imgs = $('input[name="imgs"]',$item).val();
+                    objs.push(obj);
+                });
+
+                $("#uploadimg_hidden").val(JSON.stringify(objs));
+
+                var data = $( '#form').serialize();
+
+                var rsJson = uniAjax( url , data);
+                if( rsJson.status == 'success')
+                    showSuccess( '操作成功' , rsJson.jumpurl);
+                else if(rsJson.status == 'error')
+                    showError( rsJson.data.errmsg.msg);
+                else
+                    showError( rsJson.msg);
+            },
+            debug:true,
+            "ignore":':file'
+        });
+
+        $('.input-file').dropify({});
+
+        $('.file_upload_logo1').on('click', function( e){
+            var $this = $(this);
+            e.preventDefault();
+            var fd = new FormData();
+            fd.append('image_upload', $this.closest('.appendContents').find('.input-file').get(0).files[0]);
+            $.ajax({
+                url: baseUrl + '$MODULES$$MODELNAME$/uploadOne',
+                type: 'POST',
+                data: fd,
+                contentType:false,
+                processData:false
+            }).done(function(result){
+                var rsJson = jQuery.parseJSON( result);
+                $( '#token').val( rsJson.data.token);
+                if( rsJson.status == 'success'){
+                    $( 'input:hidden',$this.closest('.appendContents')).val( rsJson.data.imgurl);
+                    alert( '上传成功');
+                }
+            }).fail(function(err){
+                console.log(err);
+            });
+        });
+
+
+
+        /* 动态绑定添加*/
+        $("input[name='add']").click(function (event) {
+            var appendHtml =
+                    '<div style="padding-top:15px;padding-bottom:5px;" class="col-md-3 appendContents">' +
+                    '<div class="fileupform">' +
+                    '<label onclick="deleteAdv(this)">广告图</label>'+
+                    '<input img-name="logo" data-default-file=" " data-max-file-size="400k" data-allowed-file-extensions="jpg jpeg png gif" type="file" class="input-file" />' +
+                    '<input type="hidden" name="imgs" value="" />'+
+                    '<button class="file_upload_logo1 btn btn-sm btn-success" style="width: 100%;">上传</button> </div> '+
+                    '<label style="margin-top: 8px;">跳转链接</label><input placeholder="http://" type="text" class="form-control" name="jumpurls" />' +
+                    '<label style="margin-top: 8px;">排序</label><input placeholder="" type="text" value=0 class="form-control" name="sortranks" />' +
+                    '<label style="margin-top: 8px;">文字描述</label><input placeholder="" type="text" value="" class="form-control" name="description" />';
+            var $str = $(appendHtml).clone();
+            $('.file_upload_logo1',$str).on('click', function( e){
+                var $this = $(this);
+                e.preventDefault();
+                var fd = new FormData();
+                fd.append('image_upload', $this.closest('.appendContents').find('.input-file').get(0).files[0]);
+                $.ajax({
+                    url: baseUrl + '$MODULES$$MODELNAME$/uploadOne',
+                    type: 'POST',
+                    data: fd,
+                    contentType:false,
+                    processData:false
+                }).done(function(result){
+                    var rsJson = jQuery.parseJSON( result);
+                    $( '#token').val( rsJson.data.token);
+                    if( rsJson.status == 'success'){
+                        $( 'input:hidden',$this.closest('.appendContents')).val( rsJson.data.imgurl);
+                        alert( '上传成功');
+                    }
+                }).fail(function(err){
+                    console.log(err);
+                });
+            });
+            $(".files-group").append($str);
+            $('.input-file').dropify({});
+        });
+
+    });
+</script>
+

@@ -69,3 +69,32 @@ body.login-page{
 .login-page .login-logo{font-size: 33px;margin-bottom: 15px;}
 .login-page .loginbtn{width: 91%;}
 /*登录页面 end*/
+
+/*上传图片底部按钮解决 begin*/
+.files-group{
+    overflow: hidden;
+}
+/*上传图片底部按钮解决 end*/
+
+
+/*备注编辑 begin*/
+.edit_modal textarea{
+    width: 100%;
+    height: 200px;
+    border:0;
+}
+.edit_modal .modal-content{
+    top: 100px;
+}
+.dataTables_wrapper .bluebtn{color: #3c8dbc;cursor: pointer;}
+/*备注编辑 end*/
+
+/*评论管理宽度 begin*/
+.dataTables_wrapper .commentstr{
+    max-width: 200px;
+    width: 150px;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+    overflow:hidden;
+}
+/*评论管理宽度 end*/

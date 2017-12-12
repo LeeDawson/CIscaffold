@@ -1,0 +1,33 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class $MODELNAME$ extends MY_Model
+{
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->_tablename = 'adv';
+        $this->_pk = 'adv_id';
+    }
+    public $fillAble = [
+        'adv_name',
+        'adv_text',
+        'adv_meta',
+        'adv_imgs',
+        'date_add',
+        'if_show',
+    ];
+
+    public $rules = [
+        'adv_name' => 'required',
+        'adv_text' => 'required',
+        'adv_meta' => 'required',
+        'adv_imgs' => 'required',
+    ];
+
+    public $softDelete = "if_show";
+    public $timestamps = "false";
+
+
+
+}
