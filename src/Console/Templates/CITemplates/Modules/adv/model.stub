@@ -3,6 +3,8 @@
 class $MODELNAME$ extends MY_Model
 {
 
+    public $_tablename;
+    public $_pk;
     public function __construct()
     {
         parent::__construct();

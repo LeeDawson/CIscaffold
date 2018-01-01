@@ -6,9 +6,9 @@ define("TIMESTAMP",time());
 class MY_Model extends CI_Model
 {
 
-    protected $_tablename;
-    protected $_pk;
-    protected $_data;
+    public $_tablename;
+    public $_pk;
+    public $_data;
 
     function __construct()
     {

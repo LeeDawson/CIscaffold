@@ -1,3 +1,33 @@
+<link rel="stylesheet" href="<?php echo base_url('public/vendor/dropify'); ?>/dropify.min.css">
+<script src="<?php echo base_url('public/vendor/dropify'); ?>/dropify.js"></script>
+<script>
+    $(function(){
+        $('.input-file').dropify({});
+        $('.file_upload').on('click', function( e){
+            var $this = $(this);
+            e.preventDefault();
+            var fd = new FormData();
+            fd.append('image_upload', $this.closest('.appendContents').find('.input-file').get(0).files[0]);
+            $.ajax({
+                url: baseUrl + 'admin/category/uploadOne',
+                type: 'POST',
+                data: fd,
+                contentType:false,
+                processData:false
+            }).done(function(result){
+                var rsJson = jQuery.parseJSON( result);
+                $( '#token').val( rsJson.data.token);
+                if( rsJson.status == 'success'){
+                    $( 'input:hidden',$this.closest('.appendContents')).val( rsJson.data.imgurl);
+                    alert( '上传成功');
+                }
+            }).fail(function(err){
+                console.log(err);
+            });
+        });
+    })
+</script>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -55,6 +85,18 @@
                     <div class="form-group">
                         <label>排序</label>
                         <input type="text" value="<?php echo isset( $categoryData['sortrank'])?$categoryData['sortrank']:'';?>" name="sortrank" class="form-control" placeholder="请输入 ...">
+                    </div>
+
+                    <div class="fileupform appendContents" style="width: 30%" >
+                           <label>分类图</label>
+                           <input img-name="logo" data-default-file="<?php echo @$categoryData["category_image"] ? base_url($categoryData["category_image"]):'';?>"
+                                                   data-max-file-size="400k"
+                                                   data-allowed-file-extensions="jpg jpeg png gif" type="file"
+                                                   class="input-file" />
+                           <input type="hidden" name="category_image" value="<?php echo @$categoryData["category_image"];?>" />
+                           <button class="file_upload btn btn-sm btn-success" style="width: 100%;">
+                                 上传
+                           </button>
                     </div>
 
                 </div>

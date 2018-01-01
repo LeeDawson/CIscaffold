@@ -62,7 +62,7 @@ class $MODULESNAME$ extends MY_Server
 
     public function destory($id)
     {
-        return $this->update([ "adv_id" => $id ],["if_show" => 0]);
+        return $this->$MODEL$->update( [ $this->$MODEL$->_pk => $id ] , [ "if_show" => 0 ]);
     }
 
     public function delete($id)

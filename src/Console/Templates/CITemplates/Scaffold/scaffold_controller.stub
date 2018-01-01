@@ -60,7 +60,7 @@ class $CONTROLER_NAME$ extends AdminBase
             $returnData = $this->$LIBRARY_NAME$->save($postData);
 
             if(!$returnData['result'])
-                $this->ajaxReturnError($returnData);
+                $this->ajaxReturnError($returnData['msg']);
             else
                 $this->ajaxReturn(base_url('$INDEXURL$/index'),$returnData);
         }
