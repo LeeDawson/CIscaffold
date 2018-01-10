@@ -30,7 +30,7 @@ class Validation
     {
         self::$message = $message;
         $checkData = [ "result" => true , "msg" => "" ];
-        $correctData = ['correctData' => ''];
+        $correctData = ['correctData' => array() ];
 
         if(empty($preDatas)) {
             throw new LogicException("待检查数组不能为空");
@@ -58,7 +58,7 @@ class Validation
     {
         self::$message = $message;
         $checkData = [ "result" => true , "msg" => ''];
-        $correctData = ['correctData' => ''];
+        $correctData = ['correctData' => array() ];
 
         if(empty($preDatas)) {
             throw new LogicException("待检查数组不能为空");
