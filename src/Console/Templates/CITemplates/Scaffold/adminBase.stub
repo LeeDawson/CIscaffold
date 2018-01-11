@@ -39,6 +39,30 @@ class AdminBase extends MY_Controller
         }
     }
 
+    public function uploadEditorImg( $upload_path = 'public/uploads/', $max_size = 1000 , $allow_types = 'jpg|jpeg|png|gif')
+    {
+        !is_dir( FCPATH . $upload_path) && mkdir( FCPATH . $upload_path , 0755);
+
+        $this->load->library('upload');
+        $config['upload_path'] = FCPATH . $upload_path;
+        $config['allowed_types'] = $allow_types;
+        $config['encrypt_name'] = true;
+        $config['max_size'] = $max_size;
+        $this->load->library('upload', $config);
+        $this->upload->initialize( $config);
+        if( $this->upload->do_upload( 'image_upload')){
+            $errno = 0;
+            $data = [
+                base_url($upload_path.$this->upload->data('file_name')),
+            ];
+              echo json_encode(compact('errno' , 'data'));
+        }else{
+              $errno = -1;
+              $data = [];
+              echo json_encode(compact('errno' , 'data'));
+        }
+    }
+
     public function ajaxReturn($jumpurl = '', $data = '', $status = 'success', $data_type = 'json')
     {
         echo json_encode(compact('status', 'data', 'jumpurl'));
