@@ -1,6 +1,7 @@
 <?php
 
-namespace OutSource\Console\Commands\Modules;
+namespace OutSource\Console\Commands\CICommands\Modules;
+
 use OutSource\Console\Common\CommandData;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -9,11 +10,12 @@ use OutSource\Console\Common\ModulesData;
 /**
  * 生成父类
  */
-class CategoryModulesCommand extends ModulesCommand
+class AdvModulesCommand extends ModulesCommand
 {
-    protected $name = 'modules:category';
 
-    protected $description = "Create a category modules";
+    protected $name = 'modules:adv';
+
+    protected $description = "Create a adv modules";
 
     protected $container;
 
@@ -24,9 +26,8 @@ class CategoryModulesCommand extends ModulesCommand
         parent::__construct();
         $this->container = $pimple;
         $this->config = $pimple['config'];
-        $this->modulesName = "category";
+        $this->modulesName = "Adv";
     }
-
 
     /**
      * 命令行的启动入口
@@ -40,7 +41,7 @@ class CategoryModulesCommand extends ModulesCommand
         //处理公用的option
         $this->commandData = new ModulesData($this);
 
-        $generator = new $this->container['generator.category']($this->config , $this->commandData , $this->container['files']);
+        $generator = new $this->container['generator.adv']($this->config , $this->commandData , $this->container['files']);
         if($this->option('rollback') ) {
             $generator->rollback();
         } else {
@@ -57,11 +58,10 @@ class CategoryModulesCommand extends ModulesCommand
     public function getOptions()
     {
         return [
-
-            ['moduleName', null, InputOption::VALUE_REQUIRED, 'modify category modules name'] ,
             ['sqldump', null, InputOption::VALUE_REQUIRED, 'deafult dump sql '] ,
             ['rollback', null, InputOption::VALUE_NONE, 'delete scaffold'],
         ];
     }
+
 
 }

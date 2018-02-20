@@ -1,6 +1,6 @@
 <?php
 
-namespace OutSource\Console\Commands\Scaffold;
+namespace OutSource\Console\Commands\CICommands\Scaffold;
 
 use OutSource\Console\Commands\BaseCommand;
 use OutSource\Console\Common\CommandData;

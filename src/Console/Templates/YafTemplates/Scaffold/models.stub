@@ -1,0 +1,34 @@
+<?php
+/**
+ * @name $MODEL_NAME$
+ */
+class $MODEL_NAME$ extends Illuminate\Database\Eloquent\Model
+{
+
+    public $fillAble = [
+        $FILLABLE$
+    ];
+
+    public $rules = [
+        $RULES$
+    ];
+
+    public $ruleMessage = [
+    //  'mini_app_secret.required' => '商户标题必须存在',
+    //  'mini_app_secret.min' => '商户标题必须小于10'
+    ];
+
+    public $softDelete = "$SOFTDELETE$";
+
+    public $table = '$TABLE_NAME$';
+
+    public $primaryKey = '$TABLE_ID$';
+
+    public $timestamps = false;
+
+    public function __construct() {
+
+    }
+
+
+}

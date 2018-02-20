@@ -1,6 +1,6 @@
 <?php
 
-namespace OutSource\Console\Commands\Scaffold;
+namespace OutSource\Console\Commands\YafCommands\Common;
 
 use OutSource\Console\Commands\BaseCommand;
 use OutSource\Console\Common\CommandData;
@@ -11,16 +11,14 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class LibraryGeneratorCommand extends BaseCommand
+class ModulesCommand extends BaseCommand
 {
-    protected $name = 'make:library';
 
-    protected $description = "Create a library";
+    protected $name = 'make:modules';
+
+    protected $description = "Create a modules";
 
     protected $container;
-
-
-
 
     public function __construct($pimple)
     {
@@ -39,35 +37,30 @@ class LibraryGeneratorCommand extends BaseCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $libraryName = $input->getArgument('name');
+        $this->preConfig($input);
+        $rollBack = $this->input->getOption('rollback');
+        $generator = new $this->container['generator.modules']($this->config , $this->commandData , $this->container['files']);
+        $generator->generateModules($rollBack);
 
-        if(empty($libraryName)) {
-            $this->error('library name not empty');
-        }
-
-        $this->commandData->modelName = $libraryName;
-        $generator = new $this->container['generator.library']($this->config , $this->commandData , $this->container['files']);
-        $generator->generateLibrary();
+        $command = $this->getApplication()->find('make:controller');
+        $arguments = array(
+            'command' => 'make:controller',
+            'name'    =>  $input->getArgument('name') .'/index',
+        );
+        $greetInput = new ArrayInput($arguments);
+        $command->run($greetInput, $output);
     }
 
-    public function preConfig(InputInterface $input,$config)
+
+
+    public function preConfig(InputInterface $input)
     {
-        $primaryName = 'id';
-        $tableName = $input->getArgument('name');
+        $modulesName = $input->getArgument('name');
+        empty($modulesName) && $this->error('library name not empty');
 
-        if ($input->getOption('primary')) {
-            $primaryName = $input->getOption('primary');
-        }
-
-        if ($input->getOption('tableName')) {
-            $this->tableName = $input->getOption('tableName');
-        }
-
-        $this->config->set('primaryName', $primaryName);
-        $this->config->set('tableName', $tableName);
+        $this->config->set('modulesName' , $modulesName );
 
     }
-
 
     /**
      * Get the console command options.
@@ -77,7 +70,7 @@ class LibraryGeneratorCommand extends BaseCommand
     public function getOptions()
     {
         return [
-
+            ['rollback', null, InputOption::VALUE_NONE, 'rollback modules'],
         ];
     }
 

@@ -5,24 +5,7 @@ namespace OutSource\Console;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use OutSource\Console\Application;
-use OutSource\Console\Commands\Scaffold\ScaffoldGeneratorCommand;
-use OutSource\Console\Generators\CIGenerator\ControllerGenerator;
-use OutSource\Console\Commands\Scaffold\ControllerGeneratorCommand;
-use OutSource\Console\Commands\Publish\GeneratorPublishCommand;
-use OutSource\Console\Commands\Publish\LayoutPublishCommand;
-use OutSource\Console\Generators\CIGenerator\ModelGenerator;
-use OutSource\Console\Commands\Scaffold\LibraryGeneratorCommand;
-use OutSource\Console\Commands\Scaffold\ModelGeneratorCommand;
-use OutSource\Console\Generators\CIGenerator\LibraryGenerator;
-use OutSource\Console\Generators\CIGenerator\ViewGenerator;
-use OutSource\Console\Commands\Scaffold\SchemaGeneratorCommand;
-use OutSource\Console\Generators\CIGenerator\SchemaGenerator;
-use OutSource\Console\Commands\Modules\CategoryModulesCommand;
-use OutSource\Console\Generators\CIGenerator\ModulesCategoryGenerator;
-use OutSource\Console\Commands\Modules\AuthModulesCommand;
-use OutSource\Console\Generators\CIGenerator\ModulesAuthGenerator;
-use OutSource\Console\Generators\CIGenerator\ModulesAdvGenerator;
-use OutSource\Console\Commands\Modules\AdvModulesCommand;
+
 
 class ServerProvider implements ServiceProviderInterface
 {
@@ -35,19 +18,8 @@ class ServerProvider implements ServiceProviderInterface
 
 
     protected $commands = [
-        ScaffoldGeneratorCommand::class,
-        ControllerGeneratorCommand::class,
-        GeneratorPublishCommand::class,
-        LayoutPublishCommand::class,
-        ModelGeneratorCommand::class,
-        LibraryGeneratorCommand::class,
-        SchemaGeneratorCommand::class,
-        CategoryModulesCommand::class ,
-//        AuthModulesCommand::class ,
-        AdvModulesCommand::class
+
     ];
-
-
 
     function register(Container $pimple)
     {
@@ -90,18 +62,51 @@ class ServerProvider implements ServiceProviderInterface
     {
         $dirver = $pimple['config']['driver'];
         call_user_func([$this , "load".$dirver."Generators"], $pimple);
+        call_user_func([$this , "prepare".$dirver."Commands"], $pimple);
     }
 
     private function loadCIGenerators($pimple)
     {
-        $pimple['generator.controller'] = ControllerGenerator::class;
-        $pimple['generator.model'] = ModelGenerator::class;
-        $pimple['generator.library'] = LibraryGenerator::class;
-        $pimple['generator.view'] = ViewGenerator::class;
-        $pimple['generator.schema'] = SchemaGenerator::class;
-        $pimple['generator.category'] = ModulesCategoryGenerator::class;
-//        $pimple['generator.auth'] = ModulesAuthGenerator::class;
-        $pimple['generator.adv'] = ModulesAdvGenerator::class;
+        $pimple['generator.controller'] = 'OutSource\Console\Generators\CIGenerator\ControllerGenerator';
+        $pimple['generator.model'] = 'OutSource\Console\Generators\CIGenerator\ModelGenerator';
+        $pimple['generator.library'] = 'OutSource\Console\Generators\CIGenerator\LibraryGenerator';
+        $pimple['generator.view'] = 'OutSource\Console\Generators\CIGenerator\ViewGenerator';
+        $pimple['generator.schema'] = 'OutSource\Console\Generators\CIGenerator\SchemaGenerator';
+        $pimple['generator.category'] = 'OutSource\Console\Generators\CIGenerator\ModulesCategoryGenerator';
+        $pimple['generator.adv'] = 'OutSource\Console\Generators\CIGenerator\ModulesAdvGenerator';
+    }
+
+    private function loadYafGenerators($pimple)
+    {
+        $pimple['generator.model'] = 'OutSource\Console\Generators\YafGenerator\ModelGenerator';
+        $pimple['generator.library'] = 'OutSource\Console\Generators\YafGenerator\LibraryGenerator';
+        $pimple['generator.modules'] = 'OutSource\Console\Generators\YafGenerator\ModulesGenerator';
+        $pimple['generator.controller'] = 'OutSource\Console\Generators\YafGenerator\ControllerGenerator';
+    }
+
+    private function prepareCICommands()
+    {
+        $this->commands = [
+            'OutSource\Console\Commands\CICommands\Scaffold\ScaffoldGeneratorCommand' ,
+            'OutSource\Console\Commands\CICommands\Scaffold\ControllerGeneratorCommand' ,
+            'OutSource\Console\Commands\CICommands\Publish\GeneratorPublishCommand' ,
+            'OutSource\Console\Commands\CICommands\Publish\LayoutPublishCommand' ,
+            'OutSource\Console\Commands\CICommands\Scaffold\ModelGeneratorCommand' ,
+            'OutSource\Console\Commands\CICommands\Scaffold\LibraryGeneratorCommand' ,
+            'OutSource\Console\Commands\CICommands\Scaffold\SchemaGeneratorCommand' ,
+            'OutSource\Console\Commands\CICommands\Modules\CategoryModulesCommand' ,
+            'OutSource\Console\Commands\CICommands\Modules\AdvModulesCommand'
+        ];
+    }
+
+    private function prepareYafCommands()
+    {
+        $this->commands = [
+            'OutSource\Console\Commands\YafCommands\Common\ModelCommand',
+            'OutSource\Console\Commands\YafCommands\Common\LibraryCommand',
+            'OutSource\Console\Commands\YafCommands\Common\ModulesCommand',
+            'OutSource\Console\Commands\YafCommands\Common\ControllerCommand'
+        ];
     }
 
 

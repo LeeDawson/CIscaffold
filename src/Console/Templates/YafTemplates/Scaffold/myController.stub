@@ -1,0 +1,16 @@
+<?php   defined('BASEPATH') OR exit('No direct script access allowed');
+
+class MY_Controller extends CI_Controller{
+
+    protected $_data;
+
+    protected $_db_data;
+
+    protected $_is_ajax;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->_is_ajax = $this->input->is_ajax_request() ? 1: 0;
+    }
+}

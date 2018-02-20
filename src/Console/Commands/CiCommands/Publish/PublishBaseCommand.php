@@ -1,6 +1,6 @@
 <?php
 
-namespace OutSource\Console\Commands\Publish;
+namespace OutSource\Console\Commands\CICommands\Publish;
 
 use File;
 use OutSource\Console\Commands\BaseCommand;

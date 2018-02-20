@@ -1,6 +1,6 @@
 <?php
 
-namespace OutSource\Console\Commands\Modules;
+namespace OutSource\Console\Commands\CICommands\Modules;
 
 use OutSource\Console\Commands\BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;

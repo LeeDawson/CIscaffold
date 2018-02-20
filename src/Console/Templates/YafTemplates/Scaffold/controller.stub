@@ -1,0 +1,20 @@
+<?php
+/**
+ * @name $CONTROLLER_NAME$
+ * @desc 默认控制器
+ * @see http://www.php.net/manual/en/class.yaf-controller-abstract.php
+ */
+class $CONTROLLER_NAME$ extends BaseController
+{
+    public function init()
+    {
+        parent::init();
+        $this->_data['common_header_path'] = APPLICATION_PATH . '/application/modules/Vote/views/common_header.php';
+        $this->_data['common_footer_path'] = APPLICATION_PATH . '/application/modules/Vote/views/common_footer.php';
+    }
+
+    public function indexAction()
+    {
+
+    }
+}

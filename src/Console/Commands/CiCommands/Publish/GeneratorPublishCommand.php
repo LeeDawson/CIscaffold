@@ -1,8 +1,8 @@
 <?php
 
-namespace OutSource\Console\Commands\Publish;
+namespace OutSource\Console\Commands\CICommands\Publish;
 
-use OutSource\Console\Commands\Publish\PublishBaseCommand;
+use OutSource\Console\Commands\CICommands\Publish\PublishBaseCommand;
 use OutSource\Console\Utils\FileUtils;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

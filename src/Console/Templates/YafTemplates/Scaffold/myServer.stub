@@ -1,0 +1,17 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class MY_Server
+{
+    public $load;
+
+    public function __construct()
+    {
+        $this->load = & load_class('Loader', 'core');
+    }
+
+    public function __get($name)
+    {
+        return get_instance()->$name;
+    }
+
+}

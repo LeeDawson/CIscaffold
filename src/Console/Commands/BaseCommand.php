@@ -69,6 +69,7 @@ class BaseCommand extends SymfonyCommand
         'vvv' => OutputInterface::VERBOSITY_DEBUG,
         'quiet' => OutputInterface::VERBOSITY_QUIET,
         'normal' => OutputInterface::VERBOSITY_NORMAL,
+        'dirver' => OutputInterface::VERBOSITY_NORMAL,
     ];
 
     /**

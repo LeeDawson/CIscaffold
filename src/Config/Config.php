@@ -3,7 +3,6 @@
 namespace OutSource\Config;
 
 use OutSource\Kernel\Support\Collection;
-use OutSource\Config\CIConfig;
 use Symfony\Component\Console\Exception\LogicException;
 
 /**
@@ -29,24 +28,28 @@ class Config extends Collection
      */
     public function __construct($items)
     {
-        $ci_configs = array();
+        $configs = array();
 
         if(isset($items['driver'])) {
             switch($items['driver']) {
-            case 'CI':
-                $config = new CIConfig($items);
-                $ci_configs = $config->getConfigs();
-                break;
-            default:
-                $this->_errorConfig();
-                break;
+                case 'CI':
+                    $config = new CIConfig($items);
+                    $configs = $config->getConfigs();
+                    break;
+                case 'Yaf' :
+                    $config = new YafConfig($items);
+                    $configs = $config->getConfigs();
+                    break;
+                default:
+                    $this->_errorConfig();
+                    break;
             }
         } else {
             $config = new CIConfig($items);
-            $ci_configs = $config->getConfigs();
+            $configs = $config->getConfigs();
         }
 
-        parent::__construct($ci_configs);
+        parent::__construct($configs);
     }
 
     /**
