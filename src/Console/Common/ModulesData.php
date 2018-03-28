@@ -2,7 +2,7 @@
 
 namespace OutSource\Console\Common;
 
-use OutSource\Console\Commands\Modules\ModulesCommand;
+use  OutSource\Console\Commands\CICommands\Modules\ModulesCommand;
 
 class ModulesData
 {

@@ -9,8 +9,10 @@ class $CONTROLLER_NAME$ extends BaseController
     public function init()
     {
         parent::init();
-        $this->_data['common_header_path'] = APPLICATION_PATH . '/application/modules/Vote/views/common_header.php';
-        $this->_data['common_footer_path'] = APPLICATION_PATH . '/application/modules/Vote/views/common_footer.php';
+        $this->_data['common_header_path'] = APPLICATION_PATH . '/application/$MODULES_NAME$views/common_header.php';
+        $this->_data['common_footer_path'] = APPLICATION_PATH . '/application/$MODULES_NAME$views/common_footer.php';
+        $this->_data['common_menu_path'] = APPLICATION_PATH . '/application/$MODULES_NAME$views/common_menu.php';
+        parent::checkLoginStatus();
     }
 
     public function indexAction()

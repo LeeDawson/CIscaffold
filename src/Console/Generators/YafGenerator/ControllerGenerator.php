@@ -53,6 +53,7 @@ class ControllerGenerator implements GeneratorInterface
         $FileName = $this->commandConfig->controllerFileName.'.php';
         $templateData = FileUtils::getTemplateScaffoldPath($this->commandConfig->get('systemTemplates'), 'controller.stub');
         $templateData = str_replace('$CONTROLLER_NAME$', ucfirst($controllerName), $templateData);
+        $templateData = str_replace('$MODULES_NAME$', $this->getModuleName() , $templateData);
 
         $controllerPath = '';
         if(empty($this->commandConfig->controllerPath)) {
@@ -72,6 +73,15 @@ class ControllerGenerator implements GeneratorInterface
     }
 
 
+    private function getModuleName()
+    {
+        $moduleName = $this->commandConfig->get('modulesName');
+
+        if(empty($moduleName))
+            return "";
+
+        return 'modules/'.ucfirst($moduleName).'/';
+    }
 
     /**
      * 回滚函数

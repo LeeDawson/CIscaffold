@@ -23,7 +23,6 @@ class ControllerCommand extends BaseCommand
     public function __construct($pimple)
     {
         parent::__construct();
-
         $this->commandData = new CommandData($this, CommandData::$COMMAND_TYPE_SCAFFOLD);
         $this->container = $pimple;
         $this->config = $pimple['config'];
@@ -52,6 +51,7 @@ class ControllerCommand extends BaseCommand
         $this->config->set('controllerName' , $this->getControllerName($controllerName) );
         $this->config->set('controllerFileName' , $this->getControllerFileName($controllerName) );
         $this->config->set('controllerPath' , $this->getControllerPath($controllerName) );
+        $this->config->set('modulesName' , $this->getModules($controllerName) );
 
 //        $this->config->set('libraryName' , $this->getLibraryName($libraryName) );
 //        $this->config->set('libraryFileName' , $this->getLibraryFileName($libraryName) );
@@ -91,6 +91,16 @@ class ControllerCommand extends BaseCommand
         array_pop($names);
 
         return implode('/' , array_map('ucfirst' , $names)) .'/Controllers/';
+    }
+
+    private function getModules($controllerName)
+    {
+        $names = explode('/' , $controllerName);
+
+        if(count($names) == 1)
+            return "";
+
+        return array_shift($names);
     }
 
 

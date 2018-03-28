@@ -6,7 +6,7 @@ use OutSource\Kernel\Application;
 
 $option = [
     "basePath" => dirname(__FILE__),
-    "driver" => 'Yaf',
+    "driver" => 'CI',
 ];
 
 
